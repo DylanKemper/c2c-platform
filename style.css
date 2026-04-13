@@ -1,0 +1,16 @@
+:root {
+    --bs-body-font-family: 'Play', sans-serif;
+}
+
+body{
+    font-family: 'Play', sans-serif;
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 2rem;
+}
+
+.search-form {
+    width: 500px;
+}
