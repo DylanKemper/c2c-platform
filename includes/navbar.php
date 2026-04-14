@@ -13,7 +13,10 @@
                     <input class="form-control me-2 search-form" type="search" placeholder="Search">
                     <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>
+                <!-- User Icon -->
+                <div class="navbar-nav ms-4">
+                    <a class="nav-link" href="#">Sign In</a>
+                </div>
             </div>
         </div>
-    </div>
 </nav>
