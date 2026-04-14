@@ -13,10 +13,14 @@
     <link rel="stylesheet" href="style.css">
 </head>
 
-<body>
+<body class="d-flex flex-column min-vh-100">
     <?php include 'includes/navbar.php'; ?>
-    <h1>Bimbimbambam</h1>
-
+    <main class="flex-grow-1">
+        <div class="container mt-4">
+            <h1>Page Content</h1>
+        </div>
+    </main>
+    <?php include 'includes/footer.php';?>
 </body>
 
 </html>

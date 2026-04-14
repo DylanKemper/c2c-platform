@@ -1,16 +1,69 @@
 :root {
     --bs-body-font-family: 'Play', sans-serif;
+    --bs-primary: #101935;
+    --bs-secondary: #2C3E66;
+    --bs-success: #3FA796;
+
+    --bs-body-bg: #F5F7FA;
+    --bs-body-color: #1A1A1A
 }
 
 body{
     font-family: 'Play', sans-serif;
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-color);
 }
 
 .navbar-brand {
     font-weight: 700;
     font-size: 2rem;
+    color: white;
 }
 
 .search-form {
     width: 500px;
+}
+
+.navbar.custom-navbar {
+    background-color: var(--bs-primary);
+}
+
+footer.custom-footer {
+    background-color: var(--bs-primary);
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+}
+
+.btn.btn-outline-success {
+    color: white;
+    border-color: white;
+    background-color: var(--bs-secondary);
+}
+
+.btn.btn-outline-success:hover {
+    color: var(--bs-secondary);
+    border-color: var(--bs-secondary);
+    background-color: white;
+}
+
+.btn.btn-outline-success:focus,
+.btn.btn-outline-success:focus-visible,
+.btn.btn-outline-success:active,
+.btn.btn-outline-success.active {
+    color: var(--bs-secondary);
+    border-color: var(--bs-secondary);
+    background-color: white;
+    box-shadow: 0 0 0 0.15rem var(--bs-secondary);
+}
+
+.form-control.search-form {
+    background-color: white;
+    color: var(--bs-body-color);
+}
+
+.form-control.search-form:focus {
+    background-color: white;
+    color: var(--bs-body-color);
+    box-shadow: 0px 0px 0px 0.15rem var(--bs-secondary);
 }
