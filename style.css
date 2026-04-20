@@ -283,7 +283,6 @@ footer.custom-footer {
 }
 
 @media (max-width: 992px) {
-
     .navbar-inner {
         flex-wrap: nowrap;
         align-items: center;
