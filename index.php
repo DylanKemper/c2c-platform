@@ -17,7 +17,7 @@
         <div class="card-grid">
             <div class="product-card">
                 <img class="product-card-img"
-                    src="assets/img/keyboard.jpg"
+                    src="Sample-Images/Sample-Image.jpg"
                     alt="Mechanical Keyboard">
                 <div class="product-card-body">
                     <span class="product-card-category">Electronics</span>
@@ -40,7 +40,7 @@
 
             <div class="product-card">
                 <img class="product-card-img"
-                    src="assets/img/headphones.jpg"
+                    src="Sample-Images/Sample-Image.jpg"
                     alt="Studio Headphones">
                 <div class="product-card-body">
                     <span class="product-card-category">Audio</span>
@@ -63,7 +63,7 @@
 
             <div class="product-card">
                 <img class="product-card-img"
-                    src="assets/img/camera.jpg"
+                    src="Sample-Images/Sample-Image.jpg"
                     alt="Mirrorless Camera">
                 <div class="product-card-body">
                     <span class="product-card-category">Photography</span>
@@ -86,7 +86,7 @@
 
             <div class="product-card">
                 <img class="product-card-img"
-                    src="assets/img/keyboard.jpg"
+                    src="Sample-Images/Sample-Image.jpg"
                     alt="Mechanical Keyboard">
                 <div class="product-card-body">
                     <span class="product-card-category">Electronics</span>
@@ -109,7 +109,7 @@
 
             <div class="product-card">
                 <img class="product-card-img"
-                    src="assets/img/headphones.jpg"
+                    src="Sample-Images/Sample-Image.jpg"
                     alt="Studio Headphones">
                 <div class="product-card-body">
                     <span class="product-card-category">Audio</span>
@@ -132,7 +132,7 @@
 
             <div class="product-card">
                 <img class="product-card-img"
-                    src="assets/img/camera.jpg"
+                    src="Sample-Images/Sample-Image.jpg"
                     alt="Mirrorless Camera">
                 <div class="product-card-body">
                     <span class="product-card-category">Photography</span>
@@ -155,7 +155,7 @@
 
             <div class="product-card">
                 <img class="product-card-img"
-                    src="assets/img/camera.jpg"
+                    src="Sample-Images/Sample-Image.jpg"
                     alt="Mirrorless Camera">
                 <div class="product-card-body">
                     <span class="product-card-category">Photography</span>
@@ -178,7 +178,7 @@
 
             <div class="product-card">
                 <img class="product-card-img"
-                    src="assets/img/keyboard.jpg"
+                    src="Sample-Images/Sample-Image.jpg"
                     alt="Mechanical Keyboard">
                 <div class="product-card-body">
                     <span class="product-card-category">Electronics</span>
@@ -201,7 +201,7 @@
 
             <div class="product-card">
                 <img class="product-card-img"
-                    src="assets/img/headphones.jpg"
+                    src="Sample-Images/Sample-Image.jpg"
                     alt="Studio Headphones">
                 <div class="product-card-body">
                     <span class="product-card-category">Audio</span>
@@ -224,7 +224,7 @@
 
             <div class="product-card">
                 <img class="product-card-img"
-                    src="assets/img/camera.jpg"
+                    src="Sample-Images/Sample-Image.jpg"
                     alt="Mirrorless Camera">
                 <div class="product-card-body">
                     <span class="product-card-category">Photography</span>
