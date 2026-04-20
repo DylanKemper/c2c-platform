@@ -12,7 +12,7 @@
 </head>
 
 <body class="d-flex flex-column min-vh-100">
-    <?php include 'includes/navbar.php'; ?>
+    <?php include 'partials/navbar.php'; ?>
     <nav class="custom-breadcrumb" aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="index.php">Home</a></li>
@@ -74,5 +74,5 @@
         </div>
     </main>
 
-    <?php include 'includes/footer.php'; ?>
+    <?php include 'partials/footer.php'; ?>
 </body>

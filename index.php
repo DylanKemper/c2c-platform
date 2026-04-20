@@ -12,7 +12,11 @@
 </head>
 
 <body class="d-flex flex-column min-vh-100">
-    <?php include 'includes/navbar.php'; ?>
+    <?php include 'partials/navbar.php'; ?>
+    <?php include 'partials/register-modal.php'; ?>
+    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#registerModal">
+        Open Register Modal
+    </button>
     <main class="flex-grow-1">
         <div class="card-grid">
             <div class="product-card">
@@ -247,7 +251,8 @@
 
         </div>
     </main>
-    <?php include 'includes/footer.php'; ?>
+    <?php include 'partials/footer.php'; ?>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

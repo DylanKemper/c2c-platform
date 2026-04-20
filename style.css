@@ -32,6 +32,10 @@ body {
     height: 100vh;
 }
 
+/* =========================
+   NAVBAR
+========================= */
+
 .navbar.custom-navbar {
     background-color: var(--primary);
     min-height: var(--navbar-height);
@@ -66,16 +70,16 @@ body {
     color: var(--accent);
 }
 
+/* =========================
+   SEARCH
+========================= */
+
 .search-wrapper {
     display: flex;
     align-items: center;
     gap: 8px;
     flex: 1 1 auto;
     min-width: 0;
-}
-
-.nav-actions {
-    flex: 0 0 auto;
 }
 
 .search-group {
@@ -144,42 +148,15 @@ body {
     background-color: var(--accent-hover);
 }
 
-.btn.btn-search {
-    height: 40px;
-    padding: 0 18px;
-    background-color: var(--secondary);
-    color: white;
-    border: 2px solid white;
-    border-radius: var(--radius-sm);
-    font-family: 'Play', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 700;
-    white-space: nowrap;
-    flex-shrink: 0;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    transition: background-color 0.15s, color 0.15s, border-color 0.15s;
-}
-
-.btn.btn-search:hover {
-    background-color: white;
-    color: var(--secondary);
-    border-color: white;
-}
-
-.btn.btn-search:focus,
-.btn.btn-search:focus-visible {
-    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.35);
-    outline: none;
-}
+/* =========================
+   NAV ACTIONS
+========================= */
 
 .nav-actions {
     display: flex;
     align-items: center;
     gap: 4px;
-    flex-shrink: 0;
+    flex: 0 0 auto;
 }
 
 .nav-action-btn {
@@ -215,21 +192,10 @@ body {
     font-weight: 700;
 }
 
-@media (min-width: 992px) {
-    .nav-action-btn {
-        flex-direction: row;
-        gap: 6px;
-        font-size: 0.875rem;
-        padding: 6px 12px;
-        min-width: unset;
-    }
+/* =========================
+   CART
+========================= */
 
-    .nav-action-btn i {
-        font-size: 1.15rem;
-    }
-}
-
-/* Cart badge */
 .cart-btn {
     position: relative;
 }
@@ -250,12 +216,39 @@ body {
     justify-content: center;
 }
 
-footer.custom-footer {
-    background-color: var(--primary);
+/* =========================
+   BUTTONS
+========================= */
+
+.btn.btn-search {
+    height: 40px;
+    padding: 0 18px;
+    background-color: var(--secondary);
     color: white;
-    padding: 20px 0;
-    text-align: center;
-    min-height: 100vh - var(--navbar-height);
+    border: 2px solid white;
+    border-radius: var(--radius-sm);
+    font-family: 'Play', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    white-space: nowrap;
+    flex-shrink: 0;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.btn.btn-search:hover {
+    background-color: white;
+    color: var(--secondary);
+    border-color: white;
+}
+
+.btn.btn-search:focus,
+.btn.btn-search:focus-visible {
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.35);
+    outline: none;
 }
 
 .btn.btn-outline-success {
@@ -281,68 +274,82 @@ footer.custom-footer {
     box-shadow: 0 0 0 0.15rem var(--secondary);
 }
 
-@media (max-width: 992px) {
-    .navbar-inner {
-        flex-wrap: nowrap;
-        align-items: center;
-        gap: 8px;
-    }
-
-    .navbar-brand {
-        order: 1;
-        flex-shrink: 0;
-    }
-
-    .search-wrapper {
-        order: 2;
-        flex: 1 1 auto;
-        min-width: 0;
-        width: auto;
-    }
-
-    .nav-actions {
-        order: 3;
-        flex-shrink: 0;
-        margin-left: auto;
-    }
-
-    .search-group {
-        min-width: 0;
-    }
-
-    .form-control.search-form {
-        min-width: 0;
-        width: 100%;
-    }
-
-    .nav-action-btn {
-        padding: 4px 6px;
-    }
-
-    .btn.btn-search {
-        display: none;
-    }
+.btn.btn-add-cart {
+    display: block;
+    width: 100%;
+    margin-top: 12px;
+    padding: 9px 0;
+    text-align: center;
+    background-color: var(--secondary);
+    color: white;
+    border: 2px solid transparent;
+    border-radius: var(--radius-sm);
+    font-family: 'Play', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.15s, color 0.15s, border-color 0.15s;
 }
 
-/* Small phones */
-@media (max-width: 480px) {
-
-    .navbar-inner {
-        padding: 8px;
-    }
-
-    .navbar-brand {
-        font-size: 1.3rem;
-    }
-
-    .form-control.search-form {
-        font-size: 0.85rem;
-    }
-
-    .nav-action-btn {
-        padding: 4px 6px;
-    }
+.btn.btn-add-cart:hover {
+    background-color: var(--primary);
+    color: white;
 }
+
+/* =========================
+   FOOTER
+========================= */
+
+footer.custom-footer {
+    background-color: var(--primary);
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+    min-height: 100vh - var(--navbar-height);
+}
+
+/* =========================
+   BREADCRUMB
+========================= */
+
+.custom-breadcrumb {
+    background-color: var(--primary);
+    padding: 10px 0;
+    margin-bottom: 0;
+}
+
+.custom-breadcrumb .breadcrumb {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0 20px;
+    background: transparent;
+}
+
+.custom-breadcrumb .breadcrumb-item a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: color 0.15s;
+}
+
+.custom-breadcrumb .breadcrumb-item a:hover {
+    color: var(--accent);
+}
+
+.custom-breadcrumb .breadcrumb-item.active {
+    color: white;
+    font-size: 0.85rem;
+}
+
+.custom-breadcrumb .breadcrumb-item+.breadcrumb-item::before {
+    color: var(--muted);
+}
+
+/* =========================
+   GRID / PRODUCTS
+========================= */
 
 .card-grid {
     display: grid;
@@ -351,7 +358,6 @@ footer.custom-footer {
     padding: 24px;
 
     max-width: calc(5 * 256px + 6 * 24px);
-    /*256 px = min width of each card. 24px = gap between cards */
     margin: 0 auto;
 }
 
@@ -452,62 +458,9 @@ footer.custom-footer {
     margin-left: 4px;
 }
 
-.btn.btn-add-cart {
-    display: block;
-    width: 100%;
-    margin-top: 12px;
-    padding: 9px 0;
-    text-align: center;
-    background-color: var(--secondary);
-    color: white;
-    border: 2px solid transparent;
-    border-radius: var(--radius-sm);
-    font-family: 'Play', sans-serif;
-    font-size: 0.88rem;
-    font-weight: 700;
-    text-decoration: none;
-    cursor: pointer;
-    transition: background-color 0.15s, color 0.15s, border-color 0.15s;
-}
-
-.btn.btn-add-cart:hover {
-    background-color: var(--primary);
-    color: white;
-}
-
-.custom-breadcrumb {
-    background-color: var(--primary);
-    padding: 10px 0;
-    margin-bottom: 0;
-}
-
-.custom-breadcrumb .breadcrumb {
-    display: flex;
-    align-items: center;
-    margin: 0;
-    padding: 0 20px;
-    background: transparent;
-}
-
-.custom-breadcrumb .breadcrumb-item a {
-    color: var(--muted);
-    text-decoration: none;
-    font-size: 0.85rem;
-    transition: color 0.15s;
-}
-
-.custom-breadcrumb .breadcrumb-item a:hover {
-    color: var(--accent);
-}
-
-.custom-breadcrumb .breadcrumb-item.active {
-    color: white;
-    font-size: 0.85rem;
-}
-
-.custom-breadcrumb .breadcrumb-item+.breadcrumb-item::before {
-    color: var(--muted);
-}
+/* =========================
+   LISTING PAGE
+========================= */
 
 .listing-page {
     padding: 32px 20px;
@@ -552,12 +505,6 @@ footer.custom-footer {
     color: var(--muted);
     line-height: 1.5;
     padding-bottom: 8px;
-}
-
-.listing-page {
-    padding: 32px 20px;
-    max-width: 1100px;
-    margin: 0 auto;
 }
 
 .product-listing-layout {
@@ -739,4 +686,194 @@ footer.custom-footer {
 .btn.btn-contact-seller:hover {
     background-color: var(--secondary);
     color: white;
+}
+
+/* =========================
+   REGISTER MODAL
+========================= */
+
+.register-modal-content {
+    border: none;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    font-family: 'Play', sans-serif;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.22);
+}
+
+.register-modal-header {
+    background-color: var(--primary);
+    padding: 16px 20px;
+    border-bottom: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.register-modal-title-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.register-modal-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background-color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.register-modal-header .modal-title {
+    color: white;
+    font-family: 'Play', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.register-close-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 1.2rem;
+    line-height: 1;
+    padding: 0;
+    transition: background-color 0.15s, color 0.15s;
+}
+
+.register-close-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.register-modal-body {
+    padding: 24px;
+    background-color: #ffffff;
+}
+
+/* Fields */
+.register-field {
+    margin-bottom: 16px;
+}
+
+.register-label {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+}
+
+.register-input-wrapper {
+    position: relative;
+}
+
+.register-input {
+    width: 100%;
+    height: 40px;
+    padding: 0 12px;
+    background-color: var(--body-bg);
+    border: 1.5px solid #d1d9e6;
+    border-radius: var(--radius-sm);
+    font-family: 'Play', sans-serif;
+    font-size: 0.9rem;
+    color: var(--body-color);
+    transition: border-color 0.15s, box-shadow 0.15s;
+    outline: none;
+}
+
+.register-input.has-toggle {
+    padding-right: 40px;
+}
+
+.register-input::placeholder {
+    color: var(--muted);
+}
+
+.register-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(63, 167, 150, 0.18);
+    background-color: #ffffff;
+}
+
+.register-pw-toggle {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.15s;
+}
+
+.register-pw-toggle:hover {
+    color: var(--primary);
+}
+
+/* Submit */
+.register-submit-btn {
+    width: 100%;
+    height: 42px;
+    margin-top: 8px;
+    background-color: var(--primary);
+    color: white;
+    border: 2px solid transparent;
+    border-radius: var(--radius-sm);
+    font-family: 'Play', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: background-color 0.15s;
+}
+
+.register-submit-btn:hover {
+    background-color: var(--primary-hover);
+    color: white;
+}
+
+.register-submit-btn:focus,
+.register-submit-btn:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(63, 167, 150, 0.3);
+}
+
+/* Sign in link */
+.register-signin-link {
+    text-align: center;
+    margin: 16px 0 0;
+    font-size: 0.82rem;
+    color: var(--muted);
+}
+
+.register-signin-link a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 700;
+    transition: color 0.15s;
+}
+
+.register-signin-link a:hover {
+    color: var(--accent-hover);
 }
