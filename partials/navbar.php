@@ -7,7 +7,13 @@
             </svg>
             <span class="navbar-brand-name">Lootly</span>
         </a>
-        
+
+        <!-- Categories -->
+        <a class="nav-action-btn" href="categories.php" aria-label="Categories">
+            <i class="bi bi-grid-3x3-gap"></i>
+            <span class="nav-action-label d-none d-lg-inline">Categories</span>
+        </a>
+
         <!-- Search -->
         <form class="search-wrapper" action="search.php" method="GET">
             <div class="search-group">
@@ -30,11 +36,6 @@
         </form>
 
         <div class="nav-actions">
-            <!-- Categories -->
-            <a class="nav-action-btn" href="categories.php" aria-label="Categories">
-                <i class="bi bi-grid-3x3-gap"></i>
-                <span class="nav-action-label d-none d-lg-inline">Categories</span>
-            </a>
             <!-- Sign In -->
             <a class="nav-action-btn" href="login.php" aria-label="Sign in">
                 <i class="bi bi-person"></i>

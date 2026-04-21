@@ -186,15 +186,14 @@ body {
 
 .nav-action-btn {
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 2px;
+    gap: 4px;
     color: rgba(255, 255, 255, 0.85);
     text-decoration: none;
     padding: 6px 8px;
     border-radius: var(--radius-sm);
-    font-size: 0.7rem;
+    font-size: 1rem;
     font-family: 'Play', sans-serif;
     transition: background-color 0.15s, color 0.15s;
     position: relative;
