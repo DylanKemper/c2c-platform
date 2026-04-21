@@ -717,7 +717,7 @@ footer.custom-footer {
    REGISTER MODAL
 ========================= */
 
-.register-modal-content {
+.auth-modal-content {
     border: none;
     border-radius: var(--radius-md);
     overflow: hidden;
@@ -725,7 +725,7 @@ footer.custom-footer {
     box-shadow: 0 16px 48px rgba(0, 0, 0, 0.22);
 }
 
-.register-modal-header {
+.auth-modal-header {
     background-color: var(--primary);
     padding: 16px 20px;
     border-bottom: none;
@@ -734,13 +734,13 @@ footer.custom-footer {
     justify-content: space-between;
 }
 
-.register-modal-title-group {
+.auth-modal-title-group {
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
-.register-modal-icon {
+.auth-modal-icon {
     width: 28px;
     height: 28px;
     border-radius: 50%;
@@ -751,7 +751,7 @@ footer.custom-footer {
     flex-shrink: 0;
 }
 
-.register-modal-header .modal-title {
+.auth-modal-header .modal-title {
     color: white;
     font-family: 'Play', sans-serif;
     font-size: 1rem;
@@ -759,7 +759,7 @@ footer.custom-footer {
     margin: 0;
 }
 
-.register-close-btn {
+.auth-close-btn {
     background: rgba(255, 255, 255, 0.1);
     border: none;
     border-radius: 50%;
@@ -776,22 +776,22 @@ footer.custom-footer {
     transition: background-color 0.15s, color 0.15s;
 }
 
-.register-close-btn:hover {
+.auth-close-btn:hover {
     background: rgba(255, 255, 255, 0.2);
     color: white;
 }
 
-.register-modal-body {
+.auth-modal-body {
     padding: 24px;
     background-color: #ffffff;
 }
 
 /* Fields */
-.register-field {
+.auth-field {
     margin-bottom: 16px;
 }
 
-.register-label {
+.auth-label {
     display: block;
     font-size: 0.7rem;
     font-weight: 700;
@@ -801,11 +801,11 @@ footer.custom-footer {
     margin-bottom: 6px;
 }
 
-.register-input-wrapper {
+.auth-input-wrapper {
     position: relative;
 }
 
-.register-input {
+.auth-input {
     width: 100%;
     height: 40px;
     padding: 0 12px;
@@ -819,21 +819,21 @@ footer.custom-footer {
     outline: none;
 }
 
-.register-input.has-toggle {
+.auth-input.has-toggle {
     padding-right: 40px;
 }
 
-.register-input::placeholder {
+.auth-input::placeholder {
     color: var(--muted);
 }
 
-.register-input:focus {
+.auth-input:focus {
     border-color: var(--accent);
     box-shadow: 0 0 0 3px rgba(63, 167, 150, 0.18);
     background-color: #ffffff;
 }
 
-.register-pw-toggle {
+.auth-pw-toggle {
     position: absolute;
     right: 10px;
     top: 50%;
@@ -849,12 +849,12 @@ footer.custom-footer {
     transition: color 0.15s;
 }
 
-.register-pw-toggle:hover {
+.auth-pw-toggle:hover {
     color: var(--primary);
 }
 
 /* Submit */
-.register-submit-btn {
+.auth-submit-btn {
     width: 100%;
     height: 42px;
     margin-top: 8px;
@@ -873,32 +873,32 @@ footer.custom-footer {
     transition: background-color 0.15s;
 }
 
-.register-submit-btn:hover {
+.auth-submit-btn:hover {
     background-color: var(--primary-hover);
     color: white;
 }
 
-.register-submit-btn:focus,
-.register-submit-btn:focus-visible {
+.auth-submit-btn:focus,
+.auth-submit-btn:focus-visible {
     outline: none;
     box-shadow: 0 0 0 3px rgba(63, 167, 150, 0.3);
 }
 
 /* Sign in link */
-.register-signin-link {
+.auth-signin-link {
     text-align: center;
     margin: 16px 0 0;
     font-size: 0.82rem;
     color: var(--muted);
 }
 
-.register-signin-link a {
+.auth-signin-link a {
     color: var(--accent);
     text-decoration: none;
     font-weight: 700;
     transition: color 0.15s;
 }
 
-.register-signin-link a:hover {
+.auth-signin-link a:hover {
     color: var(--accent-hover);
 }
