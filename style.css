@@ -216,6 +216,13 @@ body {
     font-weight: 700;
 }
 
+.nav-action-btn svg {
+    width: 1.3rem;
+    height: 1.3rem;
+    fill: currentColor;
+    display: block;
+}
+
 /* =========================
    CART
 ========================= */
