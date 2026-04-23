@@ -73,6 +73,5 @@
             </div>
         </div>
     </main>
-
     <?php include 'partials/footer.php'; ?>
 </body>
