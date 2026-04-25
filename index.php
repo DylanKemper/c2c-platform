@@ -42,53 +42,7 @@
                             <span class="rating-count">(1)</span>
                         </div>
                     </div>
-                    <a href="listing.php?id=1" class="btn btn-add-cart">Add to cart</a>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <img class="product-card-img"
-                    src="Sample-Images/Sample-Image.jpg"
-                    alt="Studio Headphones">
-                <div class="product-card-body">
-                    <span class="product-card-category">Audio</span>
-                    <h3 class="product-card-title">Studio Headphones</h3>
-                    <p class="product-card-desc">Over-ear closed-back design with 40mm drivers. Foldable frame, padded headband, and a 3.5mm jack.</p>
-                    <div class="product-card-footer">
-                        <span class="product-card-price">£49.00</span>
-                        <div class="product-card-stars">
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                            <span class="rating-count">(88)</span>
-                        </div>
-                    </div>
-                    <a href="listing.php?id=2" class="btn btn-add-cart">Add to cart</a>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <img class="product-card-img"
-                    src="Sample-Images/Sample-Image.jpg"
-                    alt="Mirrorless Camera">
-                <div class="product-card-body">
-                    <span class="product-card-category">Photography</span>
-                    <h3 class="product-card-title">Mirrorless Camera</h3>
-                    <p class="product-card-desc">24MP APS-C sensor, 4K video, and in-body stabilisation. Ships with 18-55mm kit lens and carry case.</p>
-                    <div class="product-card-footer">
-                        <span class="product-card-price">£389.00</span>
-                        <div class="product-card-stars">
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                            <span class="star star-empty">&#9733;</span>
-                            <span class="rating-count">(17)</span>
-                        </div>
-                    </div>
-                    <a href="listing.php?id=3" class="btn btn-add-cart">Add to cart</a>
+                    <a href="listing.php?id=1" class="btn-platform btn-primary-solid">Add to cart</a>
                 </div>
             </div>
 
@@ -108,79 +62,10 @@
                             <span class="star">&#9733;</span>
                             <span class="star">&#9733;</span>
                             <span class="star star-empty">&#9733;</span>
-                            <span class="rating-count">(42)</span>
+                            <span class="rating-count">(1)</span>
                         </div>
                     </div>
-                    <a href="listing.php?id=1" class="btn btn-add-cart">Add to cart</a>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <img class="product-card-img"
-                    src="Sample-Images/Sample-Image.jpg"
-                    alt="Studio Headphones">
-                <div class="product-card-body">
-                    <span class="product-card-category">Audio</span>
-                    <h3 class="product-card-title">Studio Headphones</h3>
-                    <p class="product-card-desc">Over-ear closed-back design with 40mm drivers. Foldable frame, padded headband, and a 3.5mm jack.</p>
-                    <div class="product-card-footer">
-                        <span class="product-card-price">£49.00</span>
-                        <div class="product-card-stars">
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                            <span class="rating-count">(88)</span>
-                        </div>
-                    </div>
-                    <a href="listing.php?id=2" class="btn btn-add-cart">Add to cart</a>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <img class="product-card-img"
-                    src="Sample-Images/Sample-Image.jpg"
-                    alt="Mirrorless Camera">
-                <div class="product-card-body">
-                    <span class="product-card-category">Photography</span>
-                    <h3 class="product-card-title">Mirrorless Camera</h3>
-                    <p class="product-card-desc">24MP APS-C sensor, 4K video, and in-body stabilisation. Ships with 18-55mm kit lens and carry case.</p>
-                    <div class="product-card-footer">
-                        <span class="product-card-price">£389.00</span>
-                        <div class="product-card-stars">
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                            <span class="star star-empty">&#9733;</span>
-                            <span class="rating-count">(17)</span>
-                        </div>
-                    </div>
-                    <a href="listing.php?id=3" class="btn btn-add-cart">Add to cart</a>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <img class="product-card-img"
-                    src="Sample-Images/Sample-Image.jpg"
-                    alt="Mirrorless Camera">
-                <div class="product-card-body">
-                    <span class="product-card-category">Photography</span>
-                    <h3 class="product-card-title">Mirrorless Camera</h3>
-                    <p class="product-card-desc">24MP APS-C sensor, 4K video, and in-body stabilisation. Ships with 18-55mm kit lens and carry case.</p>
-                    <div class="product-card-footer">
-                        <span class="product-card-price">£389.00</span>
-                        <div class="product-card-stars">
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                            <span class="star star-empty">&#9733;</span>
-                            <span class="rating-count">(17)</span>
-                        </div>
-                    </div>
-                    <a href="listing.php?id=3" class="btn btn-add-cart">Add to cart</a>
+                    <a href="listing.php?id=1" class="btn-platform btn-primary-solid">Add to cart</a>
                 </div>
             </div>
 
@@ -200,56 +85,171 @@
                             <span class="star">&#9733;</span>
                             <span class="star">&#9733;</span>
                             <span class="star star-empty">&#9733;</span>
-                            <span class="rating-count">(42)</span>
+                            <span class="rating-count">(1)</span>
                         </div>
                     </div>
-                    <a href="listing.php?id=1" class="btn btn-add-cart">Add to cart</a>
+                    <a href="listing.php?id=1" class="btn-platform btn-primary-solid">Add to cart</a>
                 </div>
             </div>
 
             <div class="product-card">
                 <img class="product-card-img"
                     src="Sample-Images/Sample-Image.jpg"
-                    alt="Studio Headphones">
+                    alt="Mechanical Keyboard">
                 <div class="product-card-body">
-                    <span class="product-card-category">Audio</span>
-                    <h3 class="product-card-title">Studio Headphones</h3>
-                    <p class="product-card-desc">Over-ear closed-back design with 40mm drivers. Foldable frame, padded headband, and a 3.5mm jack.</p>
+                    <span class="product-card-category">Electronics</span>
+                    <h3 class="product-card-title">Mechanical Keyboard</h3>
+                    <p class="product-card-desc">Compact TKL layout with tactile brown switches. Backlit with per-key RGB and a USB-C detachable cable.</p>
                     <div class="product-card-footer">
-                        <span class="product-card-price">£49.00</span>
-                        <div class="product-card-stars">
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                            <span class="rating-count">(88)</span>
-                        </div>
-                    </div>
-                    <a href="listing.php?id=2" class="btn btn-add-cart">Add to cart</a>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <img class="product-card-img"
-                    src="Sample-Images/Sample-Image.jpg"
-                    alt="Mirrorless Camera">
-                <div class="product-card-body">
-                    <span class="product-card-category">Photography</span>
-                    <h3 class="product-card-title">Mirrorless Camera</h3>
-                    <p class="product-card-desc">24MP APS-C sensor, 4K video, and in-body stabilisation. Ships with 18-55mm kit lens and carry case.</p>
-                    <div class="product-card-footer">
-                        <span class="product-card-price">£389.00</span>
+                        <span class="product-card-price">£74.99</span>
                         <div class="product-card-stars">
                             <span class="star">&#9733;</span>
                             <span class="star">&#9733;</span>
                             <span class="star">&#9733;</span>
                             <span class="star">&#9733;</span>
                             <span class="star star-empty">&#9733;</span>
-                            <span class="rating-count">(17)</span>
+                            <span class="rating-count">(1)</span>
                         </div>
                     </div>
-                    <a href="listing.php?id=3" class="btn btn-add-cart">Add to cart</a>
+                    <a href="listing.php?id=1" class="btn-platform btn-primary-solid">Add to cart</a>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <img class="product-card-img"
+                    src="Sample-Images/Sample-Image.jpg"
+                    alt="Mechanical Keyboard">
+                <div class="product-card-body">
+                    <span class="product-card-category">Electronics</span>
+                    <h3 class="product-card-title">Mechanical Keyboard</h3>
+                    <p class="product-card-desc">Compact TKL layout with tactile brown switches. Backlit with per-key RGB and a USB-C detachable cable.</p>
+                    <div class="product-card-footer">
+                        <span class="product-card-price">£74.99</span>
+                        <div class="product-card-stars">
+                            <span class="star">&#9733;</span>
+                            <span class="star">&#9733;</span>
+                            <span class="star">&#9733;</span>
+                            <span class="star">&#9733;</span>
+                            <span class="star star-empty">&#9733;</span>
+                            <span class="rating-count">(1)</span>
+                        </div>
+                    </div>
+                    <a href="listing.php?id=1" class="btn-platform btn-primary-solid">Add to cart</a>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <img class="product-card-img"
+                    src="Sample-Images/Sample-Image.jpg"
+                    alt="Mechanical Keyboard">
+                <div class="product-card-body">
+                    <span class="product-card-category">Electronics</span>
+                    <h3 class="product-card-title">Mechanical Keyboard</h3>
+                    <p class="product-card-desc">Compact TKL layout with tactile brown switches. Backlit with per-key RGB and a USB-C detachable cable.</p>
+                    <div class="product-card-footer">
+                        <span class="product-card-price">£74.99</span>
+                        <div class="product-card-stars">
+                            <span class="star">&#9733;</span>
+                            <span class="star">&#9733;</span>
+                            <span class="star">&#9733;</span>
+                            <span class="star">&#9733;</span>
+                            <span class="star star-empty">&#9733;</span>
+                            <span class="rating-count">(1)</span>
+                        </div>
+                    </div>
+                    <a href="listing.php?id=1" class="btn-platform btn-primary-solid">Add to cart</a>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <img class="product-card-img"
+                    src="Sample-Images/Sample-Image.jpg"
+                    alt="Mechanical Keyboard">
+                <div class="product-card-body">
+                    <span class="product-card-category">Electronics</span>
+                    <h3 class="product-card-title">Mechanical Keyboard</h3>
+                    <p class="product-card-desc">Compact TKL layout with tactile brown switches. Backlit with per-key RGB and a USB-C detachable cable.</p>
+                    <div class="product-card-footer">
+                        <span class="product-card-price">£74.99</span>
+                        <div class="product-card-stars">
+                            <span class="star">&#9733;</span>
+                            <span class="star">&#9733;</span>
+                            <span class="star">&#9733;</span>
+                            <span class="star">&#9733;</span>
+                            <span class="star star-empty">&#9733;</span>
+                            <span class="rating-count">(1)</span>
+                        </div>
+                    </div>
+                    <a href="listing.php?id=1" class="btn-platform btn-primary-solid">Add to cart</a>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <img class="product-card-img"
+                    src="Sample-Images/Sample-Image.jpg"
+                    alt="Mechanical Keyboard">
+                <div class="product-card-body">
+                    <span class="product-card-category">Electronics</span>
+                    <h3 class="product-card-title">Mechanical Keyboard</h3>
+                    <p class="product-card-desc">Compact TKL layout with tactile brown switches. Backlit with per-key RGB and a USB-C detachable cable.</p>
+                    <div class="product-card-footer">
+                        <span class="product-card-price">£74.99</span>
+                        <div class="product-card-stars">
+                            <span class="star">&#9733;</span>
+                            <span class="star">&#9733;</span>
+                            <span class="star">&#9733;</span>
+                            <span class="star">&#9733;</span>
+                            <span class="star star-empty">&#9733;</span>
+                            <span class="rating-count">(1)</span>
+                        </div>
+                    </div>
+                    <a href="listing.php?id=1" class="btn-platform btn-primary-solid">Add to cart</a>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <img class="product-card-img"
+                    src="Sample-Images/Sample-Image.jpg"
+                    alt="Mechanical Keyboard">
+                <div class="product-card-body">
+                    <span class="product-card-category">Electronics</span>
+                    <h3 class="product-card-title">Mechanical Keyboard</h3>
+                    <p class="product-card-desc">Compact TKL layout with tactile brown switches. Backlit with per-key RGB and a USB-C detachable cable.</p>
+                    <div class="product-card-footer">
+                        <span class="product-card-price">£74.99</span>
+                        <div class="product-card-stars">
+                            <span class="star">&#9733;</span>
+                            <span class="star">&#9733;</span>
+                            <span class="star">&#9733;</span>
+                            <span class="star">&#9733;</span>
+                            <span class="star star-empty">&#9733;</span>
+                            <span class="rating-count">(1)</span>
+                        </div>
+                    </div>
+                    <a href="listing.php?id=1" class="btn-platform btn-primary-solid">Add to cart</a>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <img class="product-card-img"
+                    src="Sample-Images/Sample-Image.jpg"
+                    alt="Mechanical Keyboard">
+                <div class="product-card-body">
+                    <span class="product-card-category">Electronics</span>
+                    <h3 class="product-card-title">Mechanical Keyboard</h3>
+                    <p class="product-card-desc">Compact TKL layout with tactile brown switches. Backlit with per-key RGB and a USB-C detachable cable.</p>
+                    <div class="product-card-footer">
+                        <span class="product-card-price">£74.99</span>
+                        <div class="product-card-stars">
+                            <span class="star">&#9733;</span>
+                            <span class="star">&#9733;</span>
+                            <span class="star">&#9733;</span>
+                            <span class="star">&#9733;</span>
+                            <span class="star star-empty">&#9733;</span>
+                            <span class="rating-count">(1)</span>
+                        </div>
+                    </div>
+                    <a href="listing.php?id=1" class="btn-platform btn-primary-solid">Add to cart</a>
                 </div>
             </div>
 

@@ -12,42 +12,42 @@
             <div class="modal-body auth-modal-body">
                 <form action="register.php" method="POST" id="registerForm">
 
-                    <div class="auth-field">
-                        <label class="auth-label">Full name</label>
-                        <input type="text" name="full_name" class="auth-input" placeholder="Jane Smith" required>
+                    <div class="form-field">
+                        <label class="form-label-upper">Full name</label>
+                        <input type="text" name="full_name" class="form-input" placeholder="Jane Smith" required>
                     </div>
 
-                    <div class="auth-field">
-                        <label class="auth-label">Username</label>
-                        <input type="text" name="username" class="auth-input" placeholder="janesmith" required>
+                    <div class="form-field">
+                        <label class="form-label-upper">Username</label>
+                        <input type="text" name="username" class="form-input" placeholder="janesmith" required>
                     </div>
 
-                    <div class="auth-field">
-                        <label class="auth-label">Email</label>
-                        <div class="auth-input-wrapper">
-                            <input type="email" name="email" class="auth-input has-icon" placeholder="jane@example.com" required>
+                    <div class="form-field">
+                        <label class="form-label-upper">Email</label>
+                        <div class="form-input-wrapper">
+                            <input type="email" name="email" class="form-input has-icon" placeholder="jane@example.com" required>
                         </div>
                     </div>
 
-                    <div class="auth-field">
-                        <label class="auth-label">Password</label>
-                        <div class="auth-input-wrapper">
-                            <input type="password" id="registerPassword" name="password" class="auth-input has-icon has-toggle" placeholder="Min. 8 characters" required autocomplete="new-password">
-                            <button type="button" class="auth-pw-toggle" id="registerPwToggle" aria-label="Toggle password visibility">
+                    <div class="form-field">
+                        <label class="form-label-upper">Password</label>
+                        <div class="form-input-wrapper">
+                            <input type="password" id="registerPassword" name="password" class="form-input has-icon has-toggle" placeholder="Min. 8 characters" required autocomplete="new-password">
+                            <button type="button" class="form-pw-toggle" id="registerPwToggle" aria-label="Toggle password visibility">
                             </button>
                         </div>
                     </div>
 
-                    <div class="auth-field">
-                        <label class="auth-label">Confirm Password</label>
-                        <div class="auth-input-wrapper">
-                            <input type="password" id="registerConfirmPassword" name="confirm_password" class="auth-input has-icon has-toggle" placeholder="Confirm your password" required autocomplete="new-password">
-                            <button type="button" class="auth-pw-toggle" id="registerConfirmPwToggle" aria-label="Toggle password visibility">
+                    <div class="form-field">
+                        <label class="form-label-upper">Confirm Password</label>
+                        <div class="form-input-wrapper">
+                            <input type="password" id="registerConfirmPassword" name="confirm_password" class="form-input has-icon has-toggle" placeholder="Confirm your password" required autocomplete="new-password">
+                            <button type="button" class="form-pw-toggle" id="registerConfirmPwToggle" aria-label="Toggle password visibility">
                             </button>
                         </div>
                     </div>
 
-                    <button type="submit" class="btn auth-submit-btn">
+                    <button type="submit" class="btn-platform btn-primary-solid btn-block">
                         Create account
                     </button>
                     <p class="auth-signin-link">

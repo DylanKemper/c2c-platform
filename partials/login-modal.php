@@ -12,23 +12,23 @@
             <div class="modal-body auth-modal-body">
                 <form action="login.php" method="POST" id="loginForm">
 
-                    <div class="auth-field">
-                        <label class="auth-label">Email</label>
-                        <div class="auth-input-wrapper">
-                            <input type="email" name="email" class="auth-input has-icon" placeholder="jane@example.com" required>
+                    <div class="form-field">
+                        <label class="form-label-upper">Email</label>
+                        <div class="form-input-wrapper">
+                            <input type="email" name="email" class="form-input has-icon" placeholder="jane@example.com" required>
                         </div>
                     </div>
 
-                    <div class="auth-field">
-                        <label class="auth-label">Password</label>
-                        <div class="auth-input-wrapper">
-                            <input type="password" id="loginPassword" name="password" class="auth-input has-icon has-toggle" placeholder="Enter your password" required autocomplete="current-password">
-                            <button type="button" class="auth-pw-toggle" id="loginPwToggle" aria-label="Toggle password visibility">
+                    <div class="form-field">
+                        <label class="form-label-upper">Password</label>
+                        <div class="form-input-wrapper">
+                            <input type="password" id="loginPassword" name="password" class="form-input has-icon has-toggle" placeholder="Enter your password" required autocomplete="current-password">
+                            <button type="button" class="form-pw-toggle" id="loginPwToggle" aria-label="Toggle password visibility">
                             </button>
                         </div>
                     </div>
 
-                    <button type="submit" class="btn auth-submit-btn">
+                    <button type="submit" class="btn-platform btn-primary-solid btn-block">
                         Login
                     </button>
                     <p class="auth-signin-link">

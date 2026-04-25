@@ -14,7 +14,6 @@
 <body class="d-flex flex-column min-vh-100">
 
     <?php include 'partials/navbar.php'; ?>
-
     <!-- Breadcrumb -->
     <nav class="custom-breadcrumb" aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -42,23 +41,23 @@
                     <div class="listing-form-col">
 
                         <!-- Basic Info -->
-                        <div class="listing-form-section">
-                            <div class="listing-section-header">
-                                <div class="listing-section-icon">
+                        <div class="section-card">
+                            <div class="section-card-header">
+                                <div class="section-card-icon">
                                     <i class="bi bi-card-text"></i>
                                 </div>
                                 <div>
-                                    <h2 class="listing-section-title">Basic Information</h2>
-                                    <p class="listing-section-desc">Give your listing a clear, descriptive title.</p>
+                                    <h2 class="section-card-title">Basic Information</h2>
+                                    <p class="section-card-desc">Give your listing a clear, descriptive title.</p>
                                 </div>
                             </div>
 
-                            <div class="listing-field">
-                                <label class="listing-label" for="listing-title">
-                                    Listing Title <span class="listing-required">*</span>
+                            <div class="form-field">
+                                <label class="form-label-upper" for="listing-title">
+                                    Listing Title <span class="form-required">*</span>
                                 </label>
                                 <input
-                                    class="listing-input"
+                                    class="form-input"
                                     type="text"
                                     id="listing-title"
                                     name="title"
@@ -67,13 +66,13 @@
                                     required>
                             </div>
 
-                            <div class="listing-field-row">
-                                <div class="listing-field">
-                                    <label class="listing-label" for="listing-category">
-                                        Category <span class="listing-required">*</span>
+                            <div class="form-field-row">
+                                <div class="form-field">
+                                    <label class="form-label-upper" for="listing-category">
+                                        Category <span class="form-required">*</span>
                                     </label>
-                                    <div class="listing-select-wrapper">
-                                        <select class="listing-select" id="listing-category" name="category_id" required>
+                                    <div class="form-select-wrapper">
+                                        <select class="form-select" id="listing-category" name="category_id" required>
                                             <option value="" disabled selected>Select a category</option>
                                             <?php
                                             /*
@@ -97,16 +96,16 @@
                                             }
                                             ?>
                                         </select>
-                                        <i class="bi bi-chevron-down listing-select-icon"></i>
+                                        <i class="bi bi-chevron-down form-select-icon"></i>
                                     </div>
                                 </div>
 
-                                <div class="listing-field">
-                                    <label class="listing-label" for="listing-condition">
-                                        Condition <span class="listing-required">*</span>
+                                <div class="form-field">
+                                    <label class="form-label-upper" for="listing-condition">
+                                        Condition <span class="form-required">*</span>
                                     </label>
-                                    <div class="listing-select-wrapper">
-                                        <select class="listing-select" id="listing-condition" name="condition" required>
+                                    <div class="form-select-wrapper">
+                                        <select class="form-select" id="listing-condition" name="condition" required>
                                             <option value="" disabled selected>Select condition</option>
                                             <option value="new">New</option>
                                             <option value="like_new">Like New</option>
@@ -114,47 +113,47 @@
                                             <option value="fair">Fair</option>
                                             <option value="poor">Poor</option>
                                         </select>
-                                        <i class="bi bi-chevron-down listing-select-icon"></i>
+                                        <i class="bi bi-chevron-down form-select-icon"></i>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="listing-field">
-                                <label class="listing-label" for="listing-description">
-                                    Description <span class="listing-required">*</span>
+                            <div class="form-field">
+                                <label class="form-label-upper" for="listing-description">
+                                    Description <span class="form-required">*</span>
                                 </label>
                                 <textarea
-                                    class="listing-textarea"
+                                    class="form-textarea"
                                     id="listing-description"
                                     name="description"
                                     rows="6"
                                     placeholder="Describe your item — include brand, model, any defects, what's included in the sale, etc."
                                     maxlength="2000"
                                     required></textarea>
-                                <span class="listing-hint">Max 2000 characters.</span>
+                                <span class="form-hint">Max 2000 characters.</span>
                             </div>
                         </div>
 
                         <!-- Pricing -->
-                        <div class="listing-form-section">
-                            <div class="listing-section-header">
-                                <div class="listing-section-icon">
+                        <div class="section-card">
+                            <div class="section-card-header">
+                                <div class="section-card-icon">
                                     <i class="bi bi-tag"></i>
                                 </div>
                                 <div>
-                                    <h2 class="listing-section-title">Pricing</h2>
-                                    <p class="listing-section-desc">Set a price for your item.</p>
+                                    <h2 class="section-card-title">Pricing</h2>
+                                    <p class="section-card-desc">Set a price for your item.</p>
                                 </div>
                             </div>
 
-                            <div class="listing-field">
-                                <label class="listing-label" for="listing-price">
-                                    Price <span class="listing-required">*</span>
+                            <div class="form-field">
+                                <label class="form-label-upper" for="listing-price">
+                                    Price <span class="form-required">*</span>
                                 </label>
-                                <div class="listing-price-input-wrapper">
-                                    <span class="listing-price-prefix">£</span>
+                                <div class="form-price-wrapper">
+                                    <span class="form-price-prefix">£</span>
                                     <input
-                                        class="listing-input listing-input-price"
+                                        class="form-input form-input form-input-price"
                                         type="number"
                                         id="listing-price"
                                         name="price"
@@ -167,14 +166,14 @@
                         </div>
 
                         <!-- Images -->
-                        <div class="listing-form-section">
-                            <div class="listing-section-header">
-                                <div class="listing-section-icon">
+                        <div class="section-card">
+                            <div class="section-card-header">
+                                <div class="section-card-icon">
                                     <i class="bi bi-images"></i>
                                 </div>
                                 <div>
-                                    <h2 class="listing-section-title">Photos</h2>
-                                    <p class="listing-section-desc">Upload up to 5 photos. The first photo will be your cover image.</p>
+                                    <h2 class="section-card-title">Photos</h2>
+                                    <p class="section-card-desc">Upload up to 5 photos. The first photo will be your cover image.</p>
                                 </div>
                             </div>
 
@@ -196,25 +195,25 @@
                         </div>
 
                         <!-- Location -->
-                        <div class="listing-form-section">
-                            <div class="listing-section-header">
-                                <div class="listing-section-icon">
+                        <div class="section-card">
+                            <div class="section-card-header">
+                                <div class="section-card-icon">
                                     <i class="bi bi-geo-alt"></i>
                                 </div>
                                 <div>
-                                    <h2 class="listing-section-title">Location</h2>
-                                    <p class="listing-section-desc">Provide the location where the item is available for pickup or delivery.</p>
+                                    <h2 class="section-card-title">Location</h2>
+                                    <p class="section-card-desc">Provide the location where the item is available for pickup or delivery.</p>
                                 </div>
                             </div>
 
-                            <div class="listing-field">
-                                <label class="listing-label" for="listing-location">
-                                    Town / City <span class="listing-required">*</span>
+                            <div class="form-field">
+                                <label class="form-label-upper" for="listing-location">
+                                    Town / City <span class="form-required">*</span>
                                 </label>
-                                <div class="listing-input-icon-wrapper">
-                                    <i class="bi bi-geo-alt listing-input-icon-left"></i>
+                                <div class="form-input-icon-wrapper">
+                                    <i class="bi bi-geo-alt form-input-icon-left"></i>
                                     <input
-                                        class="listing-input listing-input-has-icon"
+                                        class="form-input form-input-has-icon"
                                         type="text"
                                         id="listing-location"
                                         name="location"
@@ -225,14 +224,14 @@
                         </div>
 
                         <!-- Delivery Method -->
-                        <div class="listing-form-section">
-                            <div class="listing-section-header">
-                                <div class="listing-section-icon">
+                        <div class="section-card">
+                            <div class="section-card-header">
+                                <div class="section-card-icon">
                                     <i class="bi bi-truck"></i>
                                 </div>
                                 <div>
-                                    <h2 class="listing-section-title">Delivery Method</h2>
-                                    <p class="listing-section-desc">How will the buyer receive the item?</p>
+                                    <h2 class="section-card-title">Delivery Method</h2>
+                                    <p class="section-card-desc">How will the buyer receive the item?</p>
                                 </div>
                             </div>
 
@@ -276,9 +275,9 @@
                     <div class="listing-preview-col">
                         <div class="listing-preview-sticky">
                             <!-- Live Preview -->
-                            <div class="listing-form-section listing-preview-section">
-                                <h2 class="listing-section-title" style="margin-bottom: 4px;">Preview</h2>
-                                <p class="listing-hint" style="margin-bottom: 16px;">This is how your listing will look to buyers.</p>
+                            <div class="section-card listing-preview-section">
+                                <h2 class="section-card-title" style="margin-bottom: 4px;">Preview</h2>
+                                <p class="section-card-desc" style="margin-bottom: 16px;">This is how your listing will look to buyers.</p>
 
                                 <div class="preview-card">
                                     <div class="preview-card-img-wrapper">
@@ -306,16 +305,16 @@
                             </div>
 
                             <!-- Submit Buttons -->
-                            <div class="listing-form-section listing-submit-section">
-                                <p class="listing-hint" style="margin-bottom: 14px;">
+                            <div class="section-card listing-submit-section">
+                                <p class="section-card-desc" style="margin-bottom: 14px;">
                                     <i class="bi bi-shield-check" style="color: var(--accent);"></i>
                                     All transactions are protected by Lootly Escrow.
                                 </p>
-                                <button type="submit" name="action" value="publish" class="btn-listing-submit">
+                                <button type="submit" name="action" value="publish" class="btn-platform btn-primary-solid btn-block">
                                     <i class="bi bi-check-circle"></i>
                                     Publish Listing
                                 </button>
-                                <a href="dashboard.php" class="btn-listing-cancel">
+                                <a href="dashboard.php" class="btn-platform btn-outline btn-block">
                                     Cancel
                                 </a>
                             </div>

@@ -56,10 +56,10 @@
                     </a>
 
                     <div class="listing-actions">
-                        <button class="btn btn-buy-now">
+                        <button class="btn-platform btn-accent-solid btn-block">
                             <i class="bi bi-bag-check me-2"></i>Buy Now
                         </button>
-                        <button class="btn btn-contact-seller">
+                        <button class="btn-platform btn-outline btn-block">
                             <i class="bi bi-chat-dots me-2"></i>Contact Seller
                         </button>
                         <div class="escrow-notice">
