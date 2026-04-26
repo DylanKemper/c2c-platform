@@ -1,52 +1,18 @@
 /* =========================
-   CSS VARIABLES & RESET
+   STYLE.CSS for Main Site
 ========================= */
 
-:root {
-    --primary: #101935;
-    --primary-hover: #1a2a4a;
-    --secondary: #2C3E66;
-    --accent: #3FA796;
-    --accent-hover: #35917f;
-    --body-bg: #F5F7FA;
-    --body-color: #1A1A1A;
-    --muted: #6b7a99;
-    --border: #d1d9e6;
-    --border-light: #e2e8f0;
-    --surface: #eef2fb;
-    --radius-sm: 6px;
-    --radius-md: 10px;
-    --navbar-height: 64px;
-
-    /* Bootstrap overrides */
-    --bs-body-font-family: 'Play', sans-serif;
-    --bs-body-bg: #F5F7FA;
-    --bs-body-color: #1A1A1A;
-}
-
-*,
-*::before,
-*::after {
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Play', sans-serif;
-    background-color: var(--body-bg);
-    color: var(--body-color);
-    margin: 0;
-}
+@import 'base.css';
 
 /* =========================
    BUTTONS
-   4 semantic variants:
+   4 versions:
    .btn-primary-solid  — dark navy  (primary actions)
    .btn-accent-solid   — teal       (buy / CTA)
    .btn-outline        — outlined   (secondary actions)
    .btn-danger-outline — red border (destructive)
 ========================= */
 
-/* Shared base — apply alongside a variant class */
 .btn-platform {
     display: inline-flex;
     align-items: center;
@@ -69,7 +35,7 @@ body {
     box-shadow: 0 0 0 3px rgba(63, 167, 150, 0.35);
 }
 
-/* Full-width utility — add when needed */
+/* Full-width utility */
 .btn-block {
     width: 100%;
     justify-content: center;
@@ -193,14 +159,6 @@ body {
 
 .navbar-brand:hover .navbar-logo {
     fill: var(--accent);
-}
-
-.navbar-logo {
-    width: 32px;
-    height: 32px;
-    fill: white;
-    flex-shrink: 0;
-    transition: fill 0.15s;
 }
 
 .navbar-brand-name {
@@ -687,7 +645,6 @@ footer.custom-footer {
    Used by auth modals AND listing forms
 ========================= */
 
-/* Field wrapper */
 .form-field {
     margin-bottom: 16px;
 }
@@ -696,7 +653,6 @@ footer.custom-footer {
     margin-bottom: 0;
 }
 
-/* Label — uppercase micro-label */
 .form-label-upper {
     display: block;
     font-size: 0.7rem;
@@ -719,7 +675,6 @@ footer.custom-footer {
     line-height: 1.5;
 }
 
-/* Text input & textarea base */
 .form-input,
 .form-textarea,
 .form-select {
@@ -759,7 +714,6 @@ footer.custom-footer {
     line-height: 1.6;
 }
 
-/* Select */
 .form-select-wrapper {
     position: relative;
 }
@@ -782,7 +736,6 @@ footer.custom-footer {
     pointer-events: none;
 }
 
-/* Input with left icon */
 .form-input-icon-wrapper {
     position: relative;
 }
@@ -801,7 +754,6 @@ footer.custom-footer {
     padding-left: 36px;
 }
 
-/* Price prefix input */
 .form-price-wrapper {
     display: flex;
     align-items: center;
@@ -832,7 +784,6 @@ footer.custom-footer {
     border-left: none;
 }
 
-/* Password toggle */
 .form-input-wrapper {
     position: relative;
 }
@@ -861,7 +812,6 @@ footer.custom-footer {
     color: var(--primary);
 }
 
-/* Two-column field row */
 .form-field-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -875,7 +825,6 @@ footer.custom-footer {
     }
 }
 
-/* Toggle switch */
 .form-toggle-label {
     display: flex;
     align-items: center;
@@ -945,7 +894,6 @@ footer.custom-footer {
 
 /* =========================
    SECTION CARDS
-   Shared by listing forms and modals
 ========================= */
 
 .section-card {
@@ -1114,7 +1062,6 @@ footer.custom-footer {
     margin: 0;
 }
 
-/* Two-column layout */
 .listing-form-layout {
     display: grid;
     grid-template-columns: 1fr;
@@ -1134,7 +1081,6 @@ footer.custom-footer {
     gap: 20px;
 }
 
-/* Sticky preview column */
 .listing-preview-sticky {
     position: sticky;
     top: calc(var(--navbar-height) + 16px);
@@ -1143,7 +1089,6 @@ footer.custom-footer {
     gap: 20px;
 }
 
-/* Image upload zone */
 .listing-upload-zone {
     display: flex;
     flex-direction: column;
@@ -1193,7 +1138,6 @@ footer.custom-footer {
     gap: 10px;
 }
 
-/* Delivery method radio cards */
 .listing-delivery-options {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
