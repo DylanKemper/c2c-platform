@@ -22,28 +22,28 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <ul class="nav nav-pills flex-column mb-auto gap-1">
 
         <li class="nav-item">
-            <a href="index.php" class="sidebar-link <?= $current_page === 'test-admin.php' ? 'active' : '' ?>">
+            <a href="dashboard.php" class="sidebar-link <?= $current_page === 'dashboard.php' ? 'active' : '' ?>">
                 <i class="bi bi-speedometer2 me-2"></i>
                 Dashboard
             </a>
         </li>
 
         <li class="nav-item">
-            <a href="users.php" class="nav-link sidebar-link <?= $current_page === 'users.php' ? 'active' : '' ?>">
+            <a href="users.php" class="sidebar-link <?= $current_page === 'users.php' ? 'active' : '' ?>">
                 <i class="bi bi-people me-2"></i>
                 Users
             </a>
         </li>
 
         <li class="nav-item">
-            <a href="listings.php" class="nav-link sidebar-link <?= $current_page === 'listings.php' ? 'active' : '' ?>">
+            <a href="listings.php" class="sidebar-link <?= $current_page === 'listings.php' ? 'active' : '' ?>">
                 <i class="bi bi-tag me-2"></i>
                 Listings
             </a>
         </li>
 
         <li class="nav-item">
-            <a href="reports.php" class="nav-link sidebar-link <?= $current_page === 'reports.php' || $current_page === 'report-detail.php' ? 'active' : '' ?>">
+            <a href="reports.php" class="sidebar-link <?= $current_page === 'reports.php' || $current_page === 'report-detail.php' ? 'active' : '' ?>">
                 <i class="bi bi-flag me-2"></i>
                 Reports
                 <!-- Badge — swap 0 for a real DB count later -->
@@ -55,7 +55,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
         </li>
 
         <li class="nav-item">
-            <a href="transactions.php" class="nav-link sidebar-link <?= $current_page === 'transactions.php' ? 'active' : '' ?>">
+            <a href="transactions.php" class="sidebar-link <?= $current_page === 'transactions.php' ? 'active' : '' ?>">
                 <i class="bi bi-cash-stack me-2"></i>
                 Transactions
             </a>

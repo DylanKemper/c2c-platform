@@ -17,7 +17,7 @@
 
         <!-- Admin stat cards -->
         <div class="main-content flex-grow-1 p-4">
-            <div class="stats-heading">Platform overview</div>
+            <div class="page-heading">Platform overview</div>
             <div class="row g-3 mb-4">
                 <div class="col-md-4">
                     <div class="stat-card">
