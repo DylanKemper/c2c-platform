@@ -22,7 +22,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <ul class="nav nav-pills flex-column mb-auto gap-1">
 
         <li class="nav-item">
-            <a href="index.php" class="nav-link sidebar-link <?= $current_page === 'index.php' ? 'active' : '' ?>">
+            <a href="index.php" class="sidebar-link <?= $current_page === 'test-admin.php' ? 'active' : '' ?>">
                 <i class="bi bi-speedometer2 me-2"></i>
                 Dashboard
             </a>
