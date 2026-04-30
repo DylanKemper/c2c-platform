@@ -27,8 +27,8 @@
                             <option>Banned</option>
                             <option>Suspended</option>
                         </select>
-                        <button class="btn btn-primary-solid">Filter</button>
-                        <button class="btn btn-outline">Clear</button>
+                        <button class="btn-platform btn-primary-solid">Filter</button>
+                        <button class="btn-platform btn-outline">Clear</button>
                     </div>
                 </div>
 
@@ -53,7 +53,7 @@
                             <td>8</td>
                             <td><span class="badge badge-green">Active</span></td>
                             <td>4.5</td>
-                            <td><a href="user-details.php?id=<?= 1 ?>" class="btn btn-primary-solid view-btn">View</a></td>
+                            <td><a href="user-details.php?id=<?= 1 ?>" class="btn-platform btn-primary-solid view-btn">View</a></td>
                         </tr>
 
                         <tr class="table-row clickable">
@@ -63,7 +63,7 @@
                             <td>14</td>
                             <td><span class="badge badge-red">Banned</span></td>
                             <td>3.2</td>
-                            <td><a href="user-details.php?id=<?= 1 ?>" class="btn btn-primary-solid view-btn">View</a></td>
+                            <td><a href="user-details.php?id=<?= 1 ?>" class="btn-platform btn-primary-solid view-btn">View</a></td>
                         </tr>
 
                         <tr class="table-row clickable">
@@ -73,7 +73,7 @@
                             <td>3</td>
                             <td><span class="badge badge-amber">Suspended</span></td>
                             <td>2.8</td>
-                            <td><a href="user-details.php?id=<?= 1 ?>" class="btn btn-primary-solid view-btn">View</a></td>
+                            <td><a href="user-details.php?id=<?= 1 ?>" class="btn-platform btn-primary-solid view-btn">View</a></td>
                         </tr>
 
                         <tr class="table-row clickable">
@@ -83,7 +83,7 @@
                             <td>21</td>
                             <td><span class="badge badge-green">Active</span></td>
                             <td>4.9</td>
-                            <td><a href="user-details.php?id=<?= 1 ?>" class="btn btn-primary-solid view-btn">View</a></td>
+                            <td><a href="user-details.php?id=<?= 1 ?>" class="btn-platform btn-primary-solid view-btn">View</a></td>
                         </tr>
                     </tbody>
                 </table>

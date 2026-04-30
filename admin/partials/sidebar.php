@@ -61,6 +61,13 @@ $current_page = basename($_SERVER['PHP_SELF']);
             </a>
         </li>
 
+        <li class="nav-item">
+            <a href="escrow-disputes.php" class="sidebar-link <?= $current_page === 'escrow-disputes.php' ? 'active' : '' ?>">
+                <i class="bi bi-exclamation-triangle me-2"></i>
+                Escrow Disputes
+            </a>
+        </li>
+
     </ul>
 
     <!-- Spacer -->
