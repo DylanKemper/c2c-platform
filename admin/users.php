@@ -16,12 +16,12 @@
         <?php include 'partials/sidebar.php'; ?>
 
         <div class="main-content flex-grow-1 p-4">
-            <div class="page-heading">Users View</div>
+            <div class="page-heading">Users</div>
             <div class="records-panel">
                 <div class="page active" id="page-users">
                     <div class="filter-bar">
                         <input type="text" placeholder="Search username or email" value="" class="search-input">
-                        <select class="status-select">
+                        <select class="filter-select">
                             <option>All statuses</option>
                             <option>Active</option>
                             <option>Banned</option>
