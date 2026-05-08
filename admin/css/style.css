@@ -81,6 +81,18 @@
     color: white;
 }
 
+/* Variant: destructive (red border) */
+.btn-danger-outline {
+    background-color: transparent;
+    color: #c0392b;
+    border-color: #c0392b;
+}
+
+.btn-danger-outline:hover {
+    background-color: #c0392b;
+    color: white;
+}
+
 .view-btn {
     padding: 6px 10px;
     font-size: 0.85rem;
@@ -730,7 +742,54 @@
     letter-spacing: 0.04em;
     white-space: nowrap;
 }
- 
-.report-type--listing     { background-color: #e8f7f5; color: var(--accent-hover); }
-.report-type--user        { background-color: #eef2fb; color: var(--secondary);    }
-.report-type--transaction { background-color: #f0ebfb; color: #6d3db5;             }
+
+.report-type--listing {
+    background-color: #e8f7f5;
+    color: var(--accent-hover);
+}
+
+.report-type--user {
+    background-color: #eef2fb;
+    color: var(--secondary);
+}
+
+.report-type--transaction {
+    background-color: #f0ebfb;
+    color: #6d3db5;
+}
+
+/* =========================
+   Escrow Disputes Tab
+========================= */
+
+.resolution-badge {
+    display: inline-block;
+    font-family: 'Play', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+}
+
+.resolution--buyer {
+    background-color: #e8f7f5;
+    color: var(--accent-hover);
+}
+
+.resolution--seller {
+    background-color: #eef2fb;
+    color: var(--secondary);
+}
+
+.resolution--split {
+    background-color: #faeeda;
+    color: #854f0b;
+}
+
+.resolution-cell {
+    color: var(--muted);
+    font-size: 1rem;
+    font-weight: 700;
+}
