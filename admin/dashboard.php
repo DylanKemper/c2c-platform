@@ -89,77 +89,75 @@
 
             <!-- Two column row -->
             <div class="row g-3">
-
                 <!-- Recent activity -->
                 <div class="col-md-8">
-                    <div class="dash-panel">
-                        <div class="dash-panel-heading">Recent activity</div>
+                    <div class="panel">
+                        <div class="panel__header">Recent activity</div>
+                        <div class="panel__body">
+                            <div class="activity-item">
+                                <div class="activity-icon"><i class="bi bi-bag"></i></div>
+                                <div class="activity-content">
+                                    <div class="activity-text">New listing: "Vintage watch" by @seller_dan</div>
+                                    <div class="activity-meta">2h ago</div>
+                                </div>
+                            </div>
 
-                        <div class="activity-item">
-                            <div class="activity-icon"><i class="bi bi-person-plus"></i></div>
-                            <div class="activity-body">
-                                <div class="activity-text">New user registered — <strong>@jake_smith</strong></div>
-                                <div class="activity-time">2 minutes ago</div>
+                            <div class="activity-item">
+                                <div class="activity-icon"><i class="bi bi-people"></i></div>
+                                <div class="activity-content">
+                                    <div class="activity-text">New user registration: @new_user123</div>
+                                    <div class="activity-meta">4h ago</div>
+                                </div>
+                            </div>
+
+                            <div class="activity-item">
+                                <div class="activity-icon"><i class="bi bi-exclamation-triangle"></i></div>
+                                <div class="activity-content">
+                                    <div class="activity-text">Report filed: "Fake item" by @mike_t</div>
+                                    <div class="activity-meta">3h ago</div>
+                                </div>
                             </div>
                         </div>
-
-                        <div class="activity-item">
-                            <div class="activity-icon"><i class="bi bi-tag"></i></div>
-                            <div class="activity-body">
-                                <div class="activity-text">New listing posted — <strong>Sony WH-1000XM5</strong> by @priya_k</div>
-                                <div class="activity-time">11 minutes ago</div>
-                            </div>
-                        </div>
-
-                        <div class="activity-item">
-                            <div class="activity-icon"><i class="bi bi-check-circle"></i></div>
-                            <div class="activity-body">
-                                <div class="activity-text">Transaction completed — <strong>#TXN8821</strong> for R1,200</div>
-                                <div class="activity-time">34 minutes ago</div>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
 
                 <!-- Action queue -->
                 <div class="col-md-4">
-                    <div class="dash-panel">
-                        <div class="dash-panel-heading">Action queue</div>
-
-                        <div class="action-item action-item--alert">
-                            <div class="action-badge">Report</div>
-                            <div class="action-body">
-                                <div class="action-text">Listing #441 — suspected fake item</div>
-                                <div class="action-meta">Reported by @mike_t · 3h ago</div>
+                    <div class="panel">
+                        <div class="panel__header">Action queue</div>
+                        <div class="panel__body">
+                            <div class="action-item action-item--alert">
+                                <div class="action-badge">Report</div>
+                                <div class="action-body">
+                                    <div class="action-text">Listing #441 — suspected fake item</div>
+                                    <div class="action-meta">Reported by @mike_t · 3h ago</div>
+                                </div>
+                                <a href="admin/report-detail.php?id=1" class="action-btn">Review</a>
                             </div>
-                            <a href="admin/report-detail.php?id=1" class="action-btn">Review</a>
-                        </div>
 
-                        <div class="action-item action-item--alert">
-                            <div class="action-badge">Report</div>
-                            <div class="action-body">
-                                <div class="action-text">User @scammer99 — harassment</div>
-                                <div class="action-meta">Reported by @lisa_m · 5h ago</div>
+                            <div class="action-item action-item--alert">
+                                <div class="action-badge">Report</div>
+                                <div class="action-body">
+                                    <div class="action-text">User @scammer99 — harassment</div>
+                                    <div class="action-meta">Reported by @lisa_m · 5h ago</div>
+                                </div>
+                                <a href="admin/report-detail.php?id=2" class="action-btn">Review</a>
                             </div>
-                            <a href="admin/report-detail.php?id=2" class="action-btn">Review</a>
-                        </div>
 
-                        <div class="action-item action-item--warn">
-                            <div class="action-badge action-badge--warn">Dispute</div>
-                            <div class="action-body">
-                                <div class="action-text">Escrow #TXN8803 — buyer no-show</div>
-                                <div class="action-meta">Opened by @seller_dan · 1d ago</div>
+                            <div class="action-item action-item--warn">
+                                <div class="action-badge action-badge--warn">Dispute</div>
+                                <div class="action-body">
+                                    <div class="action-text">Escrow #TXN8803 — buyer no-show</div>
+                                    <div class="action-meta">Opened by @seller_dan · 1d ago</div>
+                                </div>
+                                <a href="admin/transactions.php?id=8803" class="action-btn">Review</a>
                             </div>
-                            <a href="admin/transactions.php?id=8803" class="action-btn">Review</a>
                         </div>
-
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

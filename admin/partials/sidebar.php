@@ -72,7 +72,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
 
     <div class="mt-auto">
         <hr class="sidebar-divider">
-        <a href="../index.php" class="btn-platform btn-danger w-100">
+        <a href="../index.php" class="btn-platform btn-danger-solid w-100">
             <i class="bi bi-box-arrow-left"></i> Logout
         </a>
     </div>

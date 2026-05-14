@@ -1,0 +1,250 @@
+/* =========================
+   FORM INPUTS
+========================= */
+
+.form-field {
+    margin-bottom: 16px;
+}
+
+.form-field:last-child {
+    margin-bottom: 0;
+}
+
+.form-label-upper {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+}
+
+.form-required {
+    color: #e05252;
+    margin-left: 2px;
+}
+
+.form-hint {
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin: 0;
+    line-height: 1.5;
+}
+
+.form-input,
+.form-textarea,
+.form-select {
+    width: 100%;
+    background-color: var(--body-bg);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: 'Play', sans-serif;
+    font-size: 0.9rem;
+    color: var(--body-color);
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+    color: var(--muted);
+}
+
+.form-input:focus,
+.form-textarea:focus,
+.form-select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(63, 167, 150, 0.18);
+    background-color: white;
+}
+
+.form-input {
+    height: 42px;
+    padding: 0 12px;
+}
+
+.form-textarea {
+    padding: 10px 12px;
+    resize: vertical;
+    min-height: 130px;
+    line-height: 1.6;
+}
+
+.form-select-wrapper {
+    position: relative;
+}
+
+.form-select {
+    height: 42px;
+    padding: 0 36px 0 12px;
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+}
+
+.form-select-icon {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    font-size: 0.85rem;
+    pointer-events: none;
+}
+
+.form-input-icon-wrapper {
+    position: relative;
+}
+
+.form-input-icon-left {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    font-size: 0.95rem;
+    pointer-events: none;
+}
+
+.form-input-has-icon {
+    padding-left: 36px;
+}
+
+.form-price-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.form-price-prefix {
+    height: 42px;
+    padding: 0 12px;
+    background-color: var(--surface);
+    border: 1.5px solid var(--border);
+    border-right: none;
+    border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+    font-family: 'Play', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--secondary);
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.form-input-price {
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    border-left: none;
+}
+
+.form-input-price:focus {
+    border-left: none;
+}
+
+.form-input-wrapper {
+    position: relative;
+}
+
+.form-input-has-toggle {
+    padding-right: 40px;
+}
+
+.form-pw-toggle {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.15s;
+}
+
+.form-pw-toggle:hover {
+    color: var(--primary);
+}
+
+.form-field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+@media (max-width: 575px) {
+    .form-field-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+.form-toggle-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    cursor: pointer;
+    padding: 14px 16px;
+    background-color: var(--body-bg);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    transition: border-color 0.15s;
+    margin-bottom: 0;
+}
+
+.form-toggle-label:hover {
+    border-color: var(--accent);
+}
+
+.form-toggle-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.form-toggle-wrapper {
+    flex-shrink: 0;
+    position: relative;
+}
+
+.form-toggle-input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.form-toggle-track {
+    display: block;
+    width: 44px;
+    height: 24px;
+    background-color: var(--border);
+    border-radius: 99px;
+    position: relative;
+    transition: background-color 0.2s;
+    cursor: pointer;
+}
+
+.form-toggle-thumb {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 18px;
+    height: 18px;
+    background-color: white;
+    border-radius: 50%;
+    transition: transform 0.2s;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.form-toggle-input:checked+.form-toggle-track {
+    background-color: var(--accent);
+}
+
+.form-toggle-input:checked+.form-toggle-track .form-toggle-thumb {
+    transform: translateX(20px);
+}

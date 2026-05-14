@@ -1,31 +1,12 @@
 /* =========================
    BASE.CSS
 ========================= */
-
 @import url('https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap');
+@import 'abstracts/tokens.css';
 
-:root {
-    --primary: #101935;
-    --primary-hover: #1a2a4a;
-    --secondary: #2C3E66;
-    --accent: #3FA796;
-    --accent-hover: #35917f;
-    --body-bg: #F5F7FA;
-    --body-color: #1A1A1A;
-    --muted: #6b7a99;
-    --border: #d1d9e6;
-    --border-light: #e2e8f0;
-    --surface: #eef2fb;
-    --radius-sm: 6px;
-    --radius-md: 10px;
-    --navbar-height: 64px;
-
-    /* Bootstrap overrides */
-    --bs-body-font-family: 'Play', sans-serif;
-    --bs-body-bg: #F5F7FA;
-    --bs-body-color: #1A1A1A;
-}
-
+/* =========================
+   RESET
+========================= */
 *,
 *::before,
 *::after {
@@ -39,6 +20,18 @@ body {
     margin: 0;
 }
 
+/* =========================
+   BOOTSTRAP OVERRIDES
+========================= */
+:root {
+    --bs-body-font-family: 'Play', sans-serif;
+    --bs-body-bg: var(--body-bg);
+    --bs-body-color: var(--body-color);
+}
+
+/* =========================
+   GLOBAL BRAND ELEMENTS
+========================= */
 .navbar-logo {
     width: 32px;
     height: 32px;

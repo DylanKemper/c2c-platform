@@ -1,0 +1,53 @@
+:root {
+   /* =========================
+       COLORS
+    ========================= */
+   --primary: #101935;
+   --primary-hover: #1a2a4a;
+
+   --secondary: #2C3E66;
+
+   --accent: #3FA796;
+   --accent-hover: #35917f;
+
+   --body-bg: #F5F7FA;
+   --body-color: #1A1A1A;
+
+   --muted: #6b7a99;
+
+   --border: #d1d9e6;
+   --border-light: #e2e8f0;
+
+   --surface: #eef2fb;
+
+   /* =========================
+       SPACING
+    ========================= */
+   --space-1: 4px;
+   --space-2: 8px;
+   --space-3: 12px;
+   --space-4: 16px;
+   --space-5: 20px;
+   --space-6: 24px;
+   --space-7: 32px;
+   --space-8: 40px;
+
+   /* =========================
+       RADIUS
+    ========================= */
+   --radius-sm: 6px;
+   --radius-md: 12px;
+   --radius-lg: 18px;
+
+   /* =========================
+       LAYOUT
+    ========================= */
+   --navbar-height: 64px;
+
+   /* =========================
+       SHADOWS
+    ========================= */
+   --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.05);
+   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+   --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+}

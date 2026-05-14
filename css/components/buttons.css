@@ -1,0 +1,134 @@
+/* =========================
+   BUTTONS
+   5 versions:
+   .btn-primary-solid  — dark navy  (primary actions)
+   .btn-accent-solid   — teal       (buy / CTA)
+   .btn-outline        — outlined   (secondary actions)
+   .btn-danger-outline — red border (destructive)
+   .btn-danger-solid   — red background (destructive)
+========================= */
+
+.btn-platform {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 16px;
+    gap: 6px;
+    font-family: 'Play', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    border-radius: var(--radius-sm);
+    border: 2px solid transparent;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+    white-space: nowrap;
+}
+
+.btn-platform:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(63, 167, 150, 0.35);
+}
+
+/* Full-width utility */
+.btn-block {
+    width: 100%;
+    justify-content: center;
+    padding: 11px 0;
+}
+
+/* Variant: navy solid */
+.btn-primary-solid {
+    background-color: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+.btn-primary-solid:hover {
+    background-color: var(--primary-hover);
+    border-color: var(--primary-hover);
+    color: white;
+}
+
+/* Variant: teal solid */
+.btn-accent-solid {
+    background-color: var(--accent);
+    color: white;
+    border-color: var(--accent);
+}
+
+.btn-accent-solid:hover {
+    background-color: var(--accent-hover);
+    border-color: var(--accent-hover);
+    color: white;
+}
+
+/* Variant: outlined (navy border) */
+.btn-outline {
+    background-color: transparent;
+    color: var(--secondary);
+    border-color: var(--secondary);
+}
+
+.btn-outline:hover {
+    background-color: var(--secondary);
+    color: white;
+}
+
+.btn-danger-solid {
+    background-color: #c0392b;
+    color: white;
+    border-color: #c0392b;
+}
+
+.btn-danger-solid:hover {
+    background-color: #e74c3c;
+    border-color: #e74c3c;
+}
+
+/* Variant: destructive (red border) */
+.btn-danger-outline {
+    background-color: transparent;
+    color: #c0392b;
+    border-color: #c0392b;
+}
+
+.btn-danger-outline:hover {
+    background-color: #c0392b;
+    color: white;
+}
+
+.view-btn {
+    padding: 6px 10px;
+    font-size: 0.85rem;
+    border-radius: var(--radius-sm);
+}
+
+/* Navbar-specific search button (inverted outline on dark bg) */
+.btn-search {
+    height: 40px;
+    padding: 0 18px;
+    background-color: var(--secondary);
+    color: white;
+    border: 2px solid white;
+    border-radius: var(--radius-sm);
+    font-family: 'Play', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.btn-search:hover {
+    background-color: white;
+    color: var(--secondary);
+}
+
+.btn-search:focus-visible {
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.35);
+    outline: none;
+}
