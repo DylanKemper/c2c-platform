@@ -64,8 +64,16 @@
                             <!-- Open dispute — no resolution yet -->
                             <tr class="clickable">
                                 <td>#TXN8803</td>
-                                <td><span class="avatar">LK</span> lk_trades</td>
-                                <td><span class="avatar">SD</span> seller_dan</td>
+                                <td>
+                                    <div style="display:flex; align-items:center; gap:8px;">
+                                        <span class="user-avatar">LK</span> lk_trades
+                                    </div>
+                                </td>
+                                <td>
+                                    <div style="display:flex; align-items:center; gap:8px;">
+                                        <span class="user-avatar">SD</span> seller_dan
+                                    </div>
+                                </td>
                                 <td class="reason-cell">Buyer claims item never arrived after...</td>
                                 <td>R 12,500</td>
                                 <td>3 Feb 2025</td>
@@ -77,8 +85,16 @@
                             <!-- Under review — no resolution yet -->
                             <tr class="clickable">
                                 <td>#TXN8790</td>
-                                <td><span class="avatar">MT</span> mike_t</td>
-                                <td><span class="avatar">LM</span> lisa_m</td>
+                                <td>
+                                    <div style="display:flex; align-items:center; gap:8px;">
+                                        <span class="user-avatar">MT</span> mike_t
+                                    </div>
+                                </td>
+                                <td>
+                                    <div style="display:flex; align-items:center; gap:8px;">
+                                        <span class="user-avatar">LM</span> lisa_m
+                                    </div>
+                                </td>
                                 <td class="reason-cell">Seller claims buyer no-show at agreed...</td>
                                 <td>R 28,000</td>
                                 <td>19 Mar 2025</td>
@@ -90,8 +106,16 @@
                             <!-- Resolved — awarded to buyer -->
                             <tr class="clickable">
                                 <td>#TXN8761</td>
-                                <td><span class="avatar">SM</span> sarah_m</td>
-                                <td><span class="avatar">TP</span> the_pete</td>
+                                <td>
+                                    <div style="display:flex; align-items:center; gap:8px;">
+                                        <span class="user-avatar">SM</span> sarah_m
+                                    </div>
+                                </td>
+                                <td>
+                                    <div style="display:flex; align-items:center; gap:8px;">
+                                        <span class="user-avatar">TP</span> the_pete
+                                    </div>
+                                </td>
                                 <td class="reason-cell">Item significantly not as described, photos...
                                 <td>R 9,500</td>
                                 <td>1 Apr 2025</td>
@@ -103,8 +127,16 @@
                             <!-- Resolved — awarded to seller -->
                             <tr class="clickable">
                                 <td>#TXN8744</td>
-                                <td><span class="avatar">PK</span> priya_k</td>
-                                <td><span class="avatar">JD</span> john_doe</td>
+                                <td>
+                                    <div style="display:flex; align-items:center; gap:8px;">
+                                        <span class="user-avatar">PK</span> priya_k
+                                    </div>
+                                </td>
+                                <td>
+                                    <div style="display:flex; align-items:center; gap:8px;">
+                                        <span class="user-avatar">JD</span> john_doe
+                                    </div>
+                                </td>
                                 <td class="reason-cell">Buyer requested refund outside policy window...</td>
                                 <td>R 6,300</td>
                                 <td>22 Apr 2025</td>
@@ -116,8 +148,16 @@
                             <!-- Resolved — split -->
                             <tr class="clickable">
                                 <td>#TXN8731</td>
-                                <td><span class="avatar">JD</span> john_doe</td>
-                                <td><span class="avatar">MT</span> mike_t</td>
+                                <td>
+                                    <div style="display:flex; align-items:center; gap:8px;">
+                                        <span class="user-avatar">JD</span> john_doe
+                                    </div>
+                                </td>
+                                <td>
+                                    <div style="display:flex; align-items:center; gap:8px;">
+                                        <span class="user-avatar">MT</span> mike_t
+                                    </div>
+                                </td>
                                 <td class="reason-cell">Partial delivery — only two of four items...</td>
                                 <td>R 5,800</td>
                                 <td>28 Apr 2025</td>

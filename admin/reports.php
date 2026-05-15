@@ -66,7 +66,11 @@
                                 <td><span class="badge badge--listing">Listing</span></td>
                                 <td>Canon EOS 5D Mark IV</td>
                                 <td class="reason-cell">Item does not match description — seller...</td>
-                                <td><span class="avatar">MT</span> mike_t</td>
+                                <td>
+                                    <div style="display:flex; align-items:center; gap:8px;">
+                                        <span class="user-avatar">MT</span> mike_t
+                                    </div>
+                                </td>
                                 <td>12 Jan 2025</td>
                                 <td><span class="badge badge--danger">Open</span></td>
                                 <td><a href="report-detail.php?id=1" class="btn-platform btn-primary-solid view-btn">View</a></td>
@@ -78,7 +82,11 @@
                                 <td><span class="badge badge--user">User</span></td>
                                 <td>@scammer99</td>
                                 <td class="reason-cell">Harassment and threatening messages sent...</td>
-                                <td><span class="avatar">LM</span> lisa_m</td>
+                                <td>
+                                    <div style="display:flex; align-items:center; gap:8px;">
+                                        <span class="user-avatar">LM</span> lisa_m
+                                    </div>
+                                </td>
                                 <td>3 Feb 2025</td>
                                 <td><span class="badge badge--warning">Under Review</span></td>
                                 <td><a href="report-detail.php?id=2" class="btn-platform btn-primary-solid view-btn">View</a></td>
@@ -90,7 +98,11 @@
                                 <td><span class="badge badge--transaction">Transaction</span></td>
                                 <td>#TXN8803</td>
                                 <td class="reason-cell">Payment released but item never delivered...</td>
-                                <td><span class="avatar">SD</span> seller_dan</td>
+                                <td>
+                                    <div style="display:flex; align-items:center; gap:8px;">
+                                        <span class="user-avatar">SD</span> seller_dan
+                                    </div>
+                                </td>
                                 <td>19 Mar 2025</td>
                                 <td><span class="badge badge--danger">Open</span></td>
                                 <td><a href="report-detail.php?id=3" class="btn-platform btn-primary-solid view-btn">View</a></td>
@@ -102,12 +114,15 @@
                                 <td><span class="badge badge--listing">Listing</span></td>
                                 <td>Apple MacBook Pro 16"</td>
                                 <td class="reason-cell">Suspected counterfeit — serial number did...</td>
-                                <td><span class="avatar">PK</span> priya_k</td>
+                                <td>
+                                    <div style="display:flex; align-items:center; gap:8px;">
+                                        <span class="user-avatar">PK</span> priya_k
+                                    </div>
+                                </td>
                                 <td>1 Apr 2025</td>
                                 <td><span class="badge badge--success">Resolved</span></td>
                                 <td><a href="report-detail.php?id=4" class="btn-platform btn-primary-solid view-btn">View</a></td>
                             </tr>
-
                         </tbody>
                     </table>
                 </div>

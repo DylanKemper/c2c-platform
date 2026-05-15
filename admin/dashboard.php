@@ -132,7 +132,7 @@
                                     <div class="action-text">Listing #441 — suspected fake item</div>
                                     <div class="action-meta">Reported by @mike_t · 3h ago</div>
                                 </div>
-                                <a href="admin/report-detail.php?id=1" class="action-btn">Review</a>
+                                <a href="report-detail.php?id=1" class="action-btn">Review</a>
                             </div>
 
                             <div class="action-item action-item--alert">
@@ -141,7 +141,7 @@
                                     <div class="action-text">User @scammer99 — harassment</div>
                                     <div class="action-meta">Reported by @lisa_m · 5h ago</div>
                                 </div>
-                                <a href="admin/report-detail.php?id=2" class="action-btn">Review</a>
+                                <a href="report-detail.php?id=2" class="action-btn">Review</a>
                             </div>
 
                             <div class="action-item action-item--warn">
@@ -150,7 +150,7 @@
                                     <div class="action-text">Escrow #TXN8803 — buyer no-show</div>
                                     <div class="action-meta">Opened by @seller_dan · 1d ago</div>
                                 </div>
-                                <a href="admin/transactions.php?id=8803" class="action-btn">Review</a>
+                                <a href="dispute-detail.php?id=8803" class="action-btn">Review</a>
                             </div>
                         </div>
                     </div>

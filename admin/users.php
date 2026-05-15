@@ -53,7 +53,11 @@
 
                         <tbody class="table-body">
                             <tr class="table-row clickable">
-                                <td><span class="avatar">JD</span> john_doe</td>
+                                <td>
+                                    <div style="display:flex; align-items:center; gap:8px;">
+                                        <span class="user-avatar">JD</span> john_doe
+                                    </div>
+                                </td>
                                 <td>john@example.com</td>
                                 <td>12 Jan 2025</td>
                                 <td>8</td>
@@ -63,7 +67,11 @@
                             </tr>
 
                             <tr class="table-row clickable">
-                                <td><span class="avatar" style="background:#FCEBEB;color:#A32D2D">SM</span> sarah_m</td>
+                                <td>
+                                    <div style="display:flex; align-items:center; gap:8px;">
+                                        <span class="user-avatar" style="background:#FCEBEB;color:#A32D2D">SM</span> sarah_m
+                                    </div>
+                                </td>
                                 <td>sarah@mail.com</td>
                                 <td>3 Feb 2025</td>
                                 <td>14</td>
@@ -73,7 +81,11 @@
                             </tr>
 
                             <tr class="table-row clickable">
-                                <td><span class="avatar" style="background:#FAEEDA;color:#854F0B">TP</span> the_pete</td>
+                                <td>
+                                    <div style="display:flex; align-items:center; gap:8px;">
+                                        <span class="user-avatar" style="background:#FAEEDA;color:#854F0B">TP</span> the_pete
+                                    </div>
+                                </td>
                                 <td>pete@hey.com</td>
                                 <td>19 Mar 2025</td>
                                 <td>3</td>
@@ -83,7 +95,11 @@
                             </tr>
 
                             <tr class="table-row clickable">
-                                <td><span class="avatar">LK</span> lk_trades</td>
+                                <td>
+                                    <div style="display:flex; align-items:center; gap:8px;">
+                                        <span class="user-avatar">LK</span> lk_trades
+                                    </div>
+                                </td>
                                 <td>lk@trades.co</td>
                                 <td>1 Apr 2025</td>
                                 <td>21</td>

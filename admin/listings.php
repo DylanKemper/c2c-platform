@@ -60,7 +60,7 @@
                                 <td>R 12,500</td>
                                 <td>12 Jan 2025</td>
                                 <td>
-                                    <a href="listing-details.php?id=1" class="btn-platform btn-primary-solid view-btn">View</a>
+                                    <a href="listing-detail.php?id=1" class="btn-platform btn-primary-solid view-btn">View</a>
                                 </td>
                             </tr>
 
@@ -72,7 +72,7 @@
                                 <td>R 28,000</td>
                                 <td>3 Feb 2025</td>
                                 <td>
-                                    <a href="listing-details.php?id=2" class="btn-platform btn-primary-solid view-btn">View</a>
+                                    <a href="listing-detail.php?id=2" class="btn-platform btn-primary-solid view-btn">View</a>
                                 </td>
                             </tr>
 
@@ -84,7 +84,7 @@
                                 <td>R 4,200</td>
                                 <td>19 Mar 2025</td>
                                 <td>
-                                    <a href="listing-details.php?id=3" class="btn-platform btn-primary-solid view-btn">View</a>
+                                    <a href="listing-detail.php?id=3" class="btn-platform btn-primary-solid view-btn">View</a>
                                 </td>
                             </tr>
                         </tbody>

@@ -57,8 +57,16 @@
 
                             <tr class="table-row clickable">
                                 <td>#TXN8821</td>
-                                <td><span class="avatar">JD</span> john_doe</td>
-                                <td><span class="avatar">PK</span> priya_k</td>
+                                <td>
+                                    <div style="display:flex; align-items:center; gap:8px;">
+                                        <span class="user-avatar">JD</span> john_doe
+                                    </div>
+                                </td>
+                                <td>
+                                    <div style="display:flex; align-items:center; gap:8px;">
+                                        <span class="user-avatar">PK</span> priya_k
+                                    </div>
+                                </td>
                                 <td>Sony WH-1000XM5 Headphones</td>
                                 <td>R 4,200</td>
                                 <td>12 Jan 2025</td>
@@ -68,8 +76,16 @@
 
                             <tr class="table-row clickable">
                                 <td>#TXN8803</td>
-                                <td><span class="avatar">LK</span> lk_trades</td>
-                                <td><span class="avatar">SD</span> seller_dan</td>
+                                <td>
+                                    <div style="display:flex; align-items:center; gap:8px;">
+                                        <span class="user-avatar">LK</span> lk_trades
+                                    </div>
+                                </td>
+                                <td>
+                                    <div style="display:flex; align-items:center; gap:8px;">
+                                        <span class="user-avatar">SD</span> seller_dan
+                                    </div>
+                                </td>
                                 <td>Canon EOS 5D Mark IV</td>
                                 <td>R 12,500</td>
                                 <td>3 Feb 2025</td>
@@ -79,8 +95,16 @@
 
                             <tr class="table-row clickable">
                                 <td>#TXN8790</td>
-                                <td><span class="avatar">MT</span> mike_t</td>
-                                <td><span class="avatar">LM</span> lisa_m</td>
+                                <td>
+                                    <div style="display:flex; align-items:center; gap:8px;">
+                                        <span class="user-avatar">MT</span> mike_t
+                                    </div>
+                                </td>
+                                <td>
+                                    <div style="display:flex; align-items:center; gap:8px;">
+                                        <span class="user-avatar">LM</span> lisa_m
+                                    </div>
+                                </td>
                                 <td>Apple MacBook Pro 16"</td>
                                 <td>R 28,000</td>
                                 <td>19 Mar 2025</td>
@@ -90,8 +114,16 @@
 
                             <tr class="table-row clickable">
                                 <td>#TXN8775</td>
-                                <td><span class="avatar">TP</span> the_pete</td>
-                                <td><span class="avatar">JD</span> john_doe</td>
+                                <td>
+                                    <div style="display:flex; align-items:center; gap:8px;">
+                                        <span class="user-avatar">TP</span> the_pete
+                                    </div>
+                                </td>
+                                <td>
+                                    <div style="display:flex; align-items:center; gap:8px;">
+                                        <span class="user-avatar">JD</span> john_doe
+                                    </div>
+                                </td>
                                 <td>Rode NT-USB Microphone</td>
                                 <td>R 3,800</td>
                                 <td>1 Apr 2025</td>
@@ -101,8 +133,16 @@
 
                             <tr class="table-row clickable">
                                 <td>#TXN8761</td>
-                                <td><span class="avatar">SM</span> sarah_m</td>
-                                <td><span class="avatar">MT</span> mike_t</td>
+                                <td>
+                                    <div style="display:flex; align-items:center; gap:8px;">
+                                        <span class="user-avatar">SM</span> sarah_m
+                                    </div>
+                                </td>
+                                <td>
+                                    <div style="display:flex; align-items:center; gap:8px;">
+                                        <span class="user-avatar">MT</span> mike_t
+                                    </div>
+                                </td>
                                 <td>DJI Osmo Pocket 3</td>
                                 <td>R 9,500</td>
                                 <td>22 Apr 2025</td>
