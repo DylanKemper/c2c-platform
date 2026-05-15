@@ -59,7 +59,7 @@
                                 <td>8</td>
                                 <td><span class="badge badge--success">Active</span></td>
                                 <td>4.5</td>
-                                <td><a href="user-details.php?id=<?= 1 ?>" class="btn-platform btn-primary-solid view-btn">View</a></td>
+                                <td><a href="user-detail.php?id=<?= 1 ?>" class="btn-platform btn-primary-solid view-btn">View</a></td>
                             </tr>
 
                             <tr class="table-row clickable">
@@ -69,7 +69,7 @@
                                 <td>14</td>
                                 <td><span class="badge badge--danger">Banned</span></td>
                                 <td>3.2</td>
-                                <td><a href="user-details.php?id=<?= 1 ?>" class="btn-platform btn-primary-solid view-btn">View</a></td>
+                                <td><a href="user-detail.php?id=<?= 1 ?>" class="btn-platform btn-primary-solid view-btn">View</a></td>
                             </tr>
 
                             <tr class="table-row clickable">
@@ -79,7 +79,7 @@
                                 <td>3</td>
                                 <td><span class="badge badge--warning">Suspended</span></td>
                                 <td>2.8</td>
-                                <td><a href="user-details.php?id=<?= 1 ?>" class="btn-platform btn-primary-solid view-btn">View</a></td>
+                                <td><a href="user-detail.php?id=<?= 1 ?>" class="btn-platform btn-primary-solid view-btn">View</a></td>
                             </tr>
 
                             <tr class="table-row clickable">
@@ -89,7 +89,7 @@
                                 <td>21</td>
                                 <td><span class="badge badge--success">Active</span></td>
                                 <td>4.9</td>
-                                <td><a href="user-details.php?id=<?= 1 ?>" class="btn-platform btn-primary-solid view-btn">View</a></td>
+                                <td><a href="user-detail.php?id=<?= 1 ?>" class="btn-platform btn-primary-solid view-btn">View</a></td>
                             </tr>
                         </tbody>
                     </table>
