@@ -57,7 +57,7 @@
                                 <td>john@example.com</td>
                                 <td>12 Jan 2025</td>
                                 <td>8</td>
-                                <td><span class="badge badge-green">Active</span></td>
+                                <td><span class="badge badge--success">Active</span></td>
                                 <td>4.5</td>
                                 <td><a href="user-details.php?id=<?= 1 ?>" class="btn-platform btn-primary-solid view-btn">View</a></td>
                             </tr>
@@ -67,7 +67,7 @@
                                 <td>sarah@mail.com</td>
                                 <td>3 Feb 2025</td>
                                 <td>14</td>
-                                <td><span class="badge badge-red">Banned</span></td>
+                                <td><span class="badge badge--danger">Banned</span></td>
                                 <td>3.2</td>
                                 <td><a href="user-details.php?id=<?= 1 ?>" class="btn-platform btn-primary-solid view-btn">View</a></td>
                             </tr>
@@ -77,7 +77,7 @@
                                 <td>pete@hey.com</td>
                                 <td>19 Mar 2025</td>
                                 <td>3</td>
-                                <td><span class="badge badge-amber">Suspended</span></td>
+                                <td><span class="badge badge--warning">Suspended</span></td>
                                 <td>2.8</td>
                                 <td><a href="user-details.php?id=<?= 1 ?>" class="btn-platform btn-primary-solid view-btn">View</a></td>
                             </tr>
@@ -87,7 +87,7 @@
                                 <td>lk@trades.co</td>
                                 <td>1 Apr 2025</td>
                                 <td>21</td>
-                                <td><span class="badge badge-green">Active</span></td>
+                                <td><span class="badge badge--success">Active</span></td>
                                 <td>4.9</td>
                                 <td><a href="user-details.php?id=<?= 1 ?>" class="btn-platform btn-primary-solid view-btn">View</a></td>
                             </tr>

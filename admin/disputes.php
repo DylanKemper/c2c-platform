@@ -69,7 +69,7 @@
                                 <td class="reason-cell">Buyer claims item never arrived after...</td>
                                 <td>R 12,500</td>
                                 <td>3 Feb 2025</td>
-                                <td><span class="status-badge badge-red">Open</span></td>
+                                <td><span class="badge badge--danger">Open</span></td>
                                 <td><span class="resolution-cell">—</span></td>
                                 <td><a href="dispute-detail.php?id=1" class="btn-platform btn-primary-solid view-btn">View</a></td>
                             </tr>
@@ -82,7 +82,7 @@
                                 <td class="reason-cell">Seller claims buyer no-show at agreed...</td>
                                 <td>R 28,000</td>
                                 <td>19 Mar 2025</td>
-                                <td><span class="status-badge badge-amber">Under Review</span></td>
+                                <td><span class="badge badge--warning">Under Review</span></td>
                                 <td><span class="resolution-cell">—</span></td>
                                 <td><a href="dispute-detail.php?id=2" class="btn-platform btn-primary-solid view-btn">View</a></td>
                             </tr>
@@ -92,11 +92,11 @@
                                 <td>#TXN8761</td>
                                 <td><span class="avatar">SM</span> sarah_m</td>
                                 <td><span class="avatar">TP</span> the_pete</td>
-                                <td class="reason-cell">Item significantly not as described, photos...</td>
+                                <td class="reason-cell">Item significantly not as described, photos...
                                 <td>R 9,500</td>
                                 <td>1 Apr 2025</td>
-                                <td><span class="status-badge badge-green">Resolved</span></td>
-                                <td><span class="resolution-badge resolution--buyer">Buyer</span></td>
+                                <td><span class="badge badge--success">Resolved</span></td>
+                                <td><span class="badge badge--info">Buyer</span></td>
                                 <td><a href="dispute-detail.php?id=3" class="btn-platform btn-primary-solid view-btn">View</a></td>
                             </tr>
 
@@ -108,8 +108,8 @@
                                 <td class="reason-cell">Buyer requested refund outside policy window...</td>
                                 <td>R 6,300</td>
                                 <td>22 Apr 2025</td>
-                                <td><span class="status-badge badge-green">Resolved</span></td>
-                                <td><span class="resolution-badge resolution--seller">Seller</span></td>
+                                <td><span class="badge badge--success">Resolved</span></td>
+                                <td><span class="badge badge--info">Seller</span></td>
                                 <td><a href="dispute-detail.php?id=4" class="btn-platform btn-primary-solid view-btn">View</a></td>
                             </tr>
 
@@ -121,8 +121,8 @@
                                 <td class="reason-cell">Partial delivery — only two of four items...</td>
                                 <td>R 5,800</td>
                                 <td>28 Apr 2025</td>
-                                <td><span class="status-badge badge-green">Resolved</span></td>
-                                <td><span class="resolution-badge resolution--split">Split</span></td>
+                                <td><span class="badge badge--success">Resolved</span></td>
+                                <td><span class="badge badge--info">Split</span></td>
                                 <td><a href="dispute-detail.php?id=5" class="btn-platform btn-primary-solid view-btn">View</a></td>
                             </tr>
 

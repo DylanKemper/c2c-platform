@@ -1,0 +1,149 @@
+/* =========================
+   BADGE COMPONENT
+   
+   Base:       .badge
+   Size:       .badge--sm  .badge--lg  .badge--dot
+   Semantic:   .badge--success  .badge--warning  .badge--danger  .badge--info
+   Entity:     .badge--user  .badge--listing  .badge--transaction
+   Special:    .badge--nav  .badge--category  .badge--active-strong
+   Cart:       .cart-btn  +  .badge--cart
+========================= */
+
+/* =========================
+   BASE
+========================= */
+.badge {
+    font-size: 12px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 20px;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+/* =========================
+   SIZE MODIFIERS
+========================= */
+.badge--sm {
+    font-size: 10px;
+    padding: 2px 6px;
+}
+
+.badge--lg {
+    font-size: 0.8rem;
+    padding: 6px 12px;
+}
+
+/* Status dot — no text, circle only */
+.badge--dot {
+    width: 8px;
+    height: 8px;
+    padding: 0;
+    border-radius: 50%;
+}
+
+
+/* =========================
+   SEMANTIC STATUS BADGES
+   --success  green   active / resolved / verified
+   --warning  amber   pending / suspended / under review
+   --danger   red     banned / removed / flagged / report
+   --info     blue    informational / transaction
+========================= */
+.badge--success {
+    background-color: #edf7f1;
+    color: #1a7a4a;
+}
+
+.badge--warning {
+    background-color: #fef8ee;
+    color: #c87f0a;
+}
+
+.badge--danger {
+    background-color: #fdf0f0;
+    color: #c0392b;
+}
+
+.badge--info {
+    background-color: #e8f0fd;
+    color: #2255b0;
+}
+
+/* =========================
+   ENTITY TYPE BADGES
+   --listing      teal    (matches platform accent)
+   --user         purple  (unique — no semantic overlap)
+   --transaction  blue    (reuses --info palette)
+========================= */
+.badge--listing {
+    background-color: #e8f7f5;
+    color: var(--accent-hover);
+}
+
+.badge--user {
+    background-color: #f0eefe;
+    color: #5a3fbf;
+}
+
+/* Transaction reuses --info colours intentionally.
+   Use .badge--info directly if no entity context is needed. */
+.badge--transaction {
+    background-color: #e8f0fd;
+    color: #2255b0;
+}
+
+/* =========================
+   SPECIAL PURPOSE
+========================= */
+
+/* Sidebar / nav notification count */
+.badge--nav {
+    background-color: #e74c3c;
+    color: #ffffff;
+    font-size: 0.65rem;
+    padding: 1px 7px;
+    border-radius: 999px;
+    line-height: 1.6;
+}
+
+/* Listing category label — text only, no background pill */
+.badge--category {
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--accent);
+    background: transparent;
+    padding: 0;
+    font-size: 0.7rem;
+}
+
+/* Filled accent badge — e.g. "Live", "Featured" callouts */
+.badge--active-strong {
+    background-color: var(--accent);
+    color: #ffffff;
+}
+
+/* =========================
+   CART BADGE
+   Positioned absolutely over .cart-btn
+========================= */
+.cart-btn {
+    position: relative;
+}
+
+.cart-btn .badge--cart {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background-color: var(--accent);
+    color: #fff;
+    font-size: 0.6rem;
+    font-weight: 700;
+    min-width: 16px;
+    height: 16px;
+    padding: 0;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

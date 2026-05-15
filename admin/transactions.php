@@ -62,7 +62,7 @@
                                 <td>Sony WH-1000XM5 Headphones</td>
                                 <td>R 4,200</td>
                                 <td>12 Jan 2025</td>
-                                <td><span class="status-badge badge-green">Completed</span></td>
+                                <td><span class="badge badge--success">Completed</span></td>
                                 <td><a href="transaction-detail.php?id=8821" class="btn-platform btn-primary-solid view-btn">View</a></td>
                             </tr>
 
@@ -73,7 +73,7 @@
                                 <td>Canon EOS 5D Mark IV</td>
                                 <td>R 12,500</td>
                                 <td>3 Feb 2025</td>
-                                <td><span class="status-badge badge-red">Disputed</span></td>
+                                <td><span class="badge badge--danger">Disputed</span></td>
                                 <td><a href="transaction-detail.php?id=8803" class="btn-platform btn-primary-solid view-btn">View</a></td>
                             </tr>
 
@@ -84,7 +84,7 @@
                                 <td>Apple MacBook Pro 16"</td>
                                 <td>R 28,000</td>
                                 <td>19 Mar 2025</td>
-                                <td><span class="status-badge badge-amber">Pending</span></td>
+                                <td><span class="badge badge--warning">Pending</span></td>
                                 <td><a href="transaction-detail.php?id=8790" class="btn-platform btn-primary-solid view-btn">View</a></td>
                             </tr>
 
@@ -95,7 +95,7 @@
                                 <td>Rode NT-USB Microphone</td>
                                 <td>R 3,800</td>
                                 <td>1 Apr 2025</td>
-                                <td><span class="status-badge badge-green">Completed</span></td>
+                                <td><span class="badge badge--success">Completed</span></td>
                                 <td><a href="transaction-detail.php?id=8775" class="btn-platform btn-primary-solid view-btn">View</a></td>
                             </tr>
 
@@ -106,7 +106,7 @@
                                 <td>DJI Osmo Pocket 3</td>
                                 <td>R 9,500</td>
                                 <td>22 Apr 2025</td>
-                                <td><span class="status-badge badge-amber">Refunded</span></td>
+                                <td><span class="badge badge--info">Refunded</span></td>
                                 <td><a href="transaction-detail.php?id=8761" class="btn-platform btn-primary-solid view-btn">View</a></td>
                             </tr>
 

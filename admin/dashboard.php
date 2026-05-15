@@ -127,7 +127,7 @@
                         <div class="panel__header">Action queue</div>
                         <div class="panel__body">
                             <div class="action-item action-item--alert">
-                                <div class="action-badge">Report</div>
+                                <div class="badge badge--sm badge--danger">Report</div>
                                 <div class="action-body">
                                     <div class="action-text">Listing #441 — suspected fake item</div>
                                     <div class="action-meta">Reported by @mike_t · 3h ago</div>
@@ -136,7 +136,7 @@
                             </div>
 
                             <div class="action-item action-item--alert">
-                                <div class="action-badge">Report</div>
+                                <div class="badge badge--sm badge--danger">Report</div>
                                 <div class="action-body">
                                     <div class="action-text">User @scammer99 — harassment</div>
                                     <div class="action-meta">Reported by @lisa_m · 5h ago</div>
@@ -145,7 +145,7 @@
                             </div>
 
                             <div class="action-item action-item--warn">
-                                <div class="action-badge action-badge--warn">Dispute</div>
+                                <div class="badge badge--sm badge--warning">Dispute</div>
                                 <div class="action-body">
                                     <div class="action-text">Escrow #TXN8803 — buyer no-show</div>
                                     <div class="action-meta">Opened by @seller_dan · 1d ago</div>

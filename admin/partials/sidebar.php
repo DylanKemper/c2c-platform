@@ -49,7 +49,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
                 <!-- Badge — swap 0 for a real DB count later -->
                 <?php $open_reports = 7; ?>
                 <?php if ($open_reports > 0): ?>
-                    <span class="sidebar-badge ms-auto"><?= $open_reports ?></span>
+                    <span class="badge badge--nav ms-auto"><?= $open_reports ?></span>
                 <?php endif; ?>
             </a>
         </li>

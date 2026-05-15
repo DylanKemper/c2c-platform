@@ -3,6 +3,7 @@
 @import '../../css/components/panel.css';
 @import '../../css/components/form.css';
 @import '../../css/components/buttons.css';
+@import "../../css/components/badges.css";
 
 /* =========================
    Admin Stylesheet
@@ -106,16 +107,6 @@
     font-weight: 700;
 }
 
-.sidebar-badge {
-    background-color: #e74c3c;
-    color: #fff;
-    font-size: 0.7rem;
-    font-weight: 700;
-    border-radius: 20px;
-    padding: 1px 7px;
-    line-height: 1.6;
-}
-
 .sidebar-user {
     color: rgba(255, 255, 255, 0.85);
     padding: 0.4rem 0.25rem;
@@ -179,7 +170,7 @@
 .main-content {
     min-height: 100vh;
     background: var(--body-bg);
-    padding: var(--space-7) var(--space-7) 0 var(--space-7);
+    padding: var(--space-7) var(--space-7);
 }
 
 .admin-stat-card {
@@ -259,30 +250,6 @@
     margin: 0 -20px;
     padding: 12px 20px;
     border-radius: var(--radius-sm);
-}
-
-.admin-badge {
-    font-size: 0.7rem;
-    font-weight: 700;
-    padding: 3px 8px;
-    border-radius: 20px;
-    white-space: nowrap;
-    flex-shrink: 0;
-}
-
-.admin-badge-report {
-    background-color: #faeeda;
-    color: #854F0B;
-}
-
-.admin-badge-dispute {
-    background-color: #fdf0ef;
-    color: #c0392b;
-}
-
-.admin-badge-open {
-    background-color: #e8f7f5;
-    color: var(--accent-hover);
 }
 
 .admin-item-title {
@@ -466,22 +433,6 @@
     border-bottom: none;
 }
 
-.action-badge {
-    font-size: 10px;
-    font-weight: 700;
-    padding: 3px 8px;
-    border-radius: 20px;
-    background: #fdf0f0;
-    color: #c0392b;
-    flex-shrink: 0;
-    white-space: nowrap;
-}
-
-.action-badge--warn {
-    background: #fef8ee;
-    color: #c87f0a;
-}
-
 .action-text {
     font-size: 12px;
     color: var(--body-color);
@@ -589,51 +540,9 @@
     text-align: left;
 }
 
-
-/* =========================
-   Reports Tab
-========================= */
-.report-type-badge {
-    display: inline-block;
-    font-family: 'Play', sans-serif;
-    font-size: 0.7rem;
-    font-weight: 700;
-    padding: 3px 10px;
-    border-radius: 20px;
-    letter-spacing: 0.04em;
-    white-space: nowrap;
-}
-
-.report-type--listing {
-    background-color: #e8f7f5;
-    color: var(--accent-hover);
-}
-
-.report-type--user {
-    background-color: #eef2fb;
-    color: var(--secondary);
-}
-
-.report-type--transaction {
-    background-color: #f0ebfb;
-    color: #6d3db5;
-}
-
 /* =========================
    Escrow Disputes Tab
 ========================= */
-
-.resolution-badge {
-    display: inline-block;
-    font-family: 'Play', sans-serif;
-    font-size: 0.7rem;
-    font-weight: 700;
-    padding: 3px 10px;
-    border-radius: 20px;
-    letter-spacing: 0.04em;
-    white-space: nowrap;
-}
-
 .resolution--buyer {
     background-color: #e8f7f5;
     color: var(--accent-hover);
@@ -653,47 +562,6 @@
     color: var(--muted);
     font-size: 1rem;
     font-weight: 700;
-}
-
-/* ─── Badges ─── */
-.badge-status {
-    font-size: 10px;
-    font-weight: 700;
-    padding: 4px 10px;
-    border-radius: 20px;
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-}
-
-.badge-open {
-    background: #fdf0f0;
-    color: #c0392b;
-}
-
-.badge-review {
-    background: #fef8ee;
-    color: #c87f0a;
-}
-
-.badge-resolved {
-    background: #edf7f1;
-    color: #1a7a4a;
-}
-
-.badge-type-listing {
-    background: #e8f0fd;
-    color: #2255b0;
-}
-
-.badge-type-user {
-    background: #f0eefe;
-    color: #5a3fbf;
-}
-
-.badge-type-transaction {
-    background: #e1f5ee;
-    color: var(--accent-hover);
 }
 
 /*=========================

@@ -63,48 +63,48 @@
                             <!-- Report type: listing -->
                             <tr class="clickable">
                                 <td>1</td>
-                                <td><span class="report-type-badge report-type--listing">Listing</span></td>
+                                <td><span class="badge badge--listing">Listing</span></td>
                                 <td>Canon EOS 5D Mark IV</td>
                                 <td class="reason-cell">Item does not match description — seller...</td>
                                 <td><span class="avatar">MT</span> mike_t</td>
                                 <td>12 Jan 2025</td>
-                                <td><span class="status-badge badge-red">Open</span></td>
+                                <td><span class="badge badge--danger">Open</span></td>
                                 <td><a href="report-detail.php?id=1" class="btn-platform btn-primary-solid view-btn">View</a></td>
                             </tr>
 
                             <!-- Report type: user -->
                             <tr class="clickable">
                                 <td>2</td>
-                                <td><span class="report-type-badge report-type--user">User</span></td>
+                                <td><span class="badge badge--user">User</span></td>
                                 <td>@scammer99</td>
                                 <td class="reason-cell">Harassment and threatening messages sent...</td>
                                 <td><span class="avatar">LM</span> lisa_m</td>
                                 <td>3 Feb 2025</td>
-                                <td><span class="status-badge badge-amber">Under Review</span></td>
+                                <td><span class="badge badge--warning">Under Review</span></td>
                                 <td><a href="report-detail.php?id=2" class="btn-platform btn-primary-solid view-btn">View</a></td>
                             </tr>
 
                             <!-- Report type: transaction -->
                             <tr class="clickable">
                                 <td>3</td>
-                                <td><span class="report-type-badge report-type--transaction">Transaction</span></td>
+                                <td><span class="badge badge--transaction">Transaction</span></td>
                                 <td>#TXN8803</td>
                                 <td class="reason-cell">Payment released but item never delivered...</td>
                                 <td><span class="avatar">SD</span> seller_dan</td>
                                 <td>19 Mar 2025</td>
-                                <td><span class="status-badge badge-red">Open</span></td>
+                                <td><span class="badge badge--danger">Open</span></td>
                                 <td><a href="report-detail.php?id=3" class="btn-platform btn-primary-solid view-btn">View</a></td>
                             </tr>
 
                             <!-- Report type: listing, resolved -->
                             <tr class="clickable">
                                 <td>4</td>
-                                <td><span class="report-type-badge report-type--listing">Listing</span></td>
+                                <td><span class="badge badge--listing">Listing</span></td>
                                 <td>Apple MacBook Pro 16"</td>
                                 <td class="reason-cell">Suspected counterfeit — serial number did...</td>
                                 <td><span class="avatar">PK</span> priya_k</td>
                                 <td>1 Apr 2025</td>
-                                <td><span class="status-badge badge-green">Resolved</span></td>
+                                <td><span class="badge badge--success">Resolved</span></td>
                                 <td><a href="report-detail.php?id=4" class="btn-platform btn-primary-solid view-btn">View</a></td>
                             </tr>
 
