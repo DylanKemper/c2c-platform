@@ -44,7 +44,7 @@
                         Impedit sed odit ipsum ratione culpa nisi mollitia, alias modi itaque iste aut dolores?
                     </p>
 
-                    <a href="profile.php?id=1" class="seller-card">
+                    <a href="user-profile.php?id=1" class="seller-card">
                         <div class="seller-avatar">JD</div>
                         <div class="seller-info">
                             <p class="seller-name">john_doe</p>
