@@ -66,6 +66,20 @@
     }
 }
 
+.navbar-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--on-accent);
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Play', sans-serif;
+}
+
 /* =========================
    SEARCH
 ========================= */
@@ -951,4 +965,88 @@ footer.custom-footer {
     background-color: #f0f2f5;
     padding: 2px 8px;
     border-radius: 99px;
+}
+
+/* =========================
+   USER DASHBOARD   
+========================= */
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+    justify-content: center;
+    padding: var(--space-2) var(--space-3);
+}
+
+.user-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--primary);
+    margin-bottom: 1px;
+}
+
+.user-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background-color: var(--secondary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.user-joined-date {
+    font-size: 0.78rem;
+    color: var(--muted);
+}
+
+/* =========================
+   PROFILE TABS
+========================= */
+.profile-tabs {
+    display: flex;
+    gap: 4px;
+    border-bottom: 2px solid var(--border-light);
+    padding-bottom: 0;
+}
+
+.profile-tab {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--muted);
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    padding: 8px 16px;
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+    cursor: pointer;
+    transition: color 0.15s, background-color 0.15s, border-color 0.15s;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.profile-tab:hover {
+    color: var(--primary);
+    background-color: var(--surface);
+}
+
+.profile-tab.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+    background-color: transparent;
+}
+
+.tab-panel {
+    display: none;
+}
+
+.tab-panel.active {
+    display: block;
 }

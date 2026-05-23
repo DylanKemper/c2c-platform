@@ -49,15 +49,19 @@
         </form>
 
         <div class="nav-actions">
-            <!-- Sign In -->
-            <a class="nav-action-btn" href="login.php" aria-label="Sign in">
+            <!-- Sign In (shown when logged out) -->
+            <a class="nav-action-btn"
+                href="#"
+                data-bs-toggle="modal"
+                data-bs-target="#loginModal"
+                aria-label="Sign in">
                 <i class="bi bi-person"></i>
                 <span class="nav-action-label d-none d-lg-inline">Sign in</span>
             </a>
-            <!-- Cart -->
-            <a class="nav-action-btn cart-btn" href="cart.php" aria-label="Cart">
-                <i class="bi bi-bag"></i>
-                <span class="cart-badge">3</span>
+
+            <!-- Profile avatar (shown when logged in) -->
+            <a class="nav-action-btn nav-avatar" href="user-dashboard.php" aria-label="My profile">
+                <div class="navbar-avatar">JS</div>
             </a>
         </div>
     </div>

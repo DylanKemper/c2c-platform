@@ -15,12 +15,6 @@
     <?php include 'partials/navbar.php'; ?>
     <?php include 'partials/register-modal.php'; ?>
     <?php include 'partials/login-modal.php'; ?>
-    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#registerModal">
-        Open Register Modal
-    </button>
-    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#loginModal">
-        Open Login Modal
-    </button>
     <main class="flex-grow-1">
         <div class="card-grid">
             <div class="product-card">
