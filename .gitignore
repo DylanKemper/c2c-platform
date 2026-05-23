@@ -1,0 +1,9 @@
+# ── Credentials ──────────────────────────────
+config/db.php
+
+# ── VS Code ───────────────────────────────────
+.vscode/
+
+# ── XAMPP / PHP logs ─────────────────────────
+*.log
+error_log
