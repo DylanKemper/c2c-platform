@@ -1,12 +1,69 @@
+<?php
+require_once __DIR__ . '/../config/db.php';
+
+// ── Filters ────────────────────────────────────────────────
+$search = trim($_GET['search'] ?? '');
+$status = $_GET['status'] ?? '';
+
+// ── Build query ────────────────────────────────────────────
+$where  = [];
+$params = [];
+
+if ($search !== '') {
+    $where[]  = '(u.username LIKE ? OR u.email LIKE ?)';
+    $params[] = "%$search%";
+    $params[] = "%$search%";
+}
+
+if ($status === 'banned') {
+    $where[]  = 'u.is_banned = 1';
+} elseif ($status === 'suspended') {
+    $where[]  = 'u.is_suspended = 1 AND u.suspended_until > NOW()';
+} elseif ($status === 'active') {
+    $where[]  = 'u.is_banned = 0 AND (u.is_suspended = 0 OR u.suspended_until <= NOW())';
+}
+
+$sql = '
+    SELECT
+        u.user_id,
+        u.username,
+        u.email,
+        u.created_at,
+        u.is_banned,
+        u.is_suspended,
+        u.suspended_until,
+        COUNT(DISTINCT l.listing_id)                                      AS listing_count,
+        ROUND(AVG(CASE WHEN r.role = "seller" THEN r.rating END), 1)     AS seller_rating
+    FROM users u
+    LEFT JOIN listings l ON l.seller_id = u.user_id
+    LEFT JOIN reviews  r ON r.reviewee_id = u.user_id
+';
+
+if ($where) {
+    $sql .= ' WHERE ' . implode(' AND ', $where);
+}
+
+$sql .= ' GROUP BY u.user_id ORDER BY u.created_at DESC';
+
+$stmt  = $pdo->prepare($sql);
+$stmt->execute($params);
+$users = $stmt->fetchAll();
+
+// ── Status helper ──────────────────────────────────────────
+function getUserStatus(array $user): string {
+    if ($user['is_banned']) return 'banned';
+    if ($user['is_suspended'] && strtotime($user['suspended_until']) > time()) return 'suspended';
+    return 'active';
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Users Page</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>Users — Lootly Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
@@ -18,25 +75,36 @@
     </div>
 
     <div class="d-flex">
-        <?php include 'partials/sidebar.php'; ?>
+        <?php
+        $active_page = 'users';
+        include 'partials/sidebar.php';
+        ?>
 
         <div class="main-content flex-grow-1 p-4">
             <div class="page-heading">Users</div>
 
             <div class="panel">
                 <div class="panel__body">
+
                     <!-- Filter bar -->
-                    <div class="filter-bar">
-                        <input type="text" placeholder="Search username or email" value="" class="search-input">
-                        <select class="filter-select">
-                            <option>All statuses</option>
-                            <option>Active</option>
-                            <option>Banned</option>
-                            <option>Suspended</option>
-                        </select>
-                        <button class="btn-platform btn-primary-solid">Filter</button>
-                        <button class="btn-platform btn-outline">Clear</button>
-                    </div>
+                    <form method="GET" action="">
+                        <div class="filter-bar">
+                            <input
+                                type="text"
+                                name="search"
+                                placeholder="Search username or email"
+                                value="<?= htmlspecialchars($search) ?>"
+                                class="search-input">
+                            <select name="status" class="filter-select">
+                                <option value="">All statuses</option>
+                                <option value="active"    <?= $status === 'active'    ? 'selected' : '' ?>>Active</option>
+                                <option value="banned"    <?= $status === 'banned'    ? 'selected' : '' ?>>Banned</option>
+                                <option value="suspended" <?= $status === 'suspended' ? 'selected' : '' ?>>Suspended</option>
+                            </select>
+                            <button type="submit" class="btn-platform btn-primary-solid">Filter</button>
+                            <a href="users.php" class="btn-platform btn-outline">Clear</a>
+                        </div>
+                    </form>
 
                     <table class="records-table">
                         <thead class="table-header">
@@ -52,63 +120,53 @@
                         </thead>
 
                         <tbody class="table-body">
-                            <tr class="table-row clickable">
-                                <td>
-                                    <div style="display:flex; align-items:center; gap:8px;">
-                                        <span class="user-avatar">JD</span> john_doe
-                                    </div>
-                                </td>
-                                <td>john@example.com</td>
-                                <td>12 Jan 2025</td>
-                                <td>8</td>
-                                <td><span class="badge badge--success">Active</span></td>
-                                <td>4.5</td>
-                                <td><a href="user-detail.php?id=<?= 1 ?>" class="btn-platform btn-primary-solid view-btn">View</a></td>
-                            </tr>
-
-                            <tr class="table-row clickable">
-                                <td>
-                                    <div style="display:flex; align-items:center; gap:8px;">
-                                        <span class="user-avatar" style="background:#FCEBEB;color:#A32D2D">SM</span> sarah_m
-                                    </div>
-                                </td>
-                                <td>sarah@mail.com</td>
-                                <td>3 Feb 2025</td>
-                                <td>14</td>
-                                <td><span class="badge badge--danger">Banned</span></td>
-                                <td>3.2</td>
-                                <td><a href="user-detail.php?id=<?= 1 ?>" class="btn-platform btn-primary-solid view-btn">View</a></td>
-                            </tr>
-
-                            <tr class="table-row clickable">
-                                <td>
-                                    <div style="display:flex; align-items:center; gap:8px;">
-                                        <span class="user-avatar" style="background:#FAEEDA;color:#854F0B">TP</span> the_pete
-                                    </div>
-                                </td>
-                                <td>pete@hey.com</td>
-                                <td>19 Mar 2025</td>
-                                <td>3</td>
-                                <td><span class="badge badge--warning">Suspended</span></td>
-                                <td>2.8</td>
-                                <td><a href="user-detail.php?id=<?= 1 ?>" class="btn-platform btn-primary-solid view-btn">View</a></td>
-                            </tr>
-
-                            <tr class="table-row clickable">
-                                <td>
-                                    <div style="display:flex; align-items:center; gap:8px;">
-                                        <span class="user-avatar">LK</span> lk_trades
-                                    </div>
-                                </td>
-                                <td>lk@trades.co</td>
-                                <td>1 Apr 2025</td>
-                                <td>21</td>
-                                <td><span class="badge badge--success">Active</span></td>
-                                <td>4.9</td>
-                                <td><a href="user-detail.php?id=<?= 1 ?>" class="btn-platform btn-primary-solid view-btn">View</a></td>
-                            </tr>
+                            <?php if (empty($users)): ?>
+                                <tr class="table-row">
+                                    <td colspan="7" style="text-align:center; padding:2rem; color:var(--muted)">
+                                        No users found.
+                                    </td>
+                                </tr>
+                            <?php else: ?>
+                                <?php foreach ($users as $user):
+                                    $initials = strtoupper(substr($user['username'], 0, 2));
+                                    $status   = getUserStatus($user);
+                                    $joined   = date('d M Y', strtotime($user['created_at']));
+                                    $rating   = $user['seller_rating'] ?? '—';
+                                ?>
+                                <tr class="table-row clickable"
+                                    onclick="window.location='user-detail.php?id=<?= $user['user_id'] ?>'">
+                                    <td>
+                                        <div style="display:flex; align-items:center; gap:8px;">
+                                            <span class="user-avatar"><?= $initials ?></span>
+                                            <?= htmlspecialchars($user['username']) ?>
+                                        </div>
+                                    </td>
+                                    <td><?= htmlspecialchars($user['email']) ?></td>
+                                    <td><?= $joined ?></td>
+                                    <td><?= $user['listing_count'] ?></td>
+                                    <td>
+                                        <?php if ($status === 'banned'): ?>
+                                            <span class="badge badge--danger">Banned</span>
+                                        <?php elseif ($status === 'suspended'): ?>
+                                            <span class="badge badge--warning">Suspended</span>
+                                        <?php else: ?>
+                                            <span class="badge badge--success">Active</span>
+                                        <?php endif; ?>
+                                    </td>
+                                    <td><?= $rating ?></td>
+                                    <td>
+                                        <a href="user-detail.php?id=<?= $user['user_id'] ?>"
+                                           class="btn-platform btn-primary-solid view-btn"
+                                           onclick="event.stopPropagation()">
+                                            View
+                                        </a>
+                                    </td>
+                                </tr>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
                         </tbody>
                     </table>
+
                 </div>
             </div>
         </div>

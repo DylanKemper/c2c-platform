@@ -1,6 +1,9 @@
 # ── Credentials ──────────────────────────────
 config/db.php
 
+# ── Database ───────────────────
+test-db.php
+
 # ── VS Code ───────────────────────────────────
 .vscode/
 
