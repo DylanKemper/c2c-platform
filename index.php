@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/config/db.php';
 
+// Fetch all active listings and their details, including the image and average rating
 $sql = 'SELECT l.listing_id, l.title, l.category, l.description, l.price,
                li.filename,
                ROUND(AVG(r.rating), 0) AS avg_rating,
@@ -8,12 +9,12 @@ $sql = 'SELECT l.listing_id, l.title, l.category, l.description, l.price,
         FROM listings l
         LEFT JOIN listing_images li ON li.listing_id = l.listing_id AND li.is_primary = 1
         LEFT JOIN reviews r ON r.reviewee_id = l.seller_id AND r.role = "seller"
-        WHERE l.status = "active"
+        WHERE l.status = "active"   -- filter only active listings
         GROUP BY l.listing_id
-        ORDER BY l.created_at DESC';
+        ORDER BY l.created_at DESC';    // sort by most recent listings first
 
 $stmt = $pdo->query($sql);
-$listings = $stmt->fetchAll();
+$listings = $stmt->fetchAll();  // returns array of listings with their details, including avg_rating and review_count
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -39,6 +40,7 @@ $listings = $stmt->fetchAll();
                 $avg     = (int) round($l['avg_rating'] ?? 0);
                 $count   = (int) $l['review_count'];
                 $img_src = $l['filename']
+                // if the listing has an image, use it; otherwise, use a placeholder image
                     ? 'uploads/listings/' . htmlspecialchars($l['filename'])
                     : 'Sample-Images/Sample-Image.jpg';
                 ?>
