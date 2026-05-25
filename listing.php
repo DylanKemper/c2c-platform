@@ -1,3 +1,92 @@
+<?php
+require_once __DIR__ . '/config/db.php';
+
+if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
+    die('Invalid listing ID.');
+}
+
+$listingId = (int) $_GET['id'];
+
+$sql = '
+    SELECT
+        l.listing_id,
+        l.category,
+        l.title,
+        l.price,
+        l.description,
+        l.created_at AS listing_created_at,
+        l.status AS listing_status,
+
+        li.filename,
+
+        u.user_id,
+        u.username,
+        u.created_at AS user_created_at,
+
+        ROUND(AVG(r.rating), 1) AS avg_rating,
+        COUNT(DISTINCT r.review_id) AS review_count,
+
+        COUNT(DISTINCT active_listings.listing_id) AS active_listing_count
+
+    FROM listings l
+
+    LEFT JOIN listing_images li
+        ON li.listing_id = l.listing_id
+        AND li.is_primary = 1
+
+    LEFT JOIN users u
+        ON u.user_id = l.seller_id
+
+    LEFT JOIN reviews r
+        ON r.reviewee_id = l.seller_id
+        AND r.role = "seller"
+
+    LEFT JOIN listings active_listings
+        ON active_listings.seller_id = l.seller_id
+        AND active_listings.status = "active"
+
+    WHERE l.listing_id = ?
+
+    GROUP BY
+        l.listing_id,
+        l.category,
+        l.title,
+        l.price,
+        l.description,
+        l.created_at,
+        l.status,
+        li.filename,
+        u.user_id,
+        u.username,
+        u.created_at
+';
+
+$stmt = $pdo->prepare($sql);
+$stmt->execute([$listingId]);
+
+$listing = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if (!$listing) {
+    die('Listing not found.');
+}
+
+$imageSrc = $listing['filename']
+    ? 'uploads/listings/' . htmlspecialchars($listing['filename'])
+    : 'Sample-Images/Sample-Image.jpg';
+
+$sellerInitials = strtoupper(substr($listing['username'], 0, 2));
+
+$avgRating = $listing['avg_rating']
+    ? number_format($listing['avg_rating'], 1)
+    : 'New';
+
+$reviewCount = (int) $listing['review_count'];
+
+$activeListingCount = (int) $listing['active_listing_count'];
+
+$memberSince = date('Y', strtotime($listing['user_created_at']));
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -27,31 +116,45 @@
 
                 <div class="image-panel">
                     <img
-                        src="Sample-Images/Sample-Image.jpg"
+                        src="<?= $listing['filename'] ? 'uploads/listings/' . htmlspecialchars($listing['filename']) : 'Sample-Images/Sample-Image.jpg' ?>"
                         alt="Mechanical Keyboard"
                         class="listing-image-main">
                 </div>
 
                 <div class="listing-details-panel">
-                    <span class="listing-category-badge">Electronics</span>
-                    <h1 class="listing-title">Wireless Headphones</h1>
+                    <span class="listing-category-badge"><?= htmlspecialchars($listing['category']) ?></span>
+                    <h1 class="listing-title"><?= htmlspecialchars($listing['title']) ?></h1>
                     <div class="listing-price-row">
-                        <span class="listing-price">£74.99</span>
+                        <span class="listing-price">R <?= number_format($listing['price'], 2) ?></span>
                     </div>
                     <p class="listing-description-text">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Non, labore accusamus. Obcaecati quos necessitatibus odit repudiandae?
-                        Impedit sed odit ipsum ratione culpa nisi mollitia, alias modi itaque iste aut dolores?
+                        <?= nl2br(htmlspecialchars($listing['description'])) ?>
                     </p>
 
-                    <a href="user-profile.php?id=1" class="seller-card">
-                        <div class="seller-avatar">JD</div>
+                    <a href="user-profile.php?id=<?= $listing['user_id'] ?>" class="seller-card">
+                        <div class="seller-avatar">
+                            <?= htmlspecialchars($sellerInitials) ?>
+                        </div>
                         <div class="seller-info">
-                            <p class="seller-name">john_doe</p>
-                            <p class="seller-meta">Member since 2024 &nbsp;·&nbsp; 12 listings</p>
+                            <p class="seller-name">
+                                <?= htmlspecialchars($listing['username']) ?>
+                            </p>
+                            <p class="seller-meta">
+                                Member since <?= $memberSince ?>
+                                &nbsp;·&nbsp;
+                                <?= $activeListingCount ?> active listings
+                            </p>
                         </div>
                         <span class="seller-rating">
-                            <i class="bi bi-star-fill"></i> 4.8
+                            <i class="bi bi-star-fill"></i>
+                            <?php if ($reviewCount > 0): ?>
+                                <?= $avgRating ?>
+                                <span class="seller-rating-count">
+                                    (<?= $reviewCount ?>)
+                                </span>
+                            <?php else: ?>
+                                No reviews
+                            <?php endif; ?>
                         </span>
                     </a>
 
