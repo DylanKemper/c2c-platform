@@ -1,10 +1,167 @@
+<?php
+require_once __DIR__ . '/includes/helpers/render-stars.php';
+require_once __DIR__ . '/config/db.php';
+
+if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
+    die('Invalid user ID.');
+}
+
+$userId = (int) $_GET['id'];
+
+/* =========================================================
+   1. USER INFO
+========================================================= */
+$userSql = '
+    SELECT
+        user_id,
+        username,
+        created_at
+    FROM users
+    WHERE user_id = ?
+';
+
+$userStmt = $pdo->prepare($userSql);
+$userStmt->execute([$userId]);
+$user = $userStmt->fetch(PDO::FETCH_ASSOC);
+
+if (!$user) {
+    die('User not found.');
+}
+
+/* =========================================================
+   2. INITIALS
+========================================================= */
+$userInitials = strtoupper(substr($user['username'], 0, 2));
+
+/* =========================================================
+   3. SELLER STATS
+========================================================= */
+$sellerStatsSql = '
+    SELECT
+        COALESCE(ROUND(AVG(rating), 1), 0) AS avg_rating,
+        COUNT(review_id) AS review_count
+    FROM reviews
+    WHERE reviewee_id = ?
+    AND role = "seller"
+';
+
+$sellerStatsStmt = $pdo->prepare($sellerStatsSql);
+$sellerStatsStmt->execute([$userId]);
+$sellerStats = $sellerStatsStmt->fetch(PDO::FETCH_ASSOC);
+
+/* =========================================================
+   4. BUYER STATS
+========================================================= */
+$buyerStatsSql = '
+    SELECT
+        COALESCE(ROUND(AVG(rating), 1), 0) AS avg_rating,
+        COUNT(review_id) AS review_count
+    FROM reviews
+    WHERE reviewee_id = ?
+    AND role = "buyer"
+';
+
+$buyerStatsStmt = $pdo->prepare($buyerStatsSql);
+$buyerStatsStmt->execute([$userId]);
+$buyerStats = $buyerStatsStmt->fetch(PDO::FETCH_ASSOC);
+
+/* =========================================================
+   5. ACTIVE LISTINGS
+========================================================= */
+$listingsSql = '
+    SELECT
+        listing_id,
+        title,
+        price,
+        category,
+        `condition`,
+        created_at
+    FROM listings
+    WHERE seller_id = ?
+    AND status = "active"
+    ORDER BY created_at DESC
+';
+
+$listingsStmt = $pdo->prepare($listingsSql);
+$listingsStmt->execute([$userId]);
+$activeListings = $listingsStmt->fetchAll(PDO::FETCH_ASSOC);
+
+$activeListingCount = count($activeListings);
+
+/* =========================================================
+   6. COMPLETED TRANSACTIONS (ALL USER ACTIVITY)
+========================================================= */
+$completedTransactionsSql = '
+    SELECT COUNT(*) AS completed_transaction_count
+    FROM transactions
+    WHERE (seller_id = ? OR buyer_id = ?)
+    AND status = "completed"
+';
+
+$completedTransactionsStmt = $pdo->prepare($completedTransactionsSql);
+$completedTransactionsStmt->execute([$userId, $userId]);
+$completedTransactions = $completedTransactionsStmt->fetch(PDO::FETCH_ASSOC);
+
+/* =========================================================
+   7. ITEMS SOLD (SELLER ONLY)
+========================================================= */
+$itemsSoldSql = '
+    SELECT COUNT(*) AS items_sold
+    FROM transactions
+    WHERE seller_id = ?
+    AND status = "completed"
+';
+
+$itemsSoldStmt = $pdo->prepare($itemsSoldSql);
+$itemsSoldStmt->execute([$userId]);
+$itemsSold = $itemsSoldStmt->fetch(PDO::FETCH_ASSOC);
+
+/* =========================================================
+   8. REVIEWS
+========================================================= */
+$reviewsSql = '
+    SELECT
+        r.review_id,
+        r.rating,
+        r.body,
+        r.role,
+        r.created_at,
+
+        reviewer.user_id AS reviewer_id,
+        reviewer.username AS reviewer_username,
+
+        l.listing_id,
+        l.title AS listing_title
+
+    FROM reviews r
+
+    LEFT JOIN users reviewer
+        ON reviewer.user_id = r.reviewer_id
+
+    LEFT JOIN transactions t
+        ON t.transaction_id = r.transaction_id
+
+    LEFT JOIN listings l
+        ON l.listing_id = t.listing_id
+
+    WHERE r.reviewee_id = ?
+
+    ORDER BY r.created_at DESC
+';
+
+$reviewsStmt = $pdo->prepare($reviewsSql);
+$reviewsStmt->execute([$userId]);
+$reviews = $reviewsStmt->fetchAll(PDO::FETCH_ASSOC);
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@sneakerhead_ct — Lootly</title>
+    <title><?= htmlspecialchars($user['username']) ?> — Profile</title>
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap" rel="stylesheet">
@@ -18,30 +175,31 @@
     <div class="container py-4">
         <div class="row g-4 align-items-start">
 
-            <!-- ══════════════════════════════════
-                 LEFT COLUMN — identity + stats
-            ══════════════════════════════════ -->
+            <!-- LEFT COLUMN -->
             <div class="col-md-4 col-lg-3 d-flex flex-column gap-3">
 
-                <!-- Identity card -->
                 <div class="panel">
                     <div class="panel__body text-center d-flex flex-column align-items-center gap-2">
-                        <div class="user-avatar">SC</div>
+                        <div class="user-avatar"><?= htmlspecialchars($userInitials) ?></div>
+
                         <div>
-                            <div class="user-name">@sneakerhead_ct</div>
-                            <div class="user-joined-date">Member since March 2023</div>
+                            <div class="user-name"><?= htmlspecialchars($user['username']) ?></div>
+                            <div class="user-joined-date">
+                                Member since <?= date('F Y', strtotime($user['created_at'])) ?>
+                            </div>
                         </div>
-                        <a href="report.php?type=user&id=88" class="btn-platform btn-outline w-100 mt-1" style="color:var(--danger,#ef4444); border-color:var(--danger,#ef4444)">
+
+                        <a href="report.php?type=user&id=<?= $userId ?>" class="btn-platform btn-block btn-danger-outline">
                             <i class="bi bi-flag"></i> Report user
                         </a>
                     </div>
                 </div>
 
-                <!-- Stats card -->
                 <div class="panel">
                     <div class="panel__header">
                         <span class="panel__title">Stats</span>
                     </div>
+
                     <div class="panel__body d-flex flex-column gap-3">
 
                         <!-- Seller rating -->
@@ -49,14 +207,14 @@
                             <div class="seller-meta mb-1">Seller rating</div>
                             <div class="d-flex align-items-center gap-2">
                                 <div class="product-card-stars">
-                                    <i class="bi bi-star-fill star"></i>
-                                    <i class="bi bi-star-fill star"></i>
-                                    <i class="bi bi-star-fill star"></i>
-                                    <i class="bi bi-star-fill star"></i>
-                                    <i class="bi bi-star-half star"></i>
+                                    <?= renderStars($sellerStats['avg_rating'] ?? 0) ?>
                                 </div>
-                                <span class="seller-rating">4.6</span>
-                                <span class="rating-count">(23)</span>
+                                <span class="seller-rating">
+                                    <?= number_format($sellerStats['avg_rating'] ?? 0, 1) ?>
+                                </span>
+                                <span class="rating-count">
+                                    (<?= $sellerStats['review_count'] ?? 0 ?>)
+                                </span>
                             </div>
                         </div>
 
@@ -65,30 +223,38 @@
                             <div class="seller-meta mb-1">Buyer rating</div>
                             <div class="d-flex align-items-center gap-2">
                                 <div class="product-card-stars">
-                                    <i class="bi bi-star-fill star"></i>
-                                    <i class="bi bi-star-fill star"></i>
-                                    <i class="bi bi-star-fill star"></i>
-                                    <i class="bi bi-star-fill star"></i>
-                                    <i class="bi bi-star-fill star"></i>
+                                    <?= renderStars($buyerStats['avg_rating'] ?? 0) ?>
                                 </div>
-                                <span class="seller-rating">5.0</span>
-                                <span class="rating-count">(8)</span>
+                                <span class="seller-rating">
+                                    <?= number_format($buyerStats['avg_rating'] ?? 0, 1) ?>
+                                </span>
+                                <span class="rating-count">
+                                    (<?= $buyerStats['review_count'] ?? 0 ?>)
+                                </span>
                             </div>
                         </div>
 
                         <hr class="m-0">
 
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span class="seller-meta"><i class="bi bi-arrow-left-right me-1"></i>Completed transactions</span>
-                            <span class="seller-name">31</span>
+                        <div class="d-flex justify-content-between">
+                            <span class="seller-meta">Completed transactions</span>
+                            <span class="seller-name">
+                                <?= $completedTransactions['completed_transaction_count'] ?? 0 ?>
+                            </span>
                         </div>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span class="seller-meta"><i class="bi bi-tag me-1"></i>Active listings</span>
-                            <span class="seller-name">4</span>
+
+                        <div class="d-flex justify-content-between">
+                            <span class="seller-meta">Active listings</span>
+                            <span class="seller-name">
+                                <?= $activeListingCount ?>
+                            </span>
                         </div>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span class="seller-meta"><i class="bi bi-bag-check me-1"></i>Items sold</span>
-                            <span class="seller-name">23</span>
+
+                        <div class="d-flex justify-content-between">
+                            <span class="seller-meta">Items sold</span>
+                            <span class="seller-name">
+                                <?= $itemsSold['items_sold'] ?? 0 ?>
+                            </span>
                         </div>
 
                     </div>
@@ -96,216 +262,121 @@
 
             </div>
 
-            <!-- ══════════════════════════════════
-                 RIGHT COLUMN — listings + reviews
-            ══════════════════════════════════ -->
+            <!-- RIGHT COLUMN -->
             <div class="col-md-8 col-lg-9 d-flex flex-column gap-3">
 
                 <div class="profile-tabs">
                     <button class="profile-tab active" data-tab="listings">
                         <i class="bi bi-tag"></i> Listings
-                        <span class="badge-status badge-neutral ms-1">4</span>
+                        <span class="badge-status badge-neutral"><?= $activeListingCount ?></span>
                     </button>
+
                     <button class="profile-tab" data-tab="reviews">
                         <i class="bi bi-star"></i> Reviews
-                        <span class="badge-status badge-neutral ms-1">23</span>
+                        <span class="badge-status badge-neutral"><?= $buyerStats['review_count'] ?? 0 ?></span>
                     </button>
                 </div>
 
-                <!-- ── LISTINGS TAB ── -->
+                <!-- LISTINGS -->
                 <div class="tab-panel active" id="tab-listings">
                     <div class="panel">
                         <div class="panel__header">
                             <span class="panel__title">Active listings</span>
                         </div>
+
                         <div class="panel__body d-flex flex-column gap-3">
 
-                            <div class="d-flex align-items-center justify-content-between gap-3">
-                                <div class="seller-info">
-                                    <p class="seller-name mb-0">Nike Air Max 90 &mdash; Size 10</p>
-                                    <p class="seller-meta mb-0">R 850 &nbsp;&middot;&nbsp; Footwear &nbsp;&middot;&nbsp; Like new &nbsp;&middot;&nbsp; Posted 3 days ago</p>
+                            <?php if (empty($activeListings)): ?>
+                                <p class="seller-meta">No active listings.</p>
+                            <?php endif; ?>
+
+                            <?php foreach ($activeListings as $listing): ?>
+                                <div class="d-flex justify-content-between align-items-center gap-3">
+                                    <div>
+                                        <p class="seller-name mb-0"><?= htmlspecialchars($listing['title']) ?></p>
+                                        <p class="seller-meta mb-0">
+                                            R <?= number_format($listing['price'], 2) ?>
+                                            · <?= htmlspecialchars($listing['category']) ?>
+                                            · <?= htmlspecialchars($listing['condition']) ?>
+                                            · <?= date('M Y', strtotime($listing['created_at'])) ?>
+                                        </p>
+                                    </div>
+
+                                    <a href="listing.php?id=<?= $listing['listing_id'] ?>"
+                                        class="btn-platform btn-outline btn-sm">
+                                        View
+                                    </a>
                                 </div>
-                                <a href="listing.php?id=17" class="btn-platform btn-outline btn-sm flex-shrink-0">View</a>
-                            </div>
 
-                            <hr class="m-0">
-
-                            <div class="d-flex align-items-center justify-content-between gap-3">
-                                <div class="seller-info">
-                                    <p class="seller-name mb-0">Air Jordan 4 Retro &mdash; Size 9</p>
-                                    <p class="seller-meta mb-0">R 2 100 &nbsp;&middot;&nbsp; Footwear &nbsp;&middot;&nbsp; Good &nbsp;&middot;&nbsp; Posted 1 week ago</p>
-                                </div>
-                                <a href="listing.php?id=21" class="btn-platform btn-outline btn-sm flex-shrink-0">View</a>
-                            </div>
-
-                            <hr class="m-0">
-
-                            <div class="d-flex align-items-center justify-content-between gap-3">
-                                <div class="seller-info">
-                                    <p class="seller-name mb-0">Asics Gel-Kayano 29 &mdash; Size 10</p>
-                                    <p class="seller-meta mb-0">R 720 &nbsp;&middot;&nbsp; Footwear &nbsp;&middot;&nbsp; Good &nbsp;&middot;&nbsp; Posted 2 weeks ago</p>
-                                </div>
-                                <a href="listing.php?id=16" class="btn-platform btn-outline btn-sm flex-shrink-0">View</a>
-                            </div>
-
-                            <hr class="m-0">
-
-                            <div class="d-flex align-items-center justify-content-between gap-3">
-                                <div class="seller-info">
-                                    <p class="seller-name mb-0">Saucony Shadow 6000 &mdash; Size 9</p>
-                                    <p class="seller-meta mb-0">R 540 &nbsp;&middot;&nbsp; Footwear &nbsp;&middot;&nbsp; Like new &nbsp;&middot;&nbsp; Posted 3 weeks ago</p>
-                                </div>
-                                <a href="listing.php?id=12" class="btn-platform btn-outline btn-sm flex-shrink-0">View</a>
-                            </div>
+                                <hr class="m-0">
+                            <?php endforeach; ?>
 
                         </div>
                     </div>
                 </div>
 
-                <!-- ── REVIEWS TAB ── -->
+                <!-- REVIEWS -->
                 <div class="tab-panel" id="tab-reviews">
 
-                    <!-- Rating summary -->
-                    <div class="panel mb-3">
-                        <div class="panel__header">
-                            <span class="panel__title">Rating summary</span>
-                        </div>
-                        <div class="panel__body">
-                            <div class="row g-3">
-
-                                <div class="col-6">
-                                    <div class="seller-meta mb-1">As a seller</div>
-                                    <div class="d-flex align-items-center gap-2 mb-1">
-                                        <div class="product-card-stars">
-                                            <i class="bi bi-star-fill star"></i>
-                                            <i class="bi bi-star-fill star"></i>
-                                            <i class="bi bi-star-fill star"></i>
-                                            <i class="bi bi-star-fill star"></i>
-                                            <i class="bi bi-star-half star"></i>
-                                        </div>
-                                        <span class="seller-rating">4.6</span>
-                                        <span class="rating-count">(23 reviews)</span>
-                                    </div>
-                                </div>
-
-                                <div class="col-6">
-                                    <div class="seller-meta mb-1">As a buyer</div>
-                                    <div class="d-flex align-items-center gap-2 mb-1">
-                                        <div class="product-card-stars">
-                                            <i class="bi bi-star-fill star"></i>
-                                            <i class="bi bi-star-fill star"></i>
-                                            <i class="bi bi-star-fill star"></i>
-                                            <i class="bi bi-star-fill star"></i>
-                                            <i class="bi bi-star-fill star"></i>
-                                        </div>
-                                        <span class="seller-rating">5.0</span>
-                                        <span class="rating-count">(8 reviews)</span>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Individual reviews -->
                     <div class="panel">
                         <div class="panel__header">
                             <span class="panel__title">All reviews</span>
                         </div>
+
                         <div class="panel__body d-flex flex-column gap-3">
 
-                            <div class="d-flex flex-column gap-2">
-                                <div class="d-flex align-items-center gap-2">
-                                    <span class="listing-category-badge">Nike Dunk Low &mdash; Size 10</span>
-                                    <span class="badge badge--sm badge--user" style="font-size:10px">Seller review</span>
-                                </div>
-                                <div class="seller-card">
-                                    <div class="seller-avatar">JS</div>
-                                    <div class="seller-info">
-                                        <p class="seller-name mb-0">@jsmith92</p>
-                                        <div class="product-card-stars">
-                                            <i class="bi bi-star-fill star"></i>
-                                            <i class="bi bi-star-fill star"></i>
-                                            <i class="bi bi-star-fill star"></i>
-                                            <i class="bi bi-star-fill star"></i>
-                                            <i class="bi bi-star-fill star"></i>
-                                        </div>
+                            <?php if (empty($reviews)): ?>
+                                <p class="seller-meta">No reviews yet.</p>
+                            <?php endif; ?>
+
+                            <?php foreach ($reviews as $review): ?>
+                                <div class="d-flex flex-column gap-2">
+
+                                    <div class="d-flex justify-content-between">
+                                        <a href="user-profile.php?id=<?= $review['reviewer_id'] ?>"
+                                            class="seller-name">
+                                            <?= htmlspecialchars($review['reviewer_username']) ?>
+                                        </a>
+
+                                        <span class="seller-meta">
+                                            <?= date('M Y', strtotime($review['created_at'])) ?>
+                                        </span>
                                     </div>
-                                    <span class="seller-meta ms-auto">1 week ago</span>
-                                </div>
-                                <div class="report-reason-box">
-                                    Exactly as described, packaged with care. One of the smoothest transactions
-                                    I&rsquo;ve had on here. Highly recommend.
-                                </div>
-                            </div>
 
-                            <hr class="m-0">
-
-                            <div class="d-flex flex-column gap-2">
-                                <div class="d-flex align-items-center gap-2">
-                                    <span class="listing-category-badge">Converse Chuck 70 &mdash; Size 9</span>
-                                    <span class="badge badge--sm badge--user" style="font-size:10px">Seller review</span>
-                                </div>
-                                <div class="seller-card">
-                                    <div class="seller-avatar">CK</div>
-                                    <div class="seller-info">
-                                        <p class="seller-name mb-0">@ct_kicks</p>
-                                        <div class="product-card-stars">
-                                            <i class="bi bi-star-fill star"></i>
-                                            <i class="bi bi-star-fill star"></i>
-                                            <i class="bi bi-star-fill star"></i>
-                                            <i class="bi bi-star-fill star"></i>
-                                            <i class="bi bi-star-empty star-empty"></i>
-                                        </div>
+                                    <div class="product-card-stars">
+                                        <?= renderStars($review['rating']) ?>
                                     </div>
-                                    <span class="seller-meta ms-auto">3 weeks ago</span>
-                                </div>
-                                <div class="report-reason-box">
-                                    Item was good but condition was slightly worse than listed. Communication was
-                                    fine, just be more accurate with descriptions.
-                                </div>
-                            </div>
 
-                            <hr class="m-0">
+                                    <p class="mb-0">
+                                        <?= nl2br(htmlspecialchars($review['body'])) ?>
+                                    </p>
 
-                            <div class="d-flex flex-column gap-2">
-                                <div class="d-flex align-items-center gap-2">
-                                    <span class="listing-category-badge">Puma RS-X &mdash; Size 10</span>
-                                    <span class="badge badge--sm badge--transaction" style="font-size:10px">Buyer review</span>
+                                    <?php if (!empty($review['listing_id'])): ?>
+                                        <a class="btn-platform btn-outline btn-sm"
+                                            href="listing.php?id=<?= $review['listing_id'] ?>">
+                                            View listing
+                                        </a>
+                                    <?php endif; ?>
+
+                                    <hr class="m-0">
                                 </div>
-                                <div class="seller-card">
-                                    <div class="seller-avatar">RZ</div>
-                                    <div class="seller-info">
-                                        <p class="seller-name mb-0">@runner_za</p>
-                                        <div class="product-card-stars">
-                                            <i class="bi bi-star-fill star"></i>
-                                            <i class="bi bi-star-fill star"></i>
-                                            <i class="bi bi-star-fill star"></i>
-                                            <i class="bi bi-star-fill star"></i>
-                                            <i class="bi bi-star-fill star"></i>
-                                        </div>
-                                    </div>
-                                    <span class="seller-meta ms-auto">1 month ago</span>
-                                </div>
-                                <div class="report-reason-box">
-                                    Great buyer, paid quickly and was easy to deal with. Would sell to again.
-                                </div>
-                            </div>
+                            <?php endforeach; ?>
 
                         </div>
                     </div>
+
                 </div>
 
             </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.querySelectorAll('.profile-tab').forEach(btn => {
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.profile-tab').forEach(b => b.classList.remove('active'));
                 document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+
                 btn.classList.add('active');
                 document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
             });
