@@ -1,3 +1,40 @@
+<?php
+$active_page = 'listings';
+require_once __DIR__ . '/../config/db.php';
+
+// Filters
+$search   = trim($_GET['search'] ?? '');
+$category = trim($_GET['category'] ?? '');
+
+$where  = [];
+$params = [];
+
+if ($search !== '') {
+    $where[]  = '(l.title LIKE ? OR u.username LIKE ?)';
+    $params[] = "%$search%";
+    $params[] = "%$search%";
+}
+
+if ($category !== '') {
+    $where[]  = 'l.category = ?';
+    $params[] = $category;
+}
+
+$sql = 'SELECT l.listing_id, l.title, l.category, l.price, l.created_at,
+               u.username, u.user_id
+        FROM listings l
+        JOIN users u ON u.user_id = l.seller_id';
+
+if ($where) {
+    $sql .= ' WHERE ' . implode(' AND ', $where);
+}
+
+$sql .= ' ORDER BY l.created_at DESC';
+
+$stmt = $pdo->prepare($sql);
+$stmt->execute($params);
+$listings = $stmt->fetchAll();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -26,17 +63,18 @@
             <div class="panel">
                 <div class="panel__body">
                     <!-- Filter bar -->
-                    <div class="filter-bar">
-                        <input type="text" placeholder="Search title or seller" class="search-input">
-                        <select class="filter-select">
-                            <option>All categories</option>
-                            <option>Audio</option>
-                            <option>Electronics</option>
-                            <option>Photography</option>
+                    <form method="GET" class="filter-bar">
+                        <input type="text" name="search" placeholder="Search title or seller"
+                            class="search-input" value="<?= htmlspecialchars($search) ?>">
+                        <select name="category" class="filter-select">
+                            <option value="">All categories</option>
+                            <option value="Audio" <?= $category === 'Audio'       ? 'selected' : '' ?>>Audio</option>
+                            <option value="Electronics" <?= $category === 'Electronics' ? 'selected' : '' ?>>Electronics</option>
+                            <option value="Photography" <?= $category === 'Photography' ? 'selected' : '' ?>>Photography</option>
                         </select>
-                        <button class="btn-platform btn-primary-solid">Filter</button>
-                        <button class="btn-platform btn-outline">Clear</button>
-                    </div>
+                        <button type="submit" class="btn-platform btn-primary-solid">Filter</button>
+                        <a href="listings.php" class="btn-platform btn-outline">Clear</a>
+                    </form>
 
                     <!-- Listings table -->
                     <table class="records-table">
@@ -52,41 +90,31 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="clickable">
-                                <td>1</td>
-                                <td>Canon EOS 5D Mark IV</td>
-                                <td>Photography</td>
-                                <td><span class="avatar">JD</span> john_doe</td>
-                                <td>R 12,500</td>
-                                <td>12 Jan 2025</td>
-                                <td>
-                                    <a href="listing-detail.php?id=1" class="btn-platform btn-primary-solid view-btn">View</a>
-                                </td>
-                            </tr>
-
-                            <tr class="clickable">
-                                <td>2</td>
-                                <td>Apple MacBook Pro 16"</td>
-                                <td>Electronics</td>
-                                <td><span class="avatar">SM</span> sarah_m</td>
-                                <td>R 28,000</td>
-                                <td>3 Feb 2025</td>
-                                <td>
-                                    <a href="listing-detail.php?id=2" class="btn-platform btn-primary-solid view-btn">View</a>
-                                </td>
-                            </tr>
-
-                            <tr class="clickable">
-                                <td>3</td>
-                                <td>Sony WH-1000XM5 Headphones</td>
-                                <td>Audio</td>
-                                <td><span class="avatar">TP</span> the_pete</td>
-                                <td>R 4,200</td>
-                                <td>19 Mar 2025</td>
-                                <td>
-                                    <a href="listing-detail.php?id=3" class="btn-platform btn-primary-solid view-btn">View</a>
-                                </td>
-                            </tr>
+                            <?php if (empty($listings)): ?>
+                                <tr>
+                                    <td colspan="7" class="text-center text-muted py-4">No listings found.</td>
+                                </tr>
+                            <?php else: ?>
+                                <?php foreach ($listings as $l): ?>
+                                    <tr class="clickable">
+                                        <td><?= $l['listing_id'] ?></td>
+                                        <td><?= htmlspecialchars($l['title']) ?></td>
+                                        <td><?= htmlspecialchars($l['category']) ?></td>
+                                        <td>
+                                            <span class="avatar">
+                                                <?= strtoupper(substr($l['username'], 0, 2)) ?>
+                                            </span>
+                                            <?= htmlspecialchars($l['username']) ?>
+                                        </td>
+                                        <td>R <?= number_format($l['price'], 0, '.', ',') ?></td>
+                                        <td><?= date('d M Y', strtotime($l['created_at'])) ?></td>
+                                        <td>
+                                            <a href="listing-detail.php?id=<?= $l['listing_id'] ?>"
+                                                class="btn-platform btn-primary-solid view-btn">View</a>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
                         </tbody>
                     </table>
                 </div>

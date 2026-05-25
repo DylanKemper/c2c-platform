@@ -85,3 +85,14 @@ CREATE TABLE admin_log (
     created_at  DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (admin_id) REFERENCES users(user_id)
 );
+
+-- 7. Listing images (depends on listings)
+CREATE TABLE listing_images (
+    image_id    INT PRIMARY KEY AUTO_INCREMENT,
+    listing_id  INT NOT NULL,
+    filename    VARCHAR(255) NOT NULL,
+    is_primary  TINYINT(1) DEFAULT 0,
+    sort_order  INT DEFAULT 0,
+    created_at  DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (listing_id) REFERENCES listings(listing_id)
+);

@@ -1,5 +1,20 @@
-<?php require_once __DIR__ . '/config/db.php'; ?>
+<?php
+require_once __DIR__ . '/config/db.php';
 
+$sql = 'SELECT l.listing_id, l.title, l.category, l.description, l.price,
+               li.filename,
+               ROUND(AVG(r.rating), 0) AS avg_rating,
+               COUNT(r.review_id) AS review_count
+        FROM listings l
+        LEFT JOIN listing_images li ON li.listing_id = l.listing_id AND li.is_primary = 1
+        LEFT JOIN reviews r ON r.reviewee_id = l.seller_id AND r.role = "seller"
+        WHERE l.status = "active"
+        GROUP BY l.listing_id
+        ORDER BY l.created_at DESC';
+
+$stmt = $pdo->query($sql);
+$listings = $stmt->fetchAll();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -19,236 +34,35 @@
     <?php include 'partials/login-modal.php'; ?>
     <main class="flex-grow-1">
         <div class="card-grid">
-            <div class="product-card">
-                <img class="product-card-img"
-                    src="Sample-Images/Sample-Image.jpg"
-                    alt="Mechanical Keyboard">
-                <div class="product-card-body">
-                    <span class="product-card-category">Electronics</span>
-                    <h3 class="product-card-title">Mechanical Keyboard</h3>
-                    <p class="product-card-desc">Compact TKL layout with tactile brown switches. Backlit with per-key RGB and a USB-C detachable cable.</p>
-                    <div class="product-card-footer">
-                        <span class="product-card-price">£74.99</span>
-                        <div class="product-card-stars">
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                            <span class="star star-empty">&#9733;</span>
-                            <span class="rating-count">(1)</span>
+            <?php foreach ($listings as $l): ?>
+                <?php
+                $avg     = (int) round($l['avg_rating'] ?? 0);
+                $count   = (int) $l['review_count'];
+                $img_src = $l['filename']
+                    ? 'uploads/listings/' . htmlspecialchars($l['filename'])
+                    : 'Sample-Images/Sample-Image.jpg';
+                ?>
+                <div class="product-card">
+                    <img class="product-card-img"
+                        src="<?= $img_src ?>"
+                        alt="<?= htmlspecialchars($l['title']) ?>">
+                    <div class="product-card-body">
+                        <span class="product-card-category"><?= htmlspecialchars($l['category']) ?></span>
+                        <h3 class="product-card-title"><?= htmlspecialchars($l['title']) ?></h3>
+                        <p class="product-card-desc"><?= htmlspecialchars($l['description']) ?></p>
+                        <div class="product-card-footer">
+                            <span class="product-card-price">R <?= number_format($l['price'], 2) ?></span>
+                            <div class="product-card-stars">
+                                <?php for ($i = 1; $i <= 5; $i++): ?>
+                                    <span class="star <?= $i > $avg ? 'star-empty' : '' ?>">&#9733;</span>
+                                <?php endfor; ?>
+                                <span class="rating-count">(<?= $count ?>)</span>
+                            </div>
                         </div>
+                        <a href="listing.php?id=<?= $l['listing_id'] ?>" class="btn-platform btn-primary-solid">View listing</a>
                     </div>
-                    <a href="listing.php?id=1" class="btn-platform btn-primary-solid">Add to cart</a>
                 </div>
-            </div>
-
-            <div class="product-card">
-                <img class="product-card-img"
-                    src="Sample-Images/Sample-Image.jpg"
-                    alt="Mechanical Keyboard">
-                <div class="product-card-body">
-                    <span class="product-card-category">Electronics</span>
-                    <h3 class="product-card-title">Mechanical Keyboard</h3>
-                    <p class="product-card-desc">Compact TKL layout with tactile brown switches. Backlit with per-key RGB and a USB-C detachable cable.</p>
-                    <div class="product-card-footer">
-                        <span class="product-card-price">£74.99</span>
-                        <div class="product-card-stars">
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                            <span class="star star-empty">&#9733;</span>
-                            <span class="rating-count">(1)</span>
-                        </div>
-                    </div>
-                    <a href="listing.php?id=1" class="btn-platform btn-primary-solid">Add to cart</a>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <img class="product-card-img"
-                    src="Sample-Images/Sample-Image.jpg"
-                    alt="Mechanical Keyboard">
-                <div class="product-card-body">
-                    <span class="product-card-category">Electronics</span>
-                    <h3 class="product-card-title">Mechanical Keyboard</h3>
-                    <p class="product-card-desc">Compact TKL layout with tactile brown switches. Backlit with per-key RGB and a USB-C detachable cable.</p>
-                    <div class="product-card-footer">
-                        <span class="product-card-price">£74.99</span>
-                        <div class="product-card-stars">
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                            <span class="star star-empty">&#9733;</span>
-                            <span class="rating-count">(1)</span>
-                        </div>
-                    </div>
-                    <a href="listing.php?id=1" class="btn-platform btn-primary-solid">Add to cart</a>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <img class="product-card-img"
-                    src="Sample-Images/Sample-Image.jpg"
-                    alt="Mechanical Keyboard">
-                <div class="product-card-body">
-                    <span class="product-card-category">Electronics</span>
-                    <h3 class="product-card-title">Mechanical Keyboard</h3>
-                    <p class="product-card-desc">Compact TKL layout with tactile brown switches. Backlit with per-key RGB and a USB-C detachable cable.</p>
-                    <div class="product-card-footer">
-                        <span class="product-card-price">£74.99</span>
-                        <div class="product-card-stars">
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                            <span class="star star-empty">&#9733;</span>
-                            <span class="rating-count">(1)</span>
-                        </div>
-                    </div>
-                    <a href="listing.php?id=1" class="btn-platform btn-primary-solid">Add to cart</a>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <img class="product-card-img"
-                    src="Sample-Images/Sample-Image.jpg"
-                    alt="Mechanical Keyboard">
-                <div class="product-card-body">
-                    <span class="product-card-category">Electronics</span>
-                    <h3 class="product-card-title">Mechanical Keyboard</h3>
-                    <p class="product-card-desc">Compact TKL layout with tactile brown switches. Backlit with per-key RGB and a USB-C detachable cable.</p>
-                    <div class="product-card-footer">
-                        <span class="product-card-price">£74.99</span>
-                        <div class="product-card-stars">
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                            <span class="star star-empty">&#9733;</span>
-                            <span class="rating-count">(1)</span>
-                        </div>
-                    </div>
-                    <a href="listing.php?id=1" class="btn-platform btn-primary-solid">Add to cart</a>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <img class="product-card-img"
-                    src="Sample-Images/Sample-Image.jpg"
-                    alt="Mechanical Keyboard">
-                <div class="product-card-body">
-                    <span class="product-card-category">Electronics</span>
-                    <h3 class="product-card-title">Mechanical Keyboard</h3>
-                    <p class="product-card-desc">Compact TKL layout with tactile brown switches. Backlit with per-key RGB and a USB-C detachable cable.</p>
-                    <div class="product-card-footer">
-                        <span class="product-card-price">£74.99</span>
-                        <div class="product-card-stars">
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                            <span class="star star-empty">&#9733;</span>
-                            <span class="rating-count">(1)</span>
-                        </div>
-                    </div>
-                    <a href="listing.php?id=1" class="btn-platform btn-primary-solid">Add to cart</a>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <img class="product-card-img"
-                    src="Sample-Images/Sample-Image.jpg"
-                    alt="Mechanical Keyboard">
-                <div class="product-card-body">
-                    <span class="product-card-category">Electronics</span>
-                    <h3 class="product-card-title">Mechanical Keyboard</h3>
-                    <p class="product-card-desc">Compact TKL layout with tactile brown switches. Backlit with per-key RGB and a USB-C detachable cable.</p>
-                    <div class="product-card-footer">
-                        <span class="product-card-price">£74.99</span>
-                        <div class="product-card-stars">
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                            <span class="star star-empty">&#9733;</span>
-                            <span class="rating-count">(1)</span>
-                        </div>
-                    </div>
-                    <a href="listing.php?id=1" class="btn-platform btn-primary-solid">Add to cart</a>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <img class="product-card-img"
-                    src="Sample-Images/Sample-Image.jpg"
-                    alt="Mechanical Keyboard">
-                <div class="product-card-body">
-                    <span class="product-card-category">Electronics</span>
-                    <h3 class="product-card-title">Mechanical Keyboard</h3>
-                    <p class="product-card-desc">Compact TKL layout with tactile brown switches. Backlit with per-key RGB and a USB-C detachable cable.</p>
-                    <div class="product-card-footer">
-                        <span class="product-card-price">£74.99</span>
-                        <div class="product-card-stars">
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                            <span class="star star-empty">&#9733;</span>
-                            <span class="rating-count">(1)</span>
-                        </div>
-                    </div>
-                    <a href="listing.php?id=1" class="btn-platform btn-primary-solid">Add to cart</a>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <img class="product-card-img"
-                    src="Sample-Images/Sample-Image.jpg"
-                    alt="Mechanical Keyboard">
-                <div class="product-card-body">
-                    <span class="product-card-category">Electronics</span>
-                    <h3 class="product-card-title">Mechanical Keyboard</h3>
-                    <p class="product-card-desc">Compact TKL layout with tactile brown switches. Backlit with per-key RGB and a USB-C detachable cable.</p>
-                    <div class="product-card-footer">
-                        <span class="product-card-price">£74.99</span>
-                        <div class="product-card-stars">
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                            <span class="star star-empty">&#9733;</span>
-                            <span class="rating-count">(1)</span>
-                        </div>
-                    </div>
-                    <a href="listing.php?id=1" class="btn-platform btn-primary-solid">Add to cart</a>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <img class="product-card-img"
-                    src="Sample-Images/Sample-Image.jpg"
-                    alt="Mechanical Keyboard">
-                <div class="product-card-body">
-                    <span class="product-card-category">Electronics</span>
-                    <h3 class="product-card-title">Mechanical Keyboard</h3>
-                    <p class="product-card-desc">Compact TKL layout with tactile brown switches. Backlit with per-key RGB and a USB-C detachable cable.</p>
-                    <div class="product-card-footer">
-                        <span class="product-card-price">£74.99</span>
-                        <div class="product-card-stars">
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                            <span class="star">&#9733;</span>
-                            <span class="star star-empty">&#9733;</span>
-                            <span class="rating-count">(1)</span>
-                        </div>
-                    </div>
-                    <a href="listing.php?id=1" class="btn-platform btn-primary-solid">Add to cart</a>
-                </div>
-            </div>
-
+            <?php endforeach; ?>
         </div>
     </main>
     <?php include 'partials/footer.php'; ?>
