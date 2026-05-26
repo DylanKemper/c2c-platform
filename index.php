@@ -79,6 +79,8 @@ $listings = $stmt->fetchAll();  // returns array of listings with their details,
         </div>
     </main>
     <?php include 'partials/footer.php'; ?>
+    <?php include 'partials/register-modal.php'; ?>
+    <?php include 'partials/login-modal.php'; ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
