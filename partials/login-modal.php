@@ -28,7 +28,7 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="btn-platform btn-primary-solid btn-block">
+                    <button action="auth/login-process.php" method="POST" type="submit" class="btn-platform btn-primary-solid btn-block">
                         Login
                     </button>
                     <p class="auth-signin-link">

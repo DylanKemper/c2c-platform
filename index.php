@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/includes/session.php';
 require_once __DIR__ . '/config/db.php';
 
 // Fetch all active listings and their details, including the image and average rating

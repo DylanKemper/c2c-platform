@@ -1,3 +1,13 @@
+<?php if (isset($_SESSION['user_id'])): ?>
+    <div style="color: green;">
+        Logged in as <?= htmlspecialchars($_SESSION['username']) ?>
+    </div>
+<?php else: ?>
+    <div style="color: red;">
+        Not logged in
+    </div>
+<?php endif; ?>
+
 <nav class="navbar custom-navbar">
     <div class="navbar-inner">
         <!-- Logo -->

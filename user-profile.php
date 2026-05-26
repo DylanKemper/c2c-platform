@@ -1,6 +1,7 @@
 <?php
-require_once __DIR__ . '/includes/helpers/render-stars.php';
+require_once __DIR__ . '/includes/session.php';
 require_once __DIR__ . '/config/db.php';
+require_once __DIR__ . '/includes/helpers/render-stars.php';
 
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     die('Invalid user ID.');

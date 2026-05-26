@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/includes/session.php';
 require_once __DIR__ . '/config/db.php';
 
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
