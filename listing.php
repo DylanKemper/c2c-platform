@@ -11,6 +11,7 @@ $sql = '
     SELECT
         l.listing_id,
         l.category,
+        l.condition,
         l.title,
         l.price,
         l.description,
@@ -122,8 +123,16 @@ $memberSince = date('Y', strtotime($listing['user_created_at']));
                 </div>
 
                 <div class="listing-details-panel">
-                    <span class="listing-category-badge"><?= htmlspecialchars($listing['category']) ?></span>
-                    <h1 class="listing-title"><?= htmlspecialchars($listing['title']) ?></h1>
+                    <div class="d-flex align-items-center justify-content-between gap-3 mb-2">
+                        <div>
+                            <h1 class="listing-title mb-0">
+                                <?= htmlspecialchars($listing['title']) ?>
+                            </h1>
+                        </div>
+                        <span class="badge badge--lg badge--info">
+                            <?= htmlspecialchars($listing['condition']) ?>
+                        </span>
+                    </div>
                     <div class="listing-price-row">
                         <span class="listing-price">R <?= number_format($listing['price'], 2) ?></span>
                     </div>

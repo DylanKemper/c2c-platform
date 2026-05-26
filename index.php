@@ -2,7 +2,7 @@
 require_once __DIR__ . '/config/db.php';
 
 // Fetch all active listings and their details, including the image and average rating
-$sql = 'SELECT l.listing_id, l.title, l.category, l.description, l.price,
+$sql = 'SELECT l.listing_id, l.title, l.category, l.description, l.price, l.condition,
                li.filename,
                ROUND(AVG(r.rating), 0) AS avg_rating,
                COUNT(r.review_id) AS review_count
@@ -40,7 +40,7 @@ $listings = $stmt->fetchAll();  // returns array of listings with their details,
                 $avg     = (int) round($l['avg_rating'] ?? 0);
                 $count   = (int) $l['review_count'];
                 $img_src = $l['filename']
-                // if the listing has an image, use it; otherwise, use a placeholder image
+                    // if the listing has an image, use it; otherwise, use a placeholder image
                     ? 'uploads/listings/' . htmlspecialchars($l['filename'])
                     : 'Sample-Images/Sample-Image.jpg';
                 ?>
@@ -49,8 +49,19 @@ $listings = $stmt->fetchAll();  // returns array of listings with their details,
                         src="<?= $img_src ?>"
                         alt="<?= htmlspecialchars($l['title']) ?>">
                     <div class="product-card-body">
-                        <span class="product-card-category"><?= htmlspecialchars($l['category']) ?></span>
-                        <h3 class="product-card-title"><?= htmlspecialchars($l['title']) ?></h3>
+                        <div class="d-flex align-items-center justify-content-between gap-2 mb-2">
+                            <span class="product-card-category">
+                                <?= htmlspecialchars($l['category']) ?>
+                            </span>
+
+                            <span class="badge badge--sm badge--info">
+                                <?= htmlspecialchars(ucfirst($l['condition'])) ?>
+                            </span>
+                        </div>
+
+                        <h3 class="product-card-title">
+                            <?= htmlspecialchars($l['title']) ?>
+                        </h3>
                         <p class="product-card-desc"><?= htmlspecialchars($l['description']) ?></p>
                         <div class="product-card-footer">
                             <span class="product-card-price">R <?= number_format($l['price'], 2) ?></span>
