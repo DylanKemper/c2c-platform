@@ -10,7 +10,7 @@
             </div>
 
             <div class="modal-body auth-modal-body">
-                <form action="register.php" method="POST" id="registerForm">
+                <form action="auth/register-process.php" method="POST" id="registerForm">
 
                     <div class="form-field">
                         <label class="form-label-upper">Full name</label>
