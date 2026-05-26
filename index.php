@@ -78,6 +78,11 @@ $listings = $stmt->fetchAll();  // returns array of listings with their details,
                 </div>
             <?php endforeach; ?>
         </div>
+
+        <div class="btn-platform btn-accent-solid">
+            <a href="auth/logout.php">Logout</a>
+        </div>
+
     </main>
     <?php include 'partials/footer.php'; ?>
     <?php include 'partials/register-modal.php'; ?>

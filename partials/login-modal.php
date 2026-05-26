@@ -10,7 +10,7 @@
             </div>
 
             <div class="modal-body auth-modal-body">
-                <form action="login.php" method="POST" id="loginForm">
+                <form action="auth/login-process.php" method="POST" id="loginForm">
 
                     <div class="form-field">
                         <label class="form-label-upper">Email</label>
@@ -28,7 +28,7 @@
                         </div>
                     </div>
 
-                    <button action="auth/login-process.php" method="POST" type="submit" class="btn-platform btn-primary-solid btn-block">
+                    <button type="submit" class="btn-platform btn-primary-solid btn-block">
                         Login
                     </button>
                     <p class="auth-signin-link">
