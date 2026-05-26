@@ -170,17 +170,10 @@ $memberSince = date('Y', strtotime($listing['user_created_at']));
                     </a>
 
                     <div class="listing-actions">
-                        <button class="btn-platform btn-accent-solid btn-block">
-                            <i class="bi bi-bag-check me-2"></i>Buy Now
-                        </button>
+                        <a href="purchase.php?id=<?= $listing['listing_id'] ?>" class="btn-platform btn-block btn-accent-solid">Buy Now</a>
                         <button class="btn-platform btn-outline btn-block">
                             <i class="bi bi-chat-dots me-2"></i>Contact Seller
                         </button>
-                        <div class="escrow-notice">
-                            <i class="bi bi-shield-check"></i>
-                            <span>All transactions are escrow-protected. Payment is only
-                                released to the seller once you confirm receipt.</span>
-                        </div>
                     </div>
 
                 </div>
