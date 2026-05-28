@@ -11,7 +11,7 @@ $listingId = (int) $_GET['id'];
 $sql = '
     SELECT
         l.listing_id,
-        l.category,
+        l.category_id,
         l.condition,
         l.title,
         l.price,
@@ -51,7 +51,7 @@ $sql = '
 
     GROUP BY
         l.listing_id,
-        l.category,
+        l.category_id,
         l.title,
         l.price,
         l.description,

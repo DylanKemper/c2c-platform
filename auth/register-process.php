@@ -2,9 +2,9 @@
 require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../includes/session.php';
 
-$username = trim($_POST['username'] ?? '');
-$email = trim($_POST['email'] ?? '');
-$password = $_POST['password'] ?? '';
+$username        = trim($_POST['username'] ?? '');
+$email           = trim($_POST['email'] ?? '');
+$password        = $_POST['password'] ?? '';
 
 if ($username === '' || $email === '' || $password === '') {
     die('Missing fields');

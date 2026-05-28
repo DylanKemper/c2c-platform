@@ -8,6 +8,11 @@
     </div>
 <?php endif; ?>
 
+<?php
+$catStmt = $pdo->query('SELECT category_id, name FROM categories ORDER BY name');
+$navCategories = $catStmt->fetchAll();
+?>
+
 <nav class="navbar custom-navbar">
     <div class="navbar-inner">
         <!-- Logo -->
@@ -31,9 +36,13 @@
                 <span class="nav-action-label d-none d-lg-inline">Categories</span>
             </a>
             <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="index.php?category=electronics">Electronics</a></li>
-                <li><a class="dropdown-item" href="index.php?category=audio">Audio</a></li>
-                <li><a class="dropdown-item" href="index.php?category=photography">Photography</a></li>
+                <?php foreach ($navCategories as $cat): ?>
+                    <li>
+                        <a class="dropdown-item" href="search.php?category_id=<?= $cat['category_id'] ?>">
+                            <?= htmlspecialchars($cat['name']) ?>
+                        </a>
+                    </li>
+                <?php endforeach; ?>
             </ul>
         </div>
 

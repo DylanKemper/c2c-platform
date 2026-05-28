@@ -1,3 +1,15 @@
+<?php
+require_once __DIR__ . '/config/db.php';
+require_once __DIR__ . '/includes/session.php';
+
+if (!isset($_SESSION['user_id'])) {
+    header('Location: index.php');
+    exit;
+}
+
+$categories = $pdo->query('SELECT category_id, name FROM categories ORDER BY name')->fetchAll();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -30,7 +42,7 @@
                 <p class="listing-form-subtitle">Fill in the details below to list your item for sale.</p>
             </div>
 
-            <form action="listing-submit.php" method="POST" enctype="multipart/form-data">
+            <form action="auth/listing-insert.php" method="POST" enctype="multipart/form-data">
 
                 <div class="listing-form-layout">
 
@@ -74,23 +86,8 @@
                                         <select class="form-select" id="listing-category" name="category_id" required>
                                             <option value="" disabled selected>Select a category</option>
                                             <?php
-                                            /*
-                                             * TODO: Replace this placeholder array with a real DB query, e.g.:
-                                             * $stmt = $pdo->query("SELECT category_id, name FROM categories ORDER BY name");
-                                             * $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                                             */
-                                            $categories = [
-                                                ['id' => 1, 'name' => 'Electronics'],
-                                                ['id' => 2, 'name' => 'Audio'],
-                                                ['id' => 3, 'name' => 'Photography'],
-                                                ['id' => 4, 'name' => 'Clothing'],
-                                                ['id' => 5, 'name' => 'Sports'],
-                                                ['id' => 6, 'name' => 'Home & Garden'],
-                                                ['id' => 7, 'name' => 'Books'],
-                                                ['id' => 8, 'name' => 'Toys'],
-                                            ];
                                             foreach ($categories as $cat) {
-                                                echo '<option value="' . htmlspecialchars($cat['id']) . '">'
+                                                echo '<option value="' . htmlspecialchars($cat['category_id']) . '">'
                                                     . htmlspecialchars($cat['name']) . '</option>';
                                             }
                                             ?>
@@ -110,7 +107,6 @@
                                             <option value="like_new">Like New</option>
                                             <option value="good">Good</option>
                                             <option value="fair">Fair</option>
-                                            <option value="poor">Poor</option>
                                         </select>
                                         <i class="bi bi-chevron-down form-select-icon"></i>
                                     </div>
@@ -180,13 +176,7 @@
                                 <i class="bi bi-cloud-arrow-up listing-upload-icon"></i>
                                 <span class="listing-upload-primary">Click to upload photos</span>
                                 <span class="listing-upload-secondary">PNG, JPG or WEBP &mdash; max 5 MB each</span>
-                                <input
-                                    class="listing-upload-input"
-                                    type="file"
-                                    id="listing-images"
-                                    name="images[]"
-                                    accept="image/png, image/jpeg, image/webp"
-                                    multiple>
+                                <input type="file" name="image" accept="image/jpeg, image/png, image/webp">
                             </label>
 
                             <!-- JS will populate this with thumbnails -->
@@ -255,10 +245,10 @@
                                 </label>
 
                                 <label class="listing-delivery-option">
-                                    <input type="radio" name="delivery_method" value="both" class="listing-radio-input">
+                                    <input type="radio" name="delivery_method" value="either" class="listing-radio-input">
                                     <span class="listing-delivery-card">
                                         <i class="bi bi-arrow-left-right listing-delivery-icon"></i>
-                                        <span class="listing-delivery-title">Both</span>
+                                        <span class="listing-delivery-title">Either</span>
                                         <span class="listing-delivery-desc">Buyer's choice</span>
                                     </span>
                                 </label>
@@ -331,4 +321,4 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
-</html> 
+</html>

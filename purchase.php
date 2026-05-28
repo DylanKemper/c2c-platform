@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/includes/session.php';
 require_once __DIR__ . '/config/db.php';
 
 // Redirect if not logged in
@@ -35,7 +36,7 @@ if (!$listing) {
 
 // Block seller from buying their own listing
 if ($listing['seller_user_id'] === $_SESSION['user_id']) {
-    header('Location: listing.php?id=' . $listing_id);
+    header('Location: index.php');
     exit;
 }
 

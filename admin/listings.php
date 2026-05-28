@@ -16,14 +16,15 @@ if ($search !== '') {
 }
 
 if ($category !== '') {
-    $where[]  = 'l.category = ?';
+    $where[]  = 'l.category_id = ?';
     $params[] = $category;
 }
 
-$sql = 'SELECT l.listing_id, l.title, l.category, l.price, l.created_at,
-               u.username, u.user_id
+$sql = 'SELECT l.listing_id, l.title, l.category_id, l.price, l.created_at,
+               u.username, u.user_id, c.name AS category_name
         FROM listings l
-        JOIN users u ON u.user_id = l.seller_id';
+        JOIN users u ON u.user_id = l.seller_id
+        LEFT JOIN categories c ON c.category_id = l.category_id';
 
 if ($where) {
     $sql .= ' WHERE ' . implode(' AND ', $where);
@@ -68,9 +69,9 @@ $listings = $stmt->fetchAll();
                             class="search-input" value="<?= htmlspecialchars($search) ?>">
                         <select name="category" class="filter-select">
                             <option value="">All categories</option>
-                            <option value="Audio" <?= $category === 'Audio'       ? 'selected' : '' ?>>Audio</option>
-                            <option value="Electronics" <?= $category === 'Electronics' ? 'selected' : '' ?>>Electronics</option>
-                            <option value="Photography" <?= $category === 'Photography' ? 'selected' : '' ?>>Photography</option>
+                            <option value="1" <?= $category === '1' ? 'selected' : '' ?>>Audio</option>
+                            <option value="2" <?= $category === '2' ? 'selected' : '' ?>>Electronics</option>
+                            <option value="3" <?= $category === '3' ? 'selected' : '' ?>>Photography</option>
                         </select>
                         <button type="submit" class="btn-platform btn-primary-solid">Filter</button>
                         <a href="listings.php" class="btn-platform btn-outline">Clear</a>
@@ -99,7 +100,7 @@ $listings = $stmt->fetchAll();
                                     <tr class="clickable">
                                         <td><?= $l['listing_id'] ?></td>
                                         <td><?= htmlspecialchars($l['title']) ?></td>
-                                        <td><?= htmlspecialchars($l['category']) ?></td>
+                                        <td><?= htmlspecialchars($l['category_name']) ?></td>
                                         <td>
                                             <span class="avatar">
                                                 <?= strtoupper(substr($l['username'], 0, 2)) ?>

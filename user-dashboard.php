@@ -75,16 +75,18 @@ $buyerStats = $buyerStatsStmt->fetch(PDO::FETCH_ASSOC);
 ========================================================= */
 $activeListingsSql = '
     SELECT
-        listing_id,
-        title,
-        category,
-        price,
-        `condition`,
-        created_at
-    FROM listings
-    WHERE seller_id = ?
-    AND status = "active"
-    ORDER BY created_at DESC
+        l.listing_id,
+        l.title,
+        l.category_id,
+        l.price,
+        l.`condition`,
+        l.created_at,
+        c.name AS category_name
+    FROM listings l
+    LEFT JOIN categories c ON c.category_id = l.category_id
+    WHERE l.seller_id = ?
+    AND l.status = "active"
+    ORDER BY l.created_at DESC
 ';
 
 $activeListingsStmt = $pdo->prepare($activeListingsSql);
@@ -101,7 +103,7 @@ $soldListingsSql = '
     SELECT
         l.listing_id,
         l.title,
-        l.category,
+        l.category_id,
         l.price,
         l.`condition`,
         t.created_at
@@ -131,7 +133,7 @@ $itemsBoughtSql = '
     SELECT
         l.listing_id,
         l.title,
-        l.category,
+        l.category_id,
         l.price,
         l.`condition`,
         t.created_at AS purchased_at,
@@ -431,7 +433,7 @@ $completedTransactionCount = $completedTransactions['completed_transaction_count
                                         <p class="seller-name mb-0"><?= htmlspecialchars($listing['title']) ?></p>
                                         <p class="seller-meta mb-0">
                                             R <?= number_format($listing['price'], 2) ?>
-                                            · <?= htmlspecialchars($listing['category']) ?>
+                                            · <?= htmlspecialchars($listing['category_name']) ?>
                                             · <?= htmlspecialchars($listing['condition']) ?>
                                             · <?= date('M Y', strtotime($listing['created_at'])) ?>
                                         </p>
@@ -465,7 +467,7 @@ $completedTransactionCount = $completedTransactions['completed_transaction_count
                                         <p class="seller-name mb-0"><?= htmlspecialchars($listing['title']) ?></p>
                                         <p class="seller-meta mb-0">
                                             R <?= number_format($listing['price'], 2) ?>
-                                            · <?= htmlspecialchars($listing['category']) ?>
+                                            · <?= htmlspecialchars($listing['category_name']) ?>
                                             · <?= htmlspecialchars($listing['condition']) ?>
                                             · <?= date('M Y', strtotime($listing['created_at'])) ?>
                                         </p>
@@ -502,7 +504,7 @@ $completedTransactionCount = $completedTransactions['completed_transaction_count
 
                                         <p class="seller-meta mb-0">
                                             R <?= number_format($listing['price'], 2) ?>
-                                            · <?= htmlspecialchars($listing['category']) ?>
+                                            · <?= htmlspecialchars($listing['category_name']) ?>
                                             · <?= htmlspecialchars($listing['condition']) ?>
                                             · <?= date('M Y', strtotime($listing['purchased_at'])) ?>
                                             · From @<?= htmlspecialchars($listing['seller_username']) ?>

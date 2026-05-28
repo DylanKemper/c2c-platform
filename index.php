@@ -3,13 +3,15 @@ require_once __DIR__ . '/includes/session.php';
 require_once __DIR__ . '/config/db.php';
 
 // Fetch all active listings and their details, including the image and average rating
-$sql = 'SELECT l.listing_id, l.title, l.category, l.description, l.price, l.condition,
+$sql = 'SELECT l.listing_id, l.title, l.category_id, l.description, l.price, l.condition,
                li.filename,
                ROUND(AVG(r.rating), 0) AS avg_rating,
-               COUNT(r.review_id) AS review_count
+               COUNT(r.review_id) AS review_count,
+               c.name AS category_name
         FROM listings l
         LEFT JOIN listing_images li ON li.listing_id = l.listing_id AND li.is_primary = 1
         LEFT JOIN reviews r ON r.reviewee_id = l.seller_id AND r.role = "seller"
+        LEFT JOIN categories c ON c.category_id = l.category_id
         WHERE l.status = "active"   -- filter only active listings
         GROUP BY l.listing_id
         ORDER BY l.created_at DESC';    // sort by most recent listings first
@@ -52,7 +54,7 @@ $listings = $stmt->fetchAll();  // returns array of listings with their details,
                     <div class="product-card-body">
                         <div class="d-flex align-items-center justify-content-between gap-2 mb-2">
                             <span class="product-card-category">
-                                <?= htmlspecialchars($l['category']) ?>
+                                <?= htmlspecialchars($l['category_name']) ?>
                             </span>
 
                             <span class="badge badge--sm badge--info">
