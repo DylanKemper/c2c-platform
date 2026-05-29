@@ -53,14 +53,15 @@ $navCategories = $catStmt->fetchAll();
         </div>
 
         <!-- Search -->
-        <form class="search-wrapper" action="search.php" method="GET">
+        <form class="search-wrapper" action="index.php" method="GET">
             <div class="search-group">
                 <i class="bi bi-search search-icon"></i>
                 <input
                     class="form-control search-form"
                     type="search"
-                    name="q"
-                    placeholder="Search for anything..."
+                    name="title"
+                    placeholder="Search for listings..."
+                    value="<?= htmlspecialchars($_GET['title'] ?? '') ?>"
                     aria-label="Search">
                 <!-- Mobile -->
                 <button class="btn search-btn-mobile d-lg-none" type="submit" aria-label="Search">

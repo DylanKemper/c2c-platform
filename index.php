@@ -12,6 +12,12 @@ if (!empty($_GET['category_id'])) {
     $params[] = (int) $_GET['category_id'];
 }
 
+// If a search query is provided, add a LIKE condition to the WHERE clause and parameters
+if (!empty($_GET['title'])) {
+    $where[]  = 'l.title LIKE ?';
+    $params[] = '%' . $_GET['title'] . '%';
+}
+
 $sql = 'SELECT l.listing_id, l.title, l.category_id, l.description, l.price, l.condition,
                li.filename,
                ROUND(AVG(r.rating), 0) AS avg_rating,
@@ -55,7 +61,7 @@ $listings = $stmt->fetchAll();
                 $img_src = $l['filename']
                     // if the listing has an image, use it; otherwise, use a placeholder image
                     ? 'uploads/listings/' . htmlspecialchars($l['filename'])
-                    : 'Sample-Images/Sample-Image.jpg';
+                    : 'Sample-Images/default-image.jpg';
                 ?>
                 <div class="product-card">
                     <img class="product-card-img"
