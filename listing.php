@@ -171,7 +171,7 @@ $memberSince = date('Y', strtotime($listing['user_created_at']));
                     </a>
 
                     <div class="listing-actions">
-                        <a href="purchase.php?id=<?= $listing['listing_id'] ?>" class="btn-platform btn-block btn-accent-solid">Buy Now</a>
+                        <a href="payment.php?id=<?= $listing['listing_id'] ?>" class="btn-platform btn-block btn-accent-solid">Buy Now</a>
                         <button class="btn-platform btn-outline btn-block">
                             <i class="bi bi-chat-dots me-2"></i>Contact Seller
                         </button>

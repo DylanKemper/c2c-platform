@@ -1,3 +1,8 @@
+<?php
+require_once __DIR__ . '/../config/db.php';
+require_once __DIR__ . '/../includes/session.php';
+?>
+
 <?php if (isset($_SESSION['user_id'])): ?>
     <div style="color: green;">
         Logged in as <?= htmlspecialchars($_SESSION['username']) ?>
