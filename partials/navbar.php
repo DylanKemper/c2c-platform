@@ -1,4 +1,3 @@
-// Display login status
 <?php if (isset($_SESSION['user_id'])): ?>
     <div style="color: green;">
         Logged in as <?= htmlspecialchars($_SESSION['username']) ?>
@@ -9,7 +8,6 @@
     </div>
 <?php endif; ?>
 
-// Fetch categories for category dropdown
 <?php
 $catStmt = $pdo->query('SELECT category_id, name FROM categories ORDER BY name');
 $navCategories = $catStmt->fetchAll();
@@ -38,6 +36,12 @@ $navCategories = $catStmt->fetchAll();
                 <span class="nav-action-label d-none d-lg-inline">Categories</span>
             </a>
             <ul class="dropdown-menu">
+                <li>
+                    <a class="dropdown-item" href="index.php">All Categories</a>
+                </li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
                 <?php foreach ($navCategories as $cat): ?>
                     <li>
                         <a class="dropdown-item" href="index.php?category_id=<?= $cat['category_id'] ?>">

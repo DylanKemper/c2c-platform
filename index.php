@@ -2,7 +2,16 @@
 require_once __DIR__ . '/includes/session.php';
 require_once __DIR__ . '/config/db.php';
 
-// Fetch all active listings and their details, including the image and average rating
+// Dynamic WHERE clause and parameters for category filtering
+$where  = ['l.status = "active"'];
+$params = [];
+
+// If a category filter is applied, add it to the WHERE clause and parameters
+if (!empty($_GET['category_id'])) {
+    $where[]  = 'l.category_id = ?';
+    $params[] = (int) $_GET['category_id'];
+}
+
 $sql = 'SELECT l.listing_id, l.title, l.category_id, l.description, l.price, l.condition,
                li.filename,
                ROUND(AVG(r.rating), 0) AS avg_rating,
@@ -12,12 +21,13 @@ $sql = 'SELECT l.listing_id, l.title, l.category_id, l.description, l.price, l.c
         LEFT JOIN listing_images li ON li.listing_id = l.listing_id AND li.is_primary = 1
         LEFT JOIN reviews r ON r.reviewee_id = l.seller_id AND r.role = "seller"
         LEFT JOIN categories c ON c.category_id = l.category_id
-        WHERE l.status = "active"   -- filter only active listings
+        WHERE ' . implode(' AND ', $where) . '
         GROUP BY l.listing_id
-        ORDER BY l.created_at DESC';    // sort by most recent listings first
+        ORDER BY l.created_at DESC';
 
-$stmt = $pdo->query($sql);
-$listings = $stmt->fetchAll();  // returns array of listings with their details, including avg_rating and review_count
+$stmt = $pdo->prepare($sql);
+$stmt->execute($params);
+$listings = $stmt->fetchAll();
 ?>
 <!DOCTYPE html>
 <html lang="en">
