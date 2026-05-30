@@ -72,6 +72,9 @@ if (!$listing) {
     die('Listing not found.');
 }
 
+$is_seller = isset($_SESSION['user_id']) && $_SESSION['user_id'] === $listing['user_id'];
+$is_guest  = !isset($_SESSION['user_id']);
+
 $imageSrc = $listing['filename']
     ? 'uploads/listings/' . htmlspecialchars($listing['filename'])
     : 'Sample-Images/Sample-Image.jpg';
@@ -171,10 +174,18 @@ $memberSince = date('Y', strtotime($listing['user_created_at']));
                     </a>
 
                     <div class="listing-actions">
-                        <a href="payment.php?id=<?= $listing['listing_id'] ?>" class="btn-platform btn-block btn-accent-solid">Buy Now</a>
-                        <button class="btn-platform btn-outline btn-block">
-                            <i class="bi bi-chat-dots me-2"></i>Contact Seller
-                        </button>
+                        <?php if ($is_seller): ?>
+                            <button class="btn-platform btn-primary-solid" disabled>This is your listing</button>
+
+                        <?php elseif ($is_guest): ?>
+                            <button class="btn-platform btn-primary-solid" disabled>Login to Purchase</button>
+
+                        <?php else: ?>
+                            <form action="payment.php" method="POST">
+                                <input type="hidden" name="id" value="<?= $listing['listing_id'] ?>">
+                                <button type="submit" class="btn-platform btn-primary-solid btn-block">Buy Now</button>
+                            </form>
+                        <?php endif; ?>
                     </div>
 
                 </div>

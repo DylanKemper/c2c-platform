@@ -2,11 +2,11 @@
 require_once __DIR__ . '/includes/session.php';
 require_once __DIR__ . '/config/db.php';
 
-if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
+if (!isset($_POST['id']) || !is_numeric($_POST['id'])) {
     die('Invalid listing ID.');
 }
 
-$listingId = (int) $_GET['id'];
+$listingId = (int) $_POST['id'];
 ?>
 
 <!DOCTYPE html>
