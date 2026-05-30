@@ -13,6 +13,7 @@ $userId = $_SESSION['user_id'];
 /* =========================================================
    1. USER INFO
 ========================================================= */
+// Used to display the username and member since date, and to generate the user initials for the avatar.
 $userSql = '
     SELECT
         user_id,
@@ -39,6 +40,7 @@ $userInitials = strtoupper(substr($user['username'], 0, 2));
 /* =========================================================
    3. SELLER REVIEW STATS
 ========================================================= */
+// Used to populate the seller rating and review count in the left column, and to show the average rating in the "Seller rating" stat.
 $sellerStatsSql = '
     SELECT
         COALESCE(ROUND(AVG(rating), 1), 0) AS avg_rating,
@@ -56,6 +58,7 @@ $sellerStats = $sellerStatsStmt->fetch(PDO::FETCH_ASSOC);
 /* =========================================================
    4. BUYER REVIEW STATS
 ========================================================= */
+// Used to populate the buyer rating and review count in the left column, and to show the average rating in the "Buyer rating" stat.
 $buyerStatsSql = '
     SELECT
         COALESCE(ROUND(AVG(rating), 1), 0) AS avg_rating,
@@ -73,6 +76,7 @@ $buyerStats = $buyerStatsStmt->fetch(PDO::FETCH_ASSOC);
 /* =========================================================
    5. ACTIVE LISTINGS
 ========================================================= */
+// Used to populate the "Selling" tab and count the active listings. 
 $activeListingsSql = '
     SELECT
         l.listing_id,
@@ -99,6 +103,8 @@ $activeListingCount = count($activeListings);
 /* =========================================================
    6. SOLD LISTINGS
 ========================================================= */
+// Used to populate the "Sold" tab and count the total items sold.
+// Includes all transactions where the user is the seller, regardless of transaction status.
 $soldListingsSql = '
     SELECT
         l.listing_id,
@@ -114,7 +120,6 @@ $soldListingsSql = '
         ON l.listing_id = t.listing_id
 
     WHERE t.seller_id = ?
-    AND t.status = "completed"
 
     ORDER BY t.created_at DESC
 ';
@@ -129,6 +134,8 @@ $totalItemsSold = count($soldListings);
 /* =========================================================
    ITEMS BOUGHT (WITH REVIEW STATUS)
 ========================================================= */
+// Used to populate the "Bought" tab and count the total items bought. 
+// Includes all incomplete transactions and shows whether the buyer has left a review for each item.
 $itemsBoughtSql = '
     SELECT
         l.listing_id,
@@ -154,7 +161,6 @@ $itemsBoughtSql = '
         AND r.reviewer_id = ?
 
     WHERE t.buyer_id = ?
-    AND t.status = "completed"
 
     ORDER BY t.created_at DESC
 ';
@@ -167,6 +173,8 @@ $itemsBought = $stmt->fetchAll(PDO::FETCH_ASSOC);
 /* =========================================================
    8. COMPLETED TRANSACTIONS
 ========================================================= */
+// Used to count the total completed transactions (both buying and selling) for the user.
+// Populates the "Completed transactions" stat in the left column.
 $completedTransactionsSql = '
     SELECT COUNT(*) AS completed_transaction_count
     FROM transactions
@@ -185,6 +193,7 @@ $completedTransactions = $completedTransactionsStmt->fetch(PDO::FETCH_ASSOC);
 /* =========================================================
    9. REVIEWS RECEIVED
 ========================================================= */
+// Used to populate the "Reviews received" tab and count the total reviews received.
 $reviewsSql = '
     SELECT
         r.review_id,
@@ -224,6 +233,7 @@ $reviewsReceivedCount = count($reviewsReceived);
 /* =========================================================
    10. REVIEWS LEFT
 ========================================================= */
+// Used to populate the "Reviews left" tab and count the total reviews left by the user.
 $reviewsLeftSql = '
     SELECT
         r.review_id,
@@ -467,16 +477,21 @@ $completedTransactionCount = $completedTransactions['completed_transaction_count
                                         <p class="seller-name mb-0"><?= htmlspecialchars($listing['title']) ?></p>
                                         <p class="seller-meta mb-0">
                                             R <?= number_format($listing['price'], 2) ?>
-                                            · <?= htmlspecialchars($listing['category_name']) ?>
-                                            · <?= htmlspecialchars($listing['condition']) ?>
                                             · <?= date('M Y', strtotime($listing['created_at'])) ?>
                                         </p>
                                     </div>
-                                    <a href="listing.php?id=<?= $listing['listing_id'] ?>"
-                                        class="btn-platform btn-outline btn-sm">
-                                        View
-                                    </a>
+                                    <!-- RIGHT SIDE ACTIONS -->
+                                    <div class="d-flex gap-2 justify-content-end flex-shrink-0">
+                                        <a href="index.php" class="btn-platform btn-primary-solid btn-sm">
+                                            Confirm Dispatched
+                                        </a>
+                                        <a href="listing.php?id=<?= $listing['listing_id'] ?>"
+                                            class="btn-platform btn-outline btn-sm">
+                                            View
+                                        </a>
+                                    </div>
                                 </div>
+
                                 <hr class="m-0">
                             <?php endforeach; ?>
                         </div>
@@ -504,10 +519,7 @@ $completedTransactionCount = $completedTransactions['completed_transaction_count
 
                                         <p class="seller-meta mb-0">
                                             R <?= number_format($listing['price'], 2) ?>
-                                            · <?= htmlspecialchars($listing['category_name']) ?>
-                                            · <?= htmlspecialchars($listing['condition']) ?>
                                             · <?= date('M Y', strtotime($listing['purchased_at'])) ?>
-                                            · From @<?= htmlspecialchars($listing['seller_username']) ?>
                                         </p>
 
                                         <?php if ($isReviewed): ?>

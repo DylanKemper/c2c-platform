@@ -1,3 +1,85 @@
+<?php
+require_once __DIR__ . '/../config/db.php';
+/* =========================================================
+   1. USER INFO
+========================================================= */
+$sql = '
+    SELECT
+        u.user_id,
+        u.username,
+        u.email,
+        u.created_at,
+        u.last_active,
+        u.is_suspended,
+        u.suspended_until,
+        u.is_banned
+
+    FROM users u
+    WHERE u.user_id = ?
+';
+$stmt = $pdo->prepare($sql);
+$stmt->execute([$_GET['id']]);
+$user = $stmt->fetch();
+
+/* =========================================================
+   2. FETCH USER COMPLETED TRANSACTIONS COUNT
+========================================================= */
+$sql = '
+    SELECT COUNT(*) FROM transactions
+    WHERE buyer_id = ? OR seller_id = ? AND status = "completed"
+';
+$stmt = $pdo->prepare($sql);
+$stmt->execute([$user['user_id'], $user['user_id']]);
+$user['transaction_count'] = $stmt->fetchColumn();
+
+/* =========================================================
+   3. FETCH ACTIVE LISTINGS
+========================================================= */
+$sql = '
+    SELECT COUNT(*) AS active_listing_count
+    FROM listings
+    WHERE seller_id = ? AND status = "active"
+';
+$stmt = $pdo->prepare($sql);
+$stmt->execute([$_GET['id']]);
+$activeListingCount = $stmt->fetchColumn();
+
+/* =========================================================
+   4. FETCH ACTIVE LISTINGS DETAILS
+========================================================= */
+$sql = '
+    SELECT
+        listing_id,
+        title,
+        price,
+        status,
+        created_at
+    FROM listings
+    WHERE seller_id = ?
+      AND status = "active"
+    ORDER BY created_at DESC
+';
+
+$stmt = $pdo->prepare($sql);
+$stmt->execute([$_GET['id']]);
+$activeListings = $stmt->fetchAll();
+
+/* =========================================================
+   5. FETCH REPORTS AGAINST THIS USER
+   (not implemented yet, so hardcoding for demo)
+========================================================= */
+$sql = '
+    SELECT COUNT(*) AS report_count
+    FROM reports
+    WHERE reporter_id = ?
+      AND status = "open"
+';
+$stmt = $pdo->prepare($sql);
+$stmt->execute([$_GET['id']]);
+$openReportCount = $stmt->fetchColumn();
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -30,10 +112,22 @@
                 <i class="bi bi-arrow-left"></i> Back to users
             </a>
             <div class="page-heading-row">
-                <h1 class="page-heading">User #31</h1>
-                <span class="badge badge--success">
-                    <i class="bi bi-circle-fill" style="font-size:7px"></i> Active
-                </span>
+                <h1 class="page-heading">User <?= htmlspecialchars($user['username']) ?></h1>
+                <?php if ($user['is_banned']): ?>
+                    <span class="badge badge--danger">
+                        Banned
+                    </span>
+
+                <?php elseif ($user['is_suspended']): ?>
+                    <span class="badge badge--warning">
+                        Suspended
+                    </span>
+
+                <?php else: ?>
+                    <span class="badge badge--success">
+                        Active
+                    </span>
+                <?php endif; ?>
             </div>
 
             <div class="row g-3 align-items-start">
@@ -44,35 +138,32 @@
                     <div class="panel">
                         <div class="panel__header">
                             <span class="panel__title">User details</span>
-                            <span class="badge badge--info">
-                                <i class="bi bi-person" style="font-size:9px"></i> Standard account
-                            </span>
                         </div>
                         <div class="panel__body">
                             <div class="report-grid">
                                 <div class="report-item">
                                     <label>User ID</label>
-                                    <span>#31</span>
+                                    <span>#<?= $user['user_id'] ?></span>
                                 </div>
                                 <div class="report-item">
                                     <label>Username</label>
-                                    <span>@jsmith92</span>
+                                    <span>@<?= htmlspecialchars($user['username']) ?></span>
                                 </div>
                                 <div class="report-item">
                                     <label>Email</label>
-                                    <span>jsmith92@example.com</span>
+                                    <span><?= htmlspecialchars($user['email']) ?></span>
                                 </div>
                                 <div class="report-item">
                                     <label>Member since</label>
-                                    <span>Jan 2024</span>
+                                    <span><?= htmlspecialchars($user['created_at']) ?></span>
                                 </div>
                                 <div class="report-item">
                                     <label>Last active</label>
-                                    <span>Today, 09:14 &mdash; 2 hours ago</span>
+                                    <span><?= htmlspecialchars($user['last_active']) ?></span>
                                 </div>
                                 <div class="report-item">
                                     <label>Completed trades</label>
-                                    <span>14</span>
+                                    <span><?= $user['transaction_count'] ?></span>
                                 </div>
                             </div>
                         </div>
@@ -82,37 +173,28 @@
                     <div class="panel">
                         <div class="panel__header">
                             <span class="panel__title">Listings</span>
-                            <span class="badge badge--success">3 active</span>
+                            <span class="badge badge--success"><?= $activeListingCount ?> active</span>
                         </div>
                         <div class="panel__body d-flex flex-column gap-2">
 
-                            <div class="report-object-preview">
-                                <div class="report-object-icon-box"><i class="bi bi-tag"></i></div>
-                                <div>
-                                    <div class="report-object-name">Jordan 1 Retro High OG &mdash; Size 9</div>
-                                    <div class="report-object-sub">R 1 200 &nbsp;&middot;&nbsp; Active &nbsp;&middot;&nbsp; Posted 5 days ago</div>
-                                </div>
-                                <a href="listing-detail.php?id=22" class="report-object-link">View <i class="bi bi-arrow-right"></i></a>
-                            </div>
+                            <?php if (empty($activeListings)): ?> ?>
+                                <p class="text-muted">This user has no active listings.</p>
+                            <?php endif; ?>
 
-                            <div class="report-object-preview">
-                                <div class="report-object-icon-box"><i class="bi bi-tag"></i></div>
-                                <div>
-                                    <div class="report-object-name">Adidas Ultraboost 22 &mdash; Size 10</div>
-                                    <div class="report-object-sub">R 650 &nbsp;&middot;&nbsp; Active &nbsp;&middot;&nbsp; Posted 12 days ago</div>
+                            <?php foreach ($activeListings as $listing): ?>
+                                <div class="report-object-preview">
+                                    <div class="report-object-icon-box"><i class="bi bi-tag"></i></div>
+                                    <div>
+                                        <div class="report-object-name"><?= htmlspecialchars($listing['title']) ?></div>
+                                        <div class="report-object-sub">
+                                            R <?= number_format($listing['price'], 2) ?> &nbsp;&middot;&nbsp;
+                                            <?= ucfirst($listing['status']) ?> &nbsp;&middot;&nbsp;
+                                            Posted <?= htmlspecialchars($listing['created_at']) ?>
+                                        </div>
+                                    </div>
+                                    <a href="listing-detail.php?id=<?= $listing['listing_id'] ?>" class="report-object-link">View <i class="bi bi-arrow-right"></i></a>
                                 </div>
-                                <a href="listing-detail.php?id=19" class="report-object-link">View <i class="bi bi-arrow-right"></i></a>
-                            </div>
-
-                            <div class="report-object-preview">
-                                <div class="report-object-icon-box"><i class="bi bi-tag"></i></div>
-                                <div>
-                                    <div class="report-object-name">New Balance 550 &mdash; Size 10</div>
-                                    <div class="report-object-sub">R 480 &nbsp;&middot;&nbsp; Active &nbsp;&middot;&nbsp; Posted 20 days ago</div>
-                                </div>
-                                <a href="listing-detail.php?id=14" class="report-object-link">View <i class="bi bi-arrow-right"></i></a>
-                            </div>
-
+                            <?php endforeach; ?>
                         </div>
                     </div>
 
@@ -120,7 +202,7 @@
                     <div class="panel">
                         <div class="panel__header">
                             <span class="panel__title">Reports against this user</span>
-                            <span class="badge badge--warning">1 open</span>
+                            <span class="badge badge--warning"><?= $openReportCount ?> open</span>
                         </div>
                         <div class="panel__body d-flex flex-column gap-2">
 

@@ -69,9 +69,14 @@ $listings = $stmt->fetchAll();
                             class="search-input" value="<?= htmlspecialchars($search) ?>">
                         <select name="category" class="filter-select">
                             <option value="">All categories</option>
-                            <option value="1" <?= $category === '1' ? 'selected' : '' ?>>Audio</option>
-                            <option value="2" <?= $category === '2' ? 'selected' : '' ?>>Electronics</option>
-                            <option value="3" <?= $category === '3' ? 'selected' : '' ?>>Photography</option>
+                            <?php
+                            $catStmt = $pdo->query('SELECT category_id, name FROM categories ORDER BY name');
+                            foreach ($catStmt as $cat):
+                            ?>
+                                <option value="<?= $cat['category_id'] ?>" <?= $category === (string)$cat['category_id'] ? 'selected' : '' ?>>
+                                    <?= htmlspecialchars($cat['name']) ?>
+                                </option>
+                            <?php endforeach; ?>
                         </select>
                         <button type="submit" class="btn-platform btn-primary-solid">Filter</button>
                         <a href="listings.php" class="btn-platform btn-outline">Clear</a>
@@ -102,10 +107,10 @@ $listings = $stmt->fetchAll();
                                         <td><?= htmlspecialchars($l['title']) ?></td>
                                         <td><?= htmlspecialchars($l['category_name']) ?></td>
                                         <td>
-                                            <span class="avatar">
-                                                <?= strtoupper(substr($l['username'], 0, 2)) ?>
-                                            </span>
-                                            <?= htmlspecialchars($l['username']) ?>
+                                            <div style="display:flex; align-items:center; gap:8px;">
+                                                <span class="user-avatar"><?= strtoupper(substr($l['username'], 0, 2)) ?></span>
+                                                <span><?= htmlspecialchars($l['username']) ?></span>
+                                            </div>
                                         </td>
                                         <td>R <?= number_format($l['price'], 0, '.', ',') ?></td>
                                         <td><?= date('d M Y', strtotime($l['created_at'])) ?></td>
