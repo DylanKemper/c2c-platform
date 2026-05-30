@@ -7,6 +7,71 @@ if (!isset($_POST['id']) || !is_numeric($_POST['id'])) {
 }
 
 $listingId = (int) $_POST['id'];
+
+$sql = ' 
+    SELECT
+        l.listing_id,
+        l.category_id,
+        l.condition,
+        l.title,
+        l.price,
+        l.description,
+        li.filename,
+        u.user_id,
+        u.username,
+        ROUND(AVG(r.rating), 1) AS avg_rating,
+        COUNT(DISTINCT r.review_id) AS review_count,
+        COUNT(DISTINCT active_listings.listing_id) AS active_listing_count,
+        c.name as category_name
+    FROM listings l
+    LEFT JOIN listing_images li
+        ON li.listing_id = l.listing_id AND li.is_primary = 1
+    LEFT JOIN users u
+        ON u.user_id = l.seller_id
+    LEFT JOIN reviews r
+        ON r.reviewee_id = l.seller_id AND r.role = "seller"
+    LEFT JOIN listings active_listings
+        ON active_listings.seller_id = l.seller_id AND active_listings.status = "active"
+    LEFT JOIN categories c
+        ON c.category_id = l.category_id
+    WHERE l.listing_id = ? AND l.status = "active"
+    GROUP BY l.listing_id, l.category_id, l.condition, l.title, l.price, 
+             l.description, li.filename, u.user_id, u.username, c.name
+';
+
+$stmt = $pdo->prepare($sql);
+$stmt->execute([$listingId]);
+
+$listing = $stmt->fetch(PDO::FETCH_ASSOC);
+// If listing not found, show error message
+if (!$listing) {
+    die('Listing not found.');
+}
+
+$is_seller = isset($_SESSION['user_id']) && $_SESSION['user_id'] === $listing['user_id'];
+$is_guest  = !isset($_SESSION['user_id']);
+
+// Prevent sellers from purchasing their own listings
+if ($is_seller) {
+    die('You cannot purchase your own listing.');
+}
+// Prevent guests from making a purchase
+if ($is_guest) {
+    die('You must be logged in to make a purchase.');
+}
+
+// Determine image source for listing preview
+$img_src = $listing['filename']
+    // if the listing has an image, use it; otherwise, use a placeholder image
+    ? 'uploads/listings/' . htmlspecialchars($listing['filename'])
+    : 'Sample-Images/default-image.jpg';
+
+const SHIPPING_FEE        = 80.00;
+const BUYER_PROTECTION_FEE = 20.00;
+
+$subtotal = $listing['price'];
+$total    = $subtotal + SHIPPING_FEE + BUYER_PROTECTION_FEE;
+
 ?>
 
 <!DOCTYPE html>
@@ -30,7 +95,7 @@ $listingId = (int) $_POST['id'];
 
     <main class="flex-grow-1">
         <div class="container py-4">
-            <form action="auth/purchase.php" method="POST">
+            <form action="auth/purchase-submit.php" method="POST">
                 <!-- Form fields for payment information -->
                 <input type="hidden" name="listing_id" value="<?php echo $listingId; ?>">
                 <div class="listing-form-layout">
@@ -250,26 +315,26 @@ $listingId = (int) $_POST['id'];
                                         <div class="preview-card-img-wrapper">
                                             <img
                                                 class="preview-card-img"
-                                                src="uploads/example.jpg"
+                                                src="<?= $img_src ?>"
                                                 alt="Product">
                                         </div>
 
                                         <div class="preview-card-body">
                                             <span class="preview-card-category">
-                                                Sneakers
+                                                <?= htmlspecialchars($listing['category_name']) ?>
                                             </span>
                                             <h3 class="preview-card-title">
-                                                Nike Dunk Low Panda
+                                                <?= htmlspecialchars($listing['title']) ?>
                                             </h3>
                                             <p class="preview-card-desc">
-                                                Excellent condition. Includes original box and extra laces.
+                                                <?= htmlspecialchars($listing['description']) ?>
                                             </p>
                                             <div class="preview-card-footer">
                                                 <span class="preview-card-price">
-                                                    R 1,200.00
+                                                    R <?= number_format($listing['price'], 2) ?>
                                                 </span>
-                                                <span class="preview-card-condition">
-                                                    Excellent
+                                                <span class="badge badge--sm badge--info">
+                                                    <?= htmlspecialchars(ucfirst($listing['condition'])) ?>
                                                 </span>
                                             </div>
                                         </div>
@@ -278,16 +343,16 @@ $listingId = (int) $_POST['id'];
                                     <!-- Seller -->
                                     <div class="seller-card mb-0">
                                         <div class="seller-avatar">
-                                            CT
+                                            <?= htmlspecialchars(substr($listing['username'], 0, 2)) ?>
                                         </div>
 
                                         <div class="seller-info">
                                             <p class="seller-name mb-0">
-                                                @ct_kicks
+                                                @<?= htmlspecialchars($listing['username']) ?>
                                             </p>
 
                                             <p class="seller-meta mb-0">
-                                                Verified seller · 24 completed sales
+                                                Verified seller · <?= $listing['active_listing_count'] ?> active listings
                                             </p>
                                         </div>
                                     </div>
@@ -299,7 +364,7 @@ $listingId = (int) $_POST['id'];
                                                 Item subtotal
                                             </span>
                                             <span class="seller-name">
-                                                R 1,200.00
+                                                R <?= number_format($listing['price'], 2) ?>
                                             </span>
                                         </div>
 
@@ -308,7 +373,7 @@ $listingId = (int) $_POST['id'];
                                                 Shipping
                                             </span>
                                             <span class="seller-name">
-                                                R 80.00
+                                                R <?= number_format(SHIPPING_FEE, 2) ?>
                                             </span>
                                         </div>
 
@@ -317,7 +382,7 @@ $listingId = (int) $_POST['id'];
                                                 Buyer protection
                                             </span>
                                             <span class="seller-name">
-                                                R 20.00
+                                                R <?= number_format(BUYER_PROTECTION_FEE, 2) ?>
                                             </span>
                                         </div>
 
@@ -329,7 +394,7 @@ $listingId = (int) $_POST['id'];
                                             </span>
 
                                             <span class="payment-total">
-                                                R 1,300.00
+                                                R <?= number_format($total, 2) ?>
                                             </span>
                                         </div>
                                     </div>
