@@ -112,6 +112,8 @@ $soldListingsSql = '
         l.category_id,
         l.price,
         l.`condition`,
+        t.transaction_id,
+        t.status,
         t.created_at
 
     FROM transactions t
@@ -145,6 +147,8 @@ $itemsBoughtSql = '
         l.`condition`,
         t.created_at AS purchased_at,
         u.username AS seller_username,
+        t.transaction_id,
+        t.status,
 
         r.review_id
 
@@ -481,14 +485,23 @@ $completedTransactionCount = $completedTransactions['completed_transaction_count
                                         </p>
                                     </div>
                                     <!-- RIGHT SIDE ACTIONS -->
-                                    <div class="d-flex gap-2 justify-content-end flex-shrink-0">
-                                        <a href="index.php" class="btn-platform btn-primary-solid btn-sm">
-                                            Confirm Dispatched
-                                        </a>
-                                        <a href="listing.php?id=<?= $listing['listing_id'] ?>"
-                                            class="btn-platform btn-outline btn-sm">
+                                    <div class="d-flex gap-2 justify-content-end align-items-center flex-shrink-0">
+                                        <a href="listing.php?id=<?= $listing['listing_id'] ?>" class="btn-platform btn-outline btn-sm">
                                             View
                                         </a>
+                                        <?php if ($listing['status'] === 'held'): ?>
+                                            <form method="POST" action="auth/dispatch-submit.php">
+                                                <input type="hidden" name="transaction_id" value="<?= $listing['transaction_id'] ?>">
+                                                <button type="submit" class="btn-platform btn-primary-solid btn-sm">
+                                                    Confirm Dispatched
+                                                </button>
+                                            </form>
+
+                                        <?php elseif ($listing['status'] === 'dispatched'): ?>
+                                            <span class="badge badge--lg badge--warning">Awaiting buyer confirmation</span>
+                                        <?php elseif ($listing['status'] === 'completed'): ?>
+                                            <span class="badge badge--lg badge--success">Completed</span>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
 
@@ -505,50 +518,83 @@ $completedTransactionCount = $completedTransactions['completed_transaction_count
                             <span class="panel__title">Purchased items</span>
                         </div>
                         <div class="panel__body d-flex flex-column gap-3">
+
                             <?php if (empty($itemsBought)): ?>
                                 <p class="seller-meta">No purchased items.</p>
                             <?php endif; ?>
+
                             <?php foreach ($itemsBought as $listing): ?>
-                                <?php
-                                $isReviewed = !empty($listing['review_id']);
-                                ?>
+                                <?php $isReviewed = !empty($listing['review_id']); ?>
 
                                 <div class="d-flex justify-content-between align-items-center gap-3">
+
+                                    <!-- LEFT — title, price, date, status badges -->
                                     <div>
                                         <p class="seller-name mb-0"><?= htmlspecialchars($listing['title']) ?></p>
-
                                         <p class="seller-meta mb-0">
                                             R <?= number_format($listing['price'], 2) ?>
                                             · <?= date('M Y', strtotime($listing['purchased_at'])) ?>
                                         </p>
 
-                                        <?php if ($isReviewed): ?>
+                                        <!-- Transaction status badge -->
+                                        <?php if ($listing['status'] === 'held'): ?>
+                                            <span class="badge badge--md badge--warning">
+                                                <i class="bi bi-clock" style="font-size:8px"></i>&nbsp; Awaiting dispatch
+                                            </span>
+                                        <?php elseif ($listing['status'] === 'dispatched'): ?>
+                                            <span class="badge badge--md badge--info">
+                                                <i class="bi bi-truck"></i>&nbsp; Dispatched
+                                            </span>
+                                        <?php elseif ($listing['status'] === 'completed'): ?>
                                             <span class="badge badge--md badge--success">
-                                                <i class="bi bi-star-fill"></i>&nbsp; Reviewed
+                                                <i class="bi bi-check-circle"></i>&nbsp; Completed
                                             </span>
-                                        <?php else: ?>
-                                            <span class="badge badge--md badge--warning d-inline-flex">
-                                                <i class="bi bi-clock" style="font-size:8px"></i>&nbsp; Review pending
-                                            </span>
+                                        <?php endif; ?>
+
+                                        <!-- Review badge — only relevant once completed -->
+                                        <?php if ($listing['status'] === 'completed'): ?>
+                                            <?php if ($isReviewed): ?>
+                                                <span class="badge badge--md badge--success">
+                                                    <i class="bi bi-star-fill"></i>&nbsp; Reviewed
+                                                </span>
+                                            <?php else: ?>
+                                                <span class="badge badge--md badge--warning">
+                                                    <i class="bi bi-clock" style="font-size:8px"></i>&nbsp; Review pending
+                                                </span>
+                                            <?php endif; ?>
                                         <?php endif; ?>
                                     </div>
 
+                                    <!-- RIGHT — action buttons -->
                                     <div class="d-flex gap-2 flex-shrink-0">
+
                                         <a href="listing.php?id=<?= $listing['listing_id'] ?>"
                                             class="btn-platform btn-outline btn-sm">
                                             View
                                         </a>
 
-                                        <?php if (!$isReviewed): ?>
+                                        <!-- Confirm receipt — only when dispatched -->
+                                        <?php if ($listing['status'] === 'dispatched'): ?>
+                                            <form method="POST" action="auth/receipt-submit.php">
+                                                <input type="hidden" name="transaction_id" value="<?= $listing['transaction_id'] ?>">
+                                                <button type="submit" class="btn-platform btn-primary-solid btn-sm">
+                                                    <i class="bi bi-check-lg"></i> Confirm Receipt
+                                                </button>
+                                            </form>
+                                        <?php endif; ?>
+
+                                        <!-- Review — only once completed and not yet reviewed -->
+                                        <?php if ($listing['status'] === 'completed' && !$isReviewed): ?>
                                             <button class="btn-platform btn-primary-solid btn-sm"
                                                 onclick="openReviewModal(
-                            <?= $listing['listing_id'] ?>,
-                            '<?= htmlspecialchars($listing['title'], ENT_QUOTES) ?>',
-                            '<?= htmlspecialchars($listing['seller_username'], ENT_QUOTES) ?>'
-                        )">
+                                    <?= $listing['listing_id'] ?>,
+                                    '<?= htmlspecialchars($listing['title'], ENT_QUOTES) ?>',
+                                    '<?= htmlspecialchars($listing['seller_username'], ENT_QUOTES) ?>'
+                                )">
                                                 <i class="bi bi-star"></i> Review
                                             </button>
                                         <?php endif; ?>
+
                                     </div>
                                 </div>
 

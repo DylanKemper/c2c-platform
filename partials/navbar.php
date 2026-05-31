@@ -14,8 +14,19 @@ require_once __DIR__ . '/../includes/session.php';
 <?php endif; ?>
 
 <?php
+
+// Fetch categories for navbar dropdown
 $catStmt = $pdo->query('SELECT category_id, name FROM categories ORDER BY name');
 $navCategories = $catStmt->fetchAll();
+
+// If user is logged in, fetch their profile info for avatar display
+if (isset($_SESSION['user_id'])) {
+    $userStmt = $pdo->prepare('SELECT username FROM users WHERE user_id = ?');
+    $userStmt->execute([$_SESSION['user_id']]);
+    $userInfo = $userStmt->fetch();
+    $_SESSION['username'] = $userInfo['username']; // Store username in session for navbar display
+    $_SESSION['initials'] = strtoupper(substr($userInfo['username'], 0, 2));
+}
 ?>
 
 <nav class="navbar custom-navbar">
@@ -80,20 +91,22 @@ $navCategories = $catStmt->fetchAll();
         </form>
 
         <div class="nav-actions">
-            <!-- Sign In (shown when logged out) -->
-            <a class="nav-action-btn"
-                href="#"
-                data-bs-toggle="modal"
-                data-bs-target="#loginModal"
-                aria-label="Sign in">
-                <i class="bi bi-person"></i>
-                <span class="nav-action-label d-none d-lg-inline">Sign in</span>
-            </a>
-
-            <!-- Profile avatar (shown when logged in) -->
-            <a class="nav-action-btn nav-avatar" href="user-dashboard.php" aria-label="My profile">
-                <div class="navbar-avatar">JS</div>
-            </a>
+            <?php if (isset($_SESSION['user_id'])): ?>
+                <!-- Profile avatar (shown when logged in) -->
+                <a class="nav-action-btn nav-avatar" href="user-dashboard.php" aria-label="My profile">
+                    <div class="navbar-avatar"><?= htmlspecialchars($_SESSION['initials'] ?? '') ?></div>
+                </a>
+            <?php else: ?>
+                <!-- Sign in (shown when logged out) -->
+                <a class="nav-action-btn"
+                    href="#"
+                    data-bs-toggle="modal"
+                    data-bs-target="#loginModal"
+                    aria-label="Sign in">
+                    <i class="bi bi-person"></i>
+                    <span class="nav-action-label d-none d-lg-inline">Sign in</span>
+                </a>
+            <?php endif; ?>
         </div>
     </div>
 </nav>
