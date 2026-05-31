@@ -146,9 +146,10 @@ $itemsBoughtSql = '
         l.price,
         l.`condition`,
         t.created_at AS purchased_at,
-        u.username AS seller_username,
+        t.seller_id,
         t.transaction_id,
         t.status,
+        u.username AS seller_username,
 
         r.review_id
 
@@ -315,7 +316,7 @@ $completedTransactionCount = $completedTransactions['completed_transaction_count
             ══════════════════════════════════ -->
             <div class="col-md-4 col-lg-3 d-flex flex-column gap-3">
 
-                <!-- Identity card — reuses .seller-card internals -->
+                <!-- Identity card -->
                 <div class="panel">
                     <div class="panel__body text-center d-flex flex-column align-items-center gap-2">
                         <div class="user-avatar"><?= htmlspecialchars($userInitials) ?></div>
@@ -585,16 +586,15 @@ $completedTransactionCount = $completedTransactions['completed_transaction_count
 
                                         <!-- Review — only once completed and not yet reviewed -->
                                         <?php if ($listing['status'] === 'completed' && !$isReviewed): ?>
-                                            <button class="btn-platform btn-primary-solid btn-sm"
-                                                onclick="openReviewModal(
-                                    <?= $listing['listing_id'] ?>,
-                                    '<?= htmlspecialchars($listing['title'], ENT_QUOTES) ?>',
-                                    '<?= htmlspecialchars($listing['seller_username'], ENT_QUOTES) ?>'
-                                )">
-                                                <i class="bi bi-star"></i> Review
-                                            </button>
+                                            <form method="POST" action="review.php">
+                                                <input type="hidden" name="listing_id" value="<?= (int) $listing['listing_id'] ?>">
+                                                <input type="hidden" name="seller_id" value="<?= (int) $listing['seller_id'] ?>">
+                                                <input type="hidden" name="transaction_id" value="<?= (int) $listing['transaction_id'] ?>">
+                                                <button type="submit" class="btn-platform btn-primary-solid btn-sm">
+                                                    <i class="bi bi-star"></i> Review
+                                                </button>
+                                            </form>
                                         <?php endif; ?>
-
                                     </div>
                                 </div>
 

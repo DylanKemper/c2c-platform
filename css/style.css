@@ -1191,3 +1191,35 @@ footer.custom-footer {
     font-size: 0.82rem;
     font-weight: 700;
 }
+
+/* =========================
+   REVIEW PAGE 
+========================= */
+.rating-stars {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    gap: 4px;
+}
+
+.rating-stars input {
+    display: none;
+}
+
+.rating-stars label {
+    font-size: 1.4rem;
+    color: #d0d5dd;
+    cursor: pointer;
+    transition: color 0.15s;
+}
+
+/* hover */
+.rating-stars label:hover,
+.rating-stars label:hover~label {
+    color: var(--accent);
+}
+
+/* checked state (fills all previous stars) */
+.rating-stars input:checked~label {
+    color: var(--accent);
+}
