@@ -61,8 +61,6 @@ $stmt    = $pdo->prepare($sql);
 $stmt->execute($params);
 $transactions = $stmt->fetchAll();
 
-
-
 ?>
 
 <!DOCTYPE html>

@@ -1,10 +1,56 @@
+<?php
+require_once __DIR__ . '/../config/db.php';
+
+// Get transaction details
+$sql = '
+    SELECT
+        t.transaction_id,
+        t.listing_id,
+        t.buyer_id,
+        t.seller_id,
+        l.title AS listing_title,
+        t.amount,
+        t.created_at,
+        t.status,
+
+        u.created_at AS buyer_joined_at,
+        u.created_at AS seller_joined_at,
+
+        buyer.username AS buyer_username,
+        seller.username AS seller_username
+
+    FROM transactions t
+
+    JOIN users buyer
+        ON buyer.user_id = t.buyer_id
+
+    JOIN users seller
+        ON seller.user_id = t.seller_id
+
+    JOIN listings l
+        ON l.listing_id = t.listing_id
+
+    JOIN users u
+        ON u.user_id = t.buyer_id OR u.user_id = t.seller_id
+
+    WHERE t.transaction_id = ?
+';
+$stmt = $pdo->prepare($sql);
+$stmt->execute([$_GET['id']]);
+$transaction = $stmt->fetch();
+
+
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Transaction #9 — Lootly Admin</title>
+    <title>Transaction <?php echo htmlspecialchars($transaction['transaction_id']); ?> — Lootly Admin</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap" rel="stylesheet">
@@ -33,9 +79,19 @@
                 <i class="bi bi-arrow-left"></i> Back to transactions
             </a>
             <div class="page-heading-row">
-                <h1 class="page-heading">Transaction #9</h1>
-                <span class="badge badge--danger">
-                    <i class="bi bi-shield-exclamation" style="font-size:9px"></i> Disputed
+                <h1 class="page-heading">Transaction #<?php echo htmlspecialchars($transaction['transaction_id']); ?></h1>
+                <?php
+                $statusClass = match ($transaction['status']) {
+                    'held'        => 'badge--warning',
+                    'dispatched'  => 'badge--info',
+                    'completed'   => 'badge--success',
+                    'disputed'    => 'badge--danger',
+                    'cancelled'   => 'badge--info',
+                    default       => 'badge--info'
+                };
+                ?>
+                <span class="badge <?= $statusClass ?>">
+                    <i class="bi bi-shield-exclamation" style="font-size:9px"></i> <?php echo htmlspecialchars($transaction['status']); ?>
                 </span>
             </div>
 
@@ -56,24 +112,26 @@
                             <div class="report-grid">
                                 <div class="report-item">
                                     <label>Transaction ID</label>
-                                    <span>#9</span>
+                                    <span>#<?php echo htmlspecialchars($transaction['transaction_id']); ?></span>
                                 </div>
                                 <div class="report-item">
                                     <label>Listing</label>
-                                    <a href="listing-detail.php?id=17">Listing #17 &mdash; Nike Air Max 90</a>
+                                    <a href="listing-detail.php?id=<?php echo htmlspecialchars($transaction['listing_id']); ?>">
+                                        <?php echo htmlspecialchars($transaction['listing_title']); ?>
+                                    </a>
                                 </div>
                                 <div class="report-item">
                                     <label>Amount held</label>
-                                    <span>R 850</span>
+                                    <span>R <?php echo number_format($transaction['amount'], 2); ?></span>
                                 </div>
                                 <div class="report-item">
                                     <label>Created</label>
-                                    <span>3 days ago &mdash; 12 May 2025</span>
+                                    <span><?php echo date('d M Y', strtotime($transaction['created_at'])); ?></span>
                                 </div>
-                                <div class="report-item">
+                                <!-- <div class="report-item">
                                     <label>Disputed</label>
-                                    <span>Today, 08:47</span>
-                                </div>
+                                    <span><?php echo date('d M Y, H:i', strtotime($transaction['disputed_at'])); ?></span>
+                                </div> -->
                             </div>
                         </div>
                     </div>
@@ -87,17 +145,17 @@
 
                             <!-- Buyer -->
                             <div class="user-row">
-                                <div class="user-avatar">JS</div>
+                                <div class="user-avatar"><?= strtoupper(substr($transaction['buyer_username'], 0, 2)) ?></div>
                                 <div>
                                     <div class="user-name">
-                                        @jsmith92
-                                        <span class="badge-status badge-neutral" style="font-size:10px; margin-left:6px">Buyer</span>
+                                        @<?php echo htmlspecialchars($transaction['buyer_username']); ?>
+                                        <span class="badge badge--info" style="font-size:10px; margin-left:6px">Buyer</span>
                                     </div>
                                     <div class="user-sub">
-                                        Member since Jan 2024 &nbsp;&middot;&nbsp; 14 completed trades
+                                        Member since <?= date('M Y', strtotime($transaction['buyer_joined_at'])); ?>
                                     </div>
                                 </div>
-                                <a href="user-detail.php?id=31" class="user-link">
+                                <a href="user-detail.php?id=<?php echo htmlspecialchars($transaction['buyer_id']); ?>" class="user-link">
                                     View profile <i class="bi bi-arrow-right"></i>
                                 </a>
                             </div>
@@ -106,17 +164,17 @@
 
                             <!-- Seller -->
                             <div class="user-row">
-                                <div class="user-avatar">SC</div>
+                                <div class="user-avatar"><?= strtoupper(substr($transaction['seller_username'], 0, 2)) ?></div>
                                 <div>
                                     <div class="user-name">
-                                        @sneakerhead_ct
-                                        <span class="badge-status badge-neutral" style="font-size:10px; margin-left:6px">Seller</span>
+                                        @<?php echo htmlspecialchars($transaction['seller_username']); ?>
+                                        <span class="badge badge--success" style="font-size:10px; margin-left:6px">Seller</span>
                                     </div>
                                     <div class="user-sub">
-                                        Member since Mar 2023 &nbsp;&middot;&nbsp; 31 completed trades
+                                        Member since <?= date('M Y', strtotime($transaction['seller_joined_at'])); ?>
                                     </div>
                                 </div>
-                                <a href="user-detail.php?id=88" class="user-link">
+                                <a href="user-detail.php?id=<?php echo htmlspecialchars($transaction['seller_id']); ?>" class="user-link">
                                     View profile <i class="bi bi-arrow-right"></i>
                                 </a>
                             </div>
@@ -137,46 +195,9 @@
                             </div>
                             <div class="report-item mt-2">
                                 <label>Filed by</label>
-                                <a href="user-detail.php?id=31">@jsmith92 (buyer)</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Transaction timeline -->
-                    <div class="panel">
-                        <div class="panel__header">
-                            <span class="panel__title">Transaction timeline</span>
-                        </div>
-                        <div class="panel__body">
-                            <div class="timeline">
-                                <div class="tl-item">
-                                    <div class="tl-dot tl-dot-done"><i class="bi bi-check"></i></div>
-                                    <div>
-                                        <div class="tl-text">Transaction created &mdash; funds held in escrow</div>
-                                        <div class="tl-time">12 May 2025, 14:03</div>
-                                    </div>
-                                </div>
-                                <div class="tl-item">
-                                    <div class="tl-dot tl-dot-done"><i class="bi bi-check"></i></div>
-                                    <div>
-                                        <div class="tl-text">Seller marked item as dispatched</div>
-                                        <div class="tl-time">13 May 2025, 09:22</div>
-                                    </div>
-                                </div>
-                                <div class="tl-item">
-                                    <div class="tl-dot tl-dot-active"><i class="bi bi-shield-exclamation" style="font-size:9px"></i></div>
-                                    <div>
-                                        <div class="tl-text">Dispute opened by buyer</div>
-                                        <div class="tl-time">Today, 08:47</div>
-                                    </div>
-                                </div>
-                                <div class="tl-item">
-                                    <div class="tl-dot tl-dot-pending"><i class="bi bi-circle-dashed"></i></div>
-                                    <div>
-                                        <div class="tl-text" style="color:var(--muted)">Resolved</div>
-                                        <div class="tl-time">Pending</div>
-                                    </div>
-                                </div>
+                                <a href="user-detail.php?id=<?php echo htmlspecialchars($transaction['buyer_id']); ?>">
+                                    @<?php echo htmlspecialchars($transaction['buyer_username']); ?> (buyer)
+                                </a>
                             </div>
                         </div>
                     </div>
