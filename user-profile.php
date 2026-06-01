@@ -191,9 +191,13 @@ $reviewsCount = count($reviews);
                             </div>
                         </div>
 
-                        <a href="report.php?type=user&id=<?= $userId ?>" class="btn-platform btn-block btn-danger-outline">
-                            <i class="bi bi-flag"></i> Report user
-                        </a>
+                        <form action="report.php" method="POST">
+                            <input type="hidden" name="id" value="<?= $userId ?>">
+                            <input type="hidden" name="type" value="user">
+                            <button class="btn-platform btn-danger-outline w-100 align-self-stretch" type="submit">
+                                Report User
+                            </button>
+                        </form>
                     </div>
                 </div>
 

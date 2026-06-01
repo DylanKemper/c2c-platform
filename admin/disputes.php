@@ -1,3 +1,80 @@
+<?php
+require_once __DIR__ . '/../config/db.php';
+
+// Filters
+$search = trim($_GET['search'] ?? '');
+$status = $_GET['status'] ?? '';
+$resolution = $_GET['resolution'] ?? '';
+
+// Build query
+$where  = [];
+$params = [];
+if ($search !== '') {
+    $where[]  = '(t.transaction_id LIKE ? OR buyer.username LIKE ? OR seller.username LIKE ?)';
+    $params[] = "%$search%";
+    $params[] = "%$search%";
+    $params[] = "%$search%";
+}
+
+// Status filter
+if ($status === 'open') {
+    $where[]  = 'd.status = "Open"';
+} elseif ($status === 'under_review') {
+    $where[]  = 'd.status = "Under Review"';
+} elseif ($status === 'resolved') {
+    $where[]  = 'd.status = "Resolved"';
+}
+
+// Resolution filter
+if ($resolution === 'refund_buyer') {
+    $where[]  = 'd.resolution = "Buyer"';
+} elseif ($resolution === 'refund_seller') {
+    $where[]  = 'd.resolution = "Seller"';
+}
+
+$sql = '
+    SELECT
+        d.dispute_id,
+        t.transaction_id,
+        t.listing_id,
+        l.title AS listing_title,
+        t.amount,
+        t.created_at,
+
+        buyer.username AS buyer_username,
+        seller.username AS seller_username,
+
+        d.reason,
+        d.status AS dispute_status,
+        d.resolution
+
+    FROM disputes d
+
+    JOIN transactions t
+        ON t.transaction_id = d.transaction_id
+
+    JOIN users buyer
+        ON buyer.user_id = t.buyer_id
+
+    JOIN users seller
+        ON seller.user_id = t.seller_id
+
+    JOIN listings l
+        ON l.listing_id = t.listing_id
+';
+if ($where) {
+    $sql .= ' WHERE ' . implode(' AND ', $where);
+}
+
+$sql .= ' ORDER BY d.created_at DESC';
+$stmt    = $pdo->prepare($sql);
+$stmt->execute($params);
+$disputes = $stmt->fetchAll();
+
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -26,23 +103,29 @@
             <div class="panel">
                 <div class="panel__body">
                     <!-- Filter bar -->
-                    <div class="filter-bar">
-                        <input type="text" placeholder="Search by transaction ID or username" class="search-input">
-                        <select class="filter-select">
-                            <option value="">All statuses</option>
-                            <option value="open">Open</option>
-                            <option value="under_review">Under Review</option>
-                            <option value="resolved">Resolved</option>
-                        </select>
-                        <select class="filter-select">
-                            <option value="">All resolutions</option>
-                            <option value="buyer">Awarded to Buyer</option>
-                            <option value="seller">Awarded to Seller</option>
-                            <option value="split">Split</option>
-                        </select>
-                        <button class="btn-platform btn-primary-solid">Filter</button>
-                        <button class="btn-platform btn-outline">Clear</button>
-                    </div>
+                    <form method="GET" action="">
+                        <div class="filter-bar">
+                            <input
+                                type="text"
+                                name="search"
+                                value="<?= htmlspecialchars($search) ?>"
+                                placeholder="Search by transaction ID or username"
+                                class="search-input">
+                            <select name="status" class="filter-select">
+                                <option value="">All statuses</option>
+                                <option value="open" <?= $status === 'open' ? 'selected' : '' ?>>Open</option>
+                                <option value="under_review" <?= $status === 'under_review' ? 'selected' : '' ?>>Under Review</option>
+                                <option value="resolved" <?= $status === 'resolved' ? 'selected' : '' ?>>Resolved</option>
+                            </select>
+                            <select name="resolution" class="filter-select">
+                                <option value="">All resolutions</option>
+                                <option value="refund_buyer" <?= $resolution === 'refund_buyer' ? 'selected' : '' ?>>Awarded to Buyer</option>
+                                <option value="refund_seller" <?= $resolution === 'refund_seller' ? 'selected' : '' ?>>Awarded to Seller</option>
+                            </select>
+                            <button type="submit" class="btn-platform btn-primary-solid">Filter</button>
+                            <a href="disputes.php" class="btn-platform btn-outline">Clear</a>
+                        </div>
+                    </form>
 
                     <!-- Disputes table -->
                     <table class="records-table">
@@ -60,113 +143,41 @@
                             </tr>
                         </thead>
                         <tbody>
-
-                            <!-- Open dispute — no resolution yet -->
-                            <tr class="clickable">
-                                <td>#TXN8803</td>
-                                <td>
-                                    <div style="display:flex; align-items:center; gap:8px;">
-                                        <span class="user-avatar">LK</span> lk_trades
-                                    </div>
-                                </td>
-                                <td>
-                                    <div style="display:flex; align-items:center; gap:8px;">
-                                        <span class="user-avatar">SD</span> seller_dan
-                                    </div>
-                                </td>
-                                <td class="reason-cell">Buyer claims item never arrived after...</td>
-                                <td>R 12,500</td>
-                                <td>3 Feb 2025</td>
-                                <td><span class="badge badge--danger">Open</span></td>
-                                <td><span class="resolution-cell">—</span></td>
-                                <td><a href="dispute-detail.php?id=1" class="btn-platform btn-primary-solid view-btn">View</a></td>
-                            </tr>
-
-                            <!-- Under review — no resolution yet -->
-                            <tr class="clickable">
-                                <td>#TXN8790</td>
-                                <td>
-                                    <div style="display:flex; align-items:center; gap:8px;">
-                                        <span class="user-avatar">MT</span> mike_t
-                                    </div>
-                                </td>
-                                <td>
-                                    <div style="display:flex; align-items:center; gap:8px;">
-                                        <span class="user-avatar">LM</span> lisa_m
-                                    </div>
-                                </td>
-                                <td class="reason-cell">Seller claims buyer no-show at agreed...</td>
-                                <td>R 28,000</td>
-                                <td>19 Mar 2025</td>
-                                <td><span class="badge badge--warning">Under Review</span></td>
-                                <td><span class="resolution-cell">—</span></td>
-                                <td><a href="dispute-detail.php?id=2" class="btn-platform btn-primary-solid view-btn">View</a></td>
-                            </tr>
-
-                            <!-- Resolved — awarded to buyer -->
-                            <tr class="clickable">
-                                <td>#TXN8761</td>
-                                <td>
-                                    <div style="display:flex; align-items:center; gap:8px;">
-                                        <span class="user-avatar">SM</span> sarah_m
-                                    </div>
-                                </td>
-                                <td>
-                                    <div style="display:flex; align-items:center; gap:8px;">
-                                        <span class="user-avatar">TP</span> the_pete
-                                    </div>
-                                </td>
-                                <td class="reason-cell">Item significantly not as described, photos...
-                                <td>R 9,500</td>
-                                <td>1 Apr 2025</td>
-                                <td><span class="badge badge--success">Resolved</span></td>
-                                <td><span class="badge badge--info">Buyer</span></td>
-                                <td><a href="dispute-detail.php?id=3" class="btn-platform btn-primary-solid view-btn">View</a></td>
-                            </tr>
-
-                            <!-- Resolved — awarded to seller -->
-                            <tr class="clickable">
-                                <td>#TXN8744</td>
-                                <td>
-                                    <div style="display:flex; align-items:center; gap:8px;">
-                                        <span class="user-avatar">PK</span> priya_k
-                                    </div>
-                                </td>
-                                <td>
-                                    <div style="display:flex; align-items:center; gap:8px;">
-                                        <span class="user-avatar">JD</span> john_doe
-                                    </div>
-                                </td>
-                                <td class="reason-cell">Buyer requested refund outside policy window...</td>
-                                <td>R 6,300</td>
-                                <td>22 Apr 2025</td>
-                                <td><span class="badge badge--success">Resolved</span></td>
-                                <td><span class="badge badge--info">Seller</span></td>
-                                <td><a href="dispute-detail.php?id=4" class="btn-platform btn-primary-solid view-btn">View</a></td>
-                            </tr>
-
-                            <!-- Resolved — split -->
-                            <tr class="clickable">
-                                <td>#TXN8731</td>
-                                <td>
-                                    <div style="display:flex; align-items:center; gap:8px;">
-                                        <span class="user-avatar">JD</span> john_doe
-                                    </div>
-                                </td>
-                                <td>
-                                    <div style="display:flex; align-items:center; gap:8px;">
-                                        <span class="user-avatar">MT</span> mike_t
-                                    </div>
-                                </td>
-                                <td class="reason-cell">Partial delivery — only two of four items...</td>
-                                <td>R 5,800</td>
-                                <td>28 Apr 2025</td>
-                                <td><span class="badge badge--success">Resolved</span></td>
-                                <td><span class="badge badge--info">Split</span></td>
-                                <td><a href="dispute-detail.php?id=5" class="btn-platform btn-primary-solid view-btn">View</a></td>
-                            </tr>
-
-                        </tbody>
+                            <?php if (empty($disputes)): ?>
+                                <tr>
+                                    <td colspan="10" class="text-center py-4">No disputes found.</td>
+                                </tr>
+                            <?php else: ?>
+                                <?php foreach ($disputes as $dispute): ?>
+                                    <tr>
+                                        <td><?= htmlspecialchars($dispute['transaction_id']) ?></td>
+                                        <td>
+                                            <div style="display:flex; align-items:center; gap:8px;">
+                                                <span class="user-avatar"><?= strtoupper(substr($dispute['buyer_username'], 0, 2)) ?></span> <?php echo htmlspecialchars($dispute['buyer_username']); ?>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div style="display:flex; align-items:center; gap:8px;">
+                                                <span class="user-avatar"><?= strtoupper(substr($dispute['seller_username'], 0, 2)) ?></span> <?php echo htmlspecialchars($dispute['seller_username']); ?>
+                                            </div>
+                                        </td>
+                                        <td><?= htmlspecialchars($dispute['reason']) ?></td>
+                                        <td>$<?= number_format($dispute['amount'], 2) ?></td>
+                                        <td><?= date('Y-m-d', strtotime($dispute['created_at'])) ?></td>
+                                        <?php
+                                        $statusClass = match ($dispute['dispute_status']) {
+                                            'open'          => 'badge--danger',
+                                            'under_review'  => 'badge--warning',
+                                            'resolved'      => 'badge--success',
+                                            default         => 'badge--danger'
+                                        };
+                                        ?>
+                                        <td><span class="badge <?= $statusClass ?>"><?= htmlspecialchars($dispute['dispute_status']) ?></span></td>
+                                        <td><?= $dispute['resolution'] ? htmlspecialchars($dispute['resolution']) : 'N/A' ?></td>
+                                        <td><a href="dispute-detail.php?dispute_id=<?= $dispute['dispute_id'] ?>" class="btn-platform btn-sm btn-outline">View</a></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
                     </table>
                 </div>
             </div>

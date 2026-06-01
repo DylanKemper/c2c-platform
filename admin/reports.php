@@ -9,7 +9,7 @@ $status = $_GET['status'] ?? '';
 $where  = [];
 $params = [];
 if ($search !== '') {
-    $where[]  = '(r.reason LIKE ? OR u.username LIKE ? OR reporter.username LIKE ?)';
+    $where[]  = '(r.reason LIKE ? OR reporter.username LIKE ? OR target.username LIKE ?)';
     $params[] = "%$search%";
     $params[] = "%$search%";
     $params[] = "%$search%";
@@ -27,12 +27,13 @@ $sql = '
     SELECT
         r.report_id,
         r.report_type,
+        r.target_id,
         r.reason,
         r.created_at,
         r.status,
 
         reporter.username AS reporter_username,
-        target.username AS target_username
+        target.username   AS target_username
 
     FROM reports r
 
@@ -82,22 +83,24 @@ $reports = $stmt->fetchAll();
             <div class="panel">
                 <div class="panel__body">
                     <!-- Filter bar -->
-                    <div class="filter-bar">
-                        <input type="text" placeholder="Search target or reporter" class="search-input">
-                        <select class="filter-select">
-                            <option value="">All types</option>
-                            <option value="listing">Listing</option>
-                            <option value="user">User</option>
-                        </select>
-                        <select class="filter-select">
-                            <option value="">All statuses</option>
-                            <option value="open">Open</option>
-                            <option value="under_review">Under Review</option>
-                            <option value="resolved">Resolved</option>
-                        </select>
-                        <button class="btn-platform btn-primary-solid">Filter</button>
-                        <button class="btn-platform btn-outline">Clear</button>
-                    </div>
+                    <form method="GET" action="">
+                        <div class="filter-bar">
+                            <input
+                                type="text"
+                                name="search"
+                                placeholder="Search by reason, reporter, or target..."
+                                value="<?= htmlspecialchars($search) ?>"
+                                class="search-input">
+                            <select name="status" class="filter-select">
+                                <option value="">All Statuses</option>
+                                <option value="open" <?= $status === 'open' ? 'selected' : '' ?>>Open</option>
+                                <option value="under_review" <?= $status === 'under_review' ? 'selected' : '' ?>>Under Review</option>
+                                <option value="resolved" <?= $status === 'resolved' ? 'selected' : '' ?>>Resolved</option>
+                            </select>
+                            <button type="submit" class="btn-platform btn-primary-solid">Filter</button>
+                            <a href="reports.php" class="btn-platform btn-outline">Clear</a>
+                        </div>
+                    </form>
 
                     <!-- Reports table -->
                     <table class="records-table">
@@ -105,7 +108,7 @@ $reports = $stmt->fetchAll();
                             <tr>
                                 <th style="width:5%">ID</th>
                                 <th style="width:10%">Type</th>
-                                <th style="width:20%">Target</th>
+                                <th style="width:10%">Target</th>
                                 <th style="width:25%">Reason</th>
                                 <th style="width:14%">Reported By</th>
                                 <th style="width:12%">Date</th>
@@ -126,16 +129,13 @@ $reports = $stmt->fetchAll();
                                         onclick="window.location='report-detail.php?id=<?= $report['report_id'] ?>'">
                                         <td><?= $report['report_id'] ?></td>
                                         <td>
-                                        <td>
                                             <?php if ($report['report_type'] === 'listing'): ?>
                                                 <span class="badge badge--info">Listing</span>
                                             <?php elseif ($report['report_type'] === 'user'): ?>
                                                 <span class="badge badge--success">User</span>
                                             <?php endif; ?>
                                         </td>
-                                        <span class="badge badge--<?= $report['report_type'] ?>">
-                                            <?= ucfirst($report['report_type']) ?>
-                                        </span>
+
                                         </td>
                                         <td><?= htmlspecialchars($report['target_username'] ?? $report['target_id']) ?></td>
                                         <td class="reason-cell"><?= htmlspecialchars($report['reason']) ?></td>

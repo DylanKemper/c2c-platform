@@ -50,7 +50,7 @@ $transaction = $stmt->fetch();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Transaction <?php echo htmlspecialchars($transaction['transaction_id']); ?> — Lootly Admin</title>
+    <title>Transaction #<?php echo htmlspecialchars($transaction['transaction_id']); ?> — Lootly Admin</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap" rel="stylesheet">
@@ -181,67 +181,7 @@ $transaction = $stmt->fetch();
 
                         </div>
                     </div>
-
-                    <!-- Dispute note panel -->
-                    <div class="panel">
-                        <div class="panel__header">
-                            <span class="panel__title">Dispute reason</span>
-                        </div>
-                        <div class="panel__body">
-                            <div class="report-reason-box">
-                                Item received does not match the listing description. Seller claimed the shoes
-                                were &ldquo;like new&rdquo; but they arrived with visible sole wear and scuffing
-                                on the toe box. I have photos. Requesting a full refund.
-                            </div>
-                            <div class="report-item mt-2">
-                                <label>Filed by</label>
-                                <a href="user-detail.php?id=<?php echo htmlspecialchars($transaction['buyer_id']); ?>">
-                                    @<?php echo htmlspecialchars($transaction['buyer_username']); ?> (buyer)
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
-
-                <!-- RIGHT COLUMN: action panel -->
-                <div class="col-md-4">
-                    <div class="panel">
-                        <div class="panel__header">
-                            <span class="panel__title">Actions</span>
-                        </div>
-                        <div class="panel__body d-flex flex-column gap-2">
-
-                            <div class="form-field">
-                                <textarea
-                                    id="resolution-note"
-                                    name="resolution_note"
-                                    class="form-textarea"
-                                    rows="4"
-                                    placeholder="Resolution note (required)&hellip;"></textarea>
-                            </div>
-
-                            <button class="btn-platform btn-primary-solid" id="btn-release" disabled style="opacity:0.45">
-                                <i class="bi bi-check-circle"></i> Release funds to seller
-                            </button>
-                            <button class="btn-platform btn-danger-outline" id="btn-refund" disabled style="opacity:0.45">
-                                <i class="bi bi-arrow-counterclockwise"></i> Refund buyer
-                            </button>
-
-                            <hr class="panel-divider">
-
-                            <!-- No note required for these two -->
-                            <button class="btn-platform btn-outline" id="btn-info">
-                                <i class="bi bi-chat-left-text"></i> Request more information
-                            </button>
-                            <button class="btn-platform btn-outline" id="btn-escalate">
-                                <i class="bi bi-arrow-up-circle"></i> Escalate
-                            </button>
-
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </div>
     </div>
