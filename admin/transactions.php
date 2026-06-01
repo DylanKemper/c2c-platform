@@ -1,3 +1,70 @@
+<?php
+require_once __DIR__ . '/../config/db.php';
+
+// Filters
+$search = trim($_GET['search'] ?? '');
+$status = $_GET['status'] ?? '';
+
+// Build query
+$where  = [];
+$params = [];
+if ($search !== '') {
+    $where[]  = '(t.transaction_id LIKE ? OR buyer.username LIKE ? OR seller.username LIKE ?)';
+    $params[] = "%$search%";
+    $params[] = "%$search%";
+    $params[] = "%$search%";
+}
+
+// Status filter
+if ($status === 'held') {
+    $where[]  = 't.status = "Held"';
+} elseif ($status === 'dispatched') {
+    $where[]  = 't.status = "Dispatched"';
+} elseif ($status === 'received') {
+    $where[]  = 't.status = "Received"';
+} elseif ($status === 'completed') {
+    $where[]  = 't.status = "Completed"';
+} elseif ($status === 'disputed') {
+    $where[]  = 't.status = "Disputed"';
+} elseif ($status === 'cancelled') {
+    $where[]  = 't.status = "Cancelled"';
+}
+
+$sql = '
+    SELECT
+        t.transaction_id,
+        t.listing_id,
+        l.title AS listing_title,
+        t.amount,
+        t.created_at,
+        t.status,
+
+        buyer.username AS buyer_username,
+        seller.username AS seller_username
+
+    FROM transactions t
+
+    JOIN users buyer
+        ON buyer.user_id = t.buyer_id
+
+    JOIN users seller
+        ON seller.user_id = t.seller_id
+
+    JOIN listings l
+        ON l.listing_id = t.listing_id
+';
+if ($where) {
+    $sql .= ' WHERE ' . implode(' AND ', $where);
+}
+$sql .= ' ORDER BY t.created_at DESC';
+$stmt    = $pdo->prepare($sql);
+$stmt->execute($params);
+$transactions = $stmt->fetchAll();
+
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -26,18 +93,27 @@
             <div class="panel">
                 <div class="panel__body">
                     <!-- Filter bar -->
-                    <div class="filter-bar">
-                        <input type="text" placeholder="Search by ID, buyer or seller" class="search-input">
-                        <select class="filter-select">
-                            <option value="">All statuses</option>
-                            <option value="pending">Pending</option>
-                            <option value="completed">Completed</option>
-                            <option value="disputed">Disputed</option>
-                            <option value="refunded">Refunded</option>
-                        </select>
-                        <button class="btn-platform btn-primary-solid">Filter</button>
-                        <button class="btn-platform btn-outline">Clear</button>
-                    </div>
+                    <form method="GET" action="">
+                        <div class="filter-bar">
+                            <input
+                                type="text"
+                                name="search"
+                                placeholder="Search transaction ID, buyer or seller"
+                                value="<?= htmlspecialchars($search) ?>"
+                                class="search-input">
+                            <select name="status" class="filter-select">
+                                <option value="">All statuses</option>
+                                <option value="held" <?= $status === 'held' ? 'selected' : '' ?>>Held</option>
+                                <option value="dispatched" <?= $status === 'dispatched' ? 'selected' : '' ?>>Dispatched</option>
+                                <option value="received" <?= $status === 'received' ? 'selected' : '' ?>>Received</option>
+                                <option value="completed" <?= $status === 'completed' ? 'selected' : '' ?>>Completed</option>
+                                <option value="disputed" <?= $status === 'disputed' ? 'selected' : '' ?>>Disputed</option>
+                                <option value="cancelled" <?= $status === 'cancelled' ? 'selected' : '' ?>>Cancelled</option>
+                            </select>
+                            <button type="submit" class="btn-platform btn-primary-solid">Filter</button>
+                            <a href="transactions.php" class="btn-platform btn-outline">Clear</a>
+                        </div>
+                    </form>
 
                     <!-- Transactions table -->
                     <table class="records-table">
@@ -55,101 +131,44 @@
                         </thead>
                         <tbody class="table-body">
 
-                            <tr class="table-row clickable">
-                                <td>#TXN8821</td>
-                                <td>
-                                    <div style="display:flex; align-items:center; gap:8px;">
-                                        <span class="user-avatar">JD</span> john_doe
-                                    </div>
-                                </td>
-                                <td>
-                                    <div style="display:flex; align-items:center; gap:8px;">
-                                        <span class="user-avatar">PK</span> priya_k
-                                    </div>
-                                </td>
-                                <td>Sony WH-1000XM5 Headphones</td>
-                                <td>R 4,200</td>
-                                <td>12 Jan 2025</td>
-                                <td><span class="badge badge--success">Completed</span></td>
-                                <td><a href="transaction-detail.php?id=8821" class="btn-platform btn-primary-solid view-btn">View</a></td>
-                            </tr>
+                            <?php if (empty($transactions)): ?>
+                                <tr class="table-row">
+                                    <td colspan="7" style="text-align:center; padding:2rem; color:var(--muted)">
+                                        No transactions found.
+                                    </td>
+                                </tr>
+                            <?php endif; ?>
 
-                            <tr class="table-row clickable">
-                                <td>#TXN8803</td>
-                                <td>
-                                    <div style="display:flex; align-items:center; gap:8px;">
-                                        <span class="user-avatar">LK</span> lk_trades
-                                    </div>
-                                </td>
-                                <td>
-                                    <div style="display:flex; align-items:center; gap:8px;">
-                                        <span class="user-avatar">SD</span> seller_dan
-                                    </div>
-                                </td>
-                                <td>Canon EOS 5D Mark IV</td>
-                                <td>R 12,500</td>
-                                <td>3 Feb 2025</td>
-                                <td><span class="badge badge--danger">Disputed</span></td>
-                                <td><a href="transaction-detail.php?id=8803" class="btn-platform btn-primary-solid view-btn">View</a></td>
-                            </tr>
-
-                            <tr class="table-row clickable">
-                                <td>#TXN8790</td>
-                                <td>
-                                    <div style="display:flex; align-items:center; gap:8px;">
-                                        <span class="user-avatar">MT</span> mike_t
-                                    </div>
-                                </td>
-                                <td>
-                                    <div style="display:flex; align-items:center; gap:8px;">
-                                        <span class="user-avatar">LM</span> lisa_m
-                                    </div>
-                                </td>
-                                <td>Apple MacBook Pro 16"</td>
-                                <td>R 28,000</td>
-                                <td>19 Mar 2025</td>
-                                <td><span class="badge badge--warning">Pending</span></td>
-                                <td><a href="transaction-detail.php?id=8790" class="btn-platform btn-primary-solid view-btn">View</a></td>
-                            </tr>
-
-                            <tr class="table-row clickable">
-                                <td>#TXN8775</td>
-                                <td>
-                                    <div style="display:flex; align-items:center; gap:8px;">
-                                        <span class="user-avatar">TP</span> the_pete
-                                    </div>
-                                </td>
-                                <td>
-                                    <div style="display:flex; align-items:center; gap:8px;">
-                                        <span class="user-avatar">JD</span> john_doe
-                                    </div>
-                                </td>
-                                <td>Rode NT-USB Microphone</td>
-                                <td>R 3,800</td>
-                                <td>1 Apr 2025</td>
-                                <td><span class="badge badge--success">Completed</span></td>
-                                <td><a href="transaction-detail.php?id=8775" class="btn-platform btn-primary-solid view-btn">View</a></td>
-                            </tr>
-
-                            <tr class="table-row clickable">
-                                <td>#TXN8761</td>
-                                <td>
-                                    <div style="display:flex; align-items:center; gap:8px;">
-                                        <span class="user-avatar">SM</span> sarah_m
-                                    </div>
-                                </td>
-                                <td>
-                                    <div style="display:flex; align-items:center; gap:8px;">
-                                        <span class="user-avatar">MT</span> mike_t
-                                    </div>
-                                </td>
-                                <td>DJI Osmo Pocket 3</td>
-                                <td>R 9,500</td>
-                                <td>22 Apr 2025</td>
-                                <td><span class="badge badge--info">Refunded</span></td>
-                                <td><a href="transaction-detail.php?id=8761" class="btn-platform btn-primary-solid view-btn">View</a></td>
-                            </tr>
-
+                            <?php foreach ($transactions as $transaction): ?>
+                                <tr class="table-row clickable">
+                                    <td><?php echo htmlspecialchars($transaction['transaction_id']); ?></td>
+                                    <td>
+                                        <div style="display:flex; align-items:center; gap:8px;">
+                                            <span class="user-avatar"><?= strtoupper(substr($transaction['buyer_username'], 0, 2)) ?></span> <?php echo htmlspecialchars($transaction['buyer_username']); ?>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div style="display:flex; align-items:center; gap:8px;">
+                                            <span class="user-avatar"><?= strtoupper(substr($transaction['seller_username'], 0, 2)) ?></span> <?php echo htmlspecialchars($transaction['seller_username']); ?>
+                                        </div>
+                                    </td>
+                                    <td><?php echo htmlspecialchars($transaction['listing_title']); ?></td>
+                                    <td>R <?php echo number_format($transaction['amount'], 2); ?></td>
+                                    <td><?php echo date('d M Y', strtotime($transaction['created_at'])); ?></td>
+                                    <?php
+                                    $statusClass = match ($transaction['status']) {
+                                        'held'        => 'badge--warning',
+                                        'dispatched'  => 'badge--info',
+                                        'completed'   => 'badge--success',
+                                        'disputed'    => 'badge--danger',
+                                        'cancelled'   => 'badge--neutral',
+                                        default       => 'badge--neutral'
+                                    };
+                                    ?>
+                                    <td><span class="badge <?= $statusClass ?>"><?php echo htmlspecialchars($transaction['status']); ?></span></td>
+                                    <td><a href="transaction-detail.php?id=<?php echo htmlspecialchars($transaction['transaction_id']); ?>" class="btn-platform btn-primary-solid view-btn">View</a></td>
+                                </tr>
+                            <?php endforeach; ?>
                         </tbody>
                     </table>
                 </div>

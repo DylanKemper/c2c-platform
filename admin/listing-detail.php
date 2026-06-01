@@ -1,3 +1,64 @@
+<?php
+require_once __DIR__ . '/../config/db.php';
+
+/* ====================================
+    Listing Details
+===================================== */
+$sql = '
+    SELECT
+        l.listing_id,
+        l.title,
+        l.price,
+        l.category_id,
+        l.condition,
+        l.description,
+        l.created_at,
+        u.user_id AS seller_id,
+        u.username AS seller_username
+
+    FROM listings l
+    JOIN users u ON u.user_id = l.seller_id
+    WHERE l.listing_id = ?
+';
+
+$stmt = $pdo->prepare($sql);
+$stmt->execute([$_GET['id']]);
+$listing = $stmt->fetch();
+
+/* ====================================
+    Seller details
+===================================== */
+$sql = '
+    SELECT
+        user_id,
+        username,
+        created_at
+    FROM users
+    WHERE user_id = ?
+';
+$stmt = $pdo->prepare($sql);
+$stmt->execute([$listing['seller_id']]);
+$seller = $stmt->fetch();
+
+$sql = '
+    SELECT
+        r.report_id,
+        r.report_type,
+        r.reporter_id,
+        r.created_at,
+        u.username AS reporter_username
+    FROM reports r
+    LEFT JOIN users u ON u.user_id = r.reporter_id
+    WHERE r.target_id = ?
+      AND r.report_type = "listing"
+    ORDER BY r.created_at DESC
+';
+$stmt = $pdo->prepare($sql);
+$stmt->execute([$_GET['id']]);
+$reports = $stmt->fetchAll();
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -32,13 +93,10 @@
             <a href="listings.php" class="page-back">
                 <i class="bi bi-arrow-left"></i> Back to listings
             </a>
-            <div class="page-heading-row">
-                <h1 class="page-heading">Listing #17</h1>
-                <span class="badge badge--warning">
-                    <i class="bi bi-flag" style="font-size:9px"></i> Flagged
-                </span>
-            </div>
 
+            <div class="page-heading-row">
+                <h1 class="page-heading">Listing <?= htmlspecialchars($listing['title']) ?></h1>
+            </div>
             <div class="row g-3 align-items-start">
 
                 <!-- LEFT COLUMN -->
@@ -53,27 +111,27 @@
                             <div class="report-grid">
                                 <div class="report-item">
                                     <label>Listing ID</label>
-                                    <span>#17</span>
+                                    <span>#<?= htmlspecialchars($listing['listing_id']) ?></span>
                                 </div>
                                 <div class="report-item">
                                     <label>Title</label>
-                                    <span>Nike Air Max 90 &mdash; Size 10</span>
+                                    <span><?= htmlspecialchars($listing['title']) ?></span>
                                 </div>
                                 <div class="report-item">
                                     <label>Price</label>
-                                    <span>R 850</span>
+                                    <span>R <?= htmlspecialchars($listing['price']) ?></span>
                                 </div>
                                 <div class="report-item">
                                     <label>Category</label>
-                                    <span>Footwear</span>
+                                    <span><?= htmlspecialchars($listing['category_id']) ?></span>
                                 </div>
                                 <div class="report-item">
                                     <label>Condition</label>
-                                    <span>Like new</span>
+                                    <span><?= htmlspecialchars($listing['condition']) ?></span>
                                 </div>
                                 <div class="report-item">
                                     <label>Posted</label>
-                                    <span>3 days ago &mdash; 12 May 2025</span>
+                                    <span><?= htmlspecialchars($listing['created_at']) ?></span>
                                 </div>
                             </div>
 
@@ -81,9 +139,7 @@
                                 <label>Description</label>
                             </div>
                             <div class="report-reason-box">
-                                Barely worn Nike Air Max 90s in white/grey colourway. Purchased from Sportscene
-                                six months ago, worn twice indoors. Box included. Selling because they're half a
-                                size too small. Price is firm.
+                                <?= nl2br(htmlspecialchars($listing['description'])) ?>
                             </div>
                         </div>
                     </div>
@@ -95,14 +151,14 @@
                         </div>
                         <div class="panel__body">
                             <div class="user-row">
-                                <div class="user-avatar">SC</div>
+                                <div class="user-avatar"><?= strtoupper(substr($seller['username'], 0, 2)); ?></div>
                                 <div>
-                                    <div class="user-name">@sneakerhead_ct</div>
+                                    <div class="user-name">@<?= htmlspecialchars($seller['username']) ?></div>
                                     <div class="user-sub">
-                                        Member since Mar 2023 &nbsp;&middot;&nbsp; 31 completed trades &nbsp;&middot;&nbsp; 0 prior bans
+                                        Joined <?= htmlspecialchars($seller['created_at']) ?>
                                     </div>
                                 </div>
-                                <a href="user-detail.php?id=88" class="user-link">
+                                <a href="user-detail.php?id=<?= htmlspecialchars($seller['user_id']) ?>" class="user-link">
                                     View profile <i class="bi bi-arrow-right"></i>
                                 </a>
                             </div>
@@ -113,54 +169,24 @@
                     <div class="panel">
                         <div class="panel__header">
                             <span class="panel__title">Reports against this listing</span>
-                            <span class="badge badge--warning">1 open</span>
+                            <span class="badge badge--warning"><?= count($reports) ?> open</span>
                         </div>
                         <div class="panel__body d-flex flex-column gap-2">
-
-                            <div class="report-object-preview">
-                                <div class="report-object-icon-box"><i class="bi bi-flag"></i></div>
-                                <div>
-                                    <div class="report-object-name">Report #42 &mdash; Listing report</div>
-                                    <div class="report-object-sub">
-                                        Filed by <strong>@jsmith92</strong> &nbsp;&middot;&nbsp; Today, 09:14
-                                        &nbsp;&middot;&nbsp;
+                            <?php if (empty($reports)): ?>
+                                <div class="text-center text-muted py-4">No reports found.</div>
+                            <?php else: ?>
+                                <?php foreach ($reports as $r): ?>
+                                    <div class="report-row">
+                                        <div>
+                                            <div class="reporter-name">@<?= htmlspecialchars($r['reporter_username']) ?></div>
+                                            <div class="report-time"><?= htmlspecialchars($r['created_at']) ?></div>
+                                        </div>
+                                        <div class="report-reason-box">
+                                            Report type: <?= htmlspecialchars($r['report_type']) ?>
+                                        </div>
                                     </div>
-                                </div>
-                                <a href="report-detail.php?id=42" class="report-object-link">View <i class="bi bi-arrow-right"></i></a>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <!-- Listing status timeline -->
-                    <div class="panel">
-                        <div class="panel__header">
-                            <span class="panel__title">Listing history</span>
-                        </div>
-                        <div class="panel__body">
-                            <div class="timeline">
-                                <div class="tl-item">
-                                    <div class="tl-dot tl-dot-done"><i class="bi bi-check"></i></div>
-                                    <div>
-                                        <div class="tl-text">Listing posted</div>
-                                        <div class="tl-time">12 May 2025</div>
-                                    </div>
-                                </div>
-                                <div class="tl-item">
-                                    <div class="tl-dot tl-dot-active"><i class="bi bi-flag" style="font-size:9px"></i></div>
-                                    <div>
-                                        <div class="tl-text">Flagged &mdash; report received</div>
-                                        <div class="tl-time">Today, 09:14</div>
-                                    </div>
-                                </div>
-                                <div class="tl-item">
-                                    <div class="tl-dot tl-dot-pending"><i class="bi bi-circle-dashed"></i></div>
-                                    <div>
-                                        <div class="tl-text" style="color:var(--muted)">Resolved</div>
-                                        <div class="tl-time">Pending</div>
-                                    </div>
-                                </div>
-                            </div>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
                         </div>
                     </div>
 
@@ -194,11 +220,9 @@
                             <button class="btn-platform btn-danger-outline" id="btn-remove" disabled style="opacity:0.45">
                                 <i class="bi bi-trash"></i> Remove listing
                             </button>
-
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>

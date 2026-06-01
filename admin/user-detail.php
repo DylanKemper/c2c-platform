@@ -65,18 +65,46 @@ $stmt->execute([$_GET['id']]);
 $activeListings = $stmt->fetchAll();
 
 /* =========================================================
-   5. FETCH REPORTS AGAINST THIS USER
-   (not implemented yet, so hardcoding for demo)
+   5. FETCH ALL REPORTS AGAINST THIS USER
 ========================================================= */
 $sql = '
-    SELECT COUNT(*) AS report_count
-    FROM reports
-    WHERE reporter_id = ?
-      AND status = "open"
+    SELECT
+        r.report_id,
+        r.reporter_id,
+        r.report_type,
+        r.target_id,
+        r.reason,
+        r.status,
+        r.created_at,
+        r.resolved_at,
+        r.resolution_note,
+
+        u.username AS reporter_username
+    FROM reports r
+    LEFT JOIN users u ON u.user_id = r.reporter_id
+    WHERE r.target_id = ?
+      AND r.report_type = "user"
+    ORDER BY r.created_at DESC
 ';
+
 $stmt = $pdo->prepare($sql);
 $stmt->execute([$_GET['id']]);
-$openReportCount = $stmt->fetchColumn();
+$reports = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+/* =========================================================
+   6. COUNT OPEN REPORTS
+========================================================= */
+$countSql = '
+    SELECT COUNT(*) 
+    FROM reports
+    WHERE target_id = ?
+      AND report_type = "user"
+      AND status = "open"
+';
+
+$countStmt = $pdo->prepare($countSql);
+$countStmt->execute([$_GET['id']]);
+$openReportCount = (int) $countStmt->fetchColumn();
 
 ?>
 
@@ -177,7 +205,7 @@ $openReportCount = $stmt->fetchColumn();
                         </div>
                         <div class="panel__body d-flex flex-column gap-2">
 
-                            <?php if (empty($activeListings)): ?> ?>
+                            <?php if (empty($activeListings)): ?>
                                 <p class="text-muted">This user has no active listings.</p>
                             <?php endif; ?>
 
@@ -205,18 +233,37 @@ $openReportCount = $stmt->fetchColumn();
                             <span class="badge badge--warning"><?= $openReportCount ?> open</span>
                         </div>
                         <div class="panel__body d-flex flex-column gap-2">
-
-                            <div class="report-object-preview">
-                                <div class="report-object-icon-box"><i class="bi bi-flag"></i></div>
-                                <div>
-                                    <div class="report-object-name">Report #38 &mdash; User report</div>
-                                    <div class="report-object-sub">
-                                        Filed by <strong>@buyer_cape99</strong> &nbsp;&middot;&nbsp; 3 days ago &nbsp;&middot;&nbsp;
-                                        <span style="color:var(--warning,#f59e0b)">Open</span>
+                            <?php foreach ($reports as $report): ?>
+                                <div class="report-object-preview">
+                                    <div class="report-object-icon-box">
+                                        <i class="bi bi-flag"></i>
                                     </div>
+                                    <div>
+                                        <div class="report-object-name">
+                                            Report #<?= (int)$report['report_id'] ?>
+                                            &mdash;
+                                            <?= htmlspecialchars(ucfirst($report['report_type'])) ?> report
+                                        </div>
+
+                                        <div class="report-object-sub">
+                                            Filed by
+                                            <strong>
+                                                @<?= htmlspecialchars($report['reporter_username'] ?? 'unknown') ?>
+                                            </strong>
+                                            &nbsp;&middot;&nbsp;
+                                            <?= date('j M Y', strtotime($report['created_at'])) ?>
+                                            &nbsp;&middot;&nbsp;
+                                            <span style="color:<?= $report['status'] === 'open' ? 'var(--warning,#f59e0b)' : 'var(--success,#10b981)' ?>">
+                                                <?= htmlspecialchars(ucfirst($report['status'])) ?>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <a href="report-detail.php?id=<?= (int)$report['report_id'] ?>"
+                                        class="report-object-link">
+                                        View <i class="bi bi-arrow-right"></i>
+                                    </a>
                                 </div>
-                                <a href="report-detail.php?id=38" class="report-object-link">View <i class="bi bi-arrow-right"></i></a>
-                            </div>
+                            <?php endforeach; ?>
 
                         </div>
                     </div>

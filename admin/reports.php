@@ -1,3 +1,59 @@
+<?php
+require_once __DIR__ . '/../config/db.php';
+
+// ── Filters ────────────────────────────────────────────────
+$search = trim($_GET['search'] ?? '');
+$status = $_GET['status'] ?? '';
+
+// ── Build query ────────────────────────────────────────────
+$where  = [];
+$params = [];
+if ($search !== '') {
+    $where[]  = '(r.reason LIKE ? OR u.username LIKE ? OR reporter.username LIKE ?)';
+    $params[] = "%$search%";
+    $params[] = "%$search%";
+    $params[] = "%$search%";
+}
+
+if ($status === 'open') {
+    $where[]  = 'r.status = "open"';
+} elseif ($status === 'under_review') {
+    $where[]  = 'r.status = "under_review"';
+} elseif ($status === 'resolved') {
+    $where[]  = 'r.status = "resolved"';
+}
+
+$sql = '
+    SELECT
+        r.report_id,
+        r.report_type,
+        r.reason,
+        r.created_at,
+        r.status,
+
+        reporter.username AS reporter_username,
+        target.username AS target_username
+
+    FROM reports r
+
+    JOIN users reporter
+        ON reporter.user_id = r.reporter_id
+
+    LEFT JOIN users target
+        ON r.report_type = "user"
+       AND target.user_id = r.target_id
+';
+if ($where) {
+    $sql .= ' WHERE ' . implode(' AND ', $where);
+}
+$sql .= ' ORDER BY r.created_at DESC';
+$stmt    = $pdo->prepare($sql);
+$stmt->execute($params);
+$reports = $stmt->fetchAll();
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -32,7 +88,6 @@
                             <option value="">All types</option>
                             <option value="listing">Listing</option>
                             <option value="user">User</option>
-                            <option value="transaction">Transaction</option>
                         </select>
                         <select class="filter-select">
                             <option value="">All statuses</option>
@@ -58,71 +113,52 @@
                                 <th style="width:6%"></th>
                             </tr>
                         </thead>
-                        <tbody>
-
-                            <!-- Report type: listing -->
-                            <tr class="clickable">
-                                <td>1</td>
-                                <td><span class="badge badge--listing">Listing</span></td>
-                                <td>Canon EOS 5D Mark IV</td>
-                                <td class="reason-cell">Item does not match description — seller...</td>
-                                <td>
-                                    <div style="display:flex; align-items:center; gap:8px;">
-                                        <span class="user-avatar">MT</span> mike_t
-                                    </div>
-                                </td>
-                                <td>12 Jan 2025</td>
-                                <td><span class="badge badge--danger">Open</span></td>
-                                <td><a href="report-detail.php?id=1" class="btn-platform btn-primary-solid view-btn">View</a></td>
-                            </tr>
-
-                            <!-- Report type: user -->
-                            <tr class="clickable">
-                                <td>2</td>
-                                <td><span class="badge badge--user">User</span></td>
-                                <td>@scammer99</td>
-                                <td class="reason-cell">Harassment and threatening messages sent...</td>
-                                <td>
-                                    <div style="display:flex; align-items:center; gap:8px;">
-                                        <span class="user-avatar">LM</span> lisa_m
-                                    </div>
-                                </td>
-                                <td>3 Feb 2025</td>
-                                <td><span class="badge badge--warning">Under Review</span></td>
-                                <td><a href="report-detail.php?id=2" class="btn-platform btn-primary-solid view-btn">View</a></td>
-                            </tr>
-
-                            <!-- Report type: transaction -->
-                            <tr class="clickable">
-                                <td>3</td>
-                                <td><span class="badge badge--transaction">Transaction</span></td>
-                                <td>#TXN8803</td>
-                                <td class="reason-cell">Payment released but item never delivered...</td>
-                                <td>
-                                    <div style="display:flex; align-items:center; gap:8px;">
-                                        <span class="user-avatar">SD</span> seller_dan
-                                    </div>
-                                </td>
-                                <td>19 Mar 2025</td>
-                                <td><span class="badge badge--danger">Open</span></td>
-                                <td><a href="report-detail.php?id=3" class="btn-platform btn-primary-solid view-btn">View</a></td>
-                            </tr>
-
-                            <!-- Report type: listing, resolved -->
-                            <tr class="clickable">
-                                <td>4</td>
-                                <td><span class="badge badge--listing">Listing</span></td>
-                                <td>Apple MacBook Pro 16"</td>
-                                <td class="reason-cell">Suspected counterfeit — serial number did...</td>
-                                <td>
-                                    <div style="display:flex; align-items:center; gap:8px;">
-                                        <span class="user-avatar">PK</span> priya_k
-                                    </div>
-                                </td>
-                                <td>1 Apr 2025</td>
-                                <td><span class="badge badge--success">Resolved</span></td>
-                                <td><a href="report-detail.php?id=4" class="btn-platform btn-primary-solid view-btn">View</a></td>
-                            </tr>
+                        <tbody class="table-body">
+                            <?php if (empty($reports)): ?>
+                                <tr class="table-row">
+                                    <td colspan="7" style="text-align:center; padding:2rem; color:var(--muted)">
+                                        No reports found.
+                                    </td>
+                                </tr>
+                            <?php else: ?>
+                                <?php foreach ($reports as $report): ?>
+                                    <tr class="table-row clickable"
+                                        onclick="window.location='report-detail.php?id=<?= $report['report_id'] ?>'">
+                                        <td><?= $report['report_id'] ?></td>
+                                        <td>
+                                        <td>
+                                            <?php if ($report['report_type'] === 'listing'): ?>
+                                                <span class="badge badge--info">Listing</span>
+                                            <?php elseif ($report['report_type'] === 'user'): ?>
+                                                <span class="badge badge--success">User</span>
+                                            <?php endif; ?>
+                                        </td>
+                                        <span class="badge badge--<?= $report['report_type'] ?>">
+                                            <?= ucfirst($report['report_type']) ?>
+                                        </span>
+                                        </td>
+                                        <td><?= htmlspecialchars($report['target_username'] ?? $report['target_id']) ?></td>
+                                        <td class="reason-cell"><?= htmlspecialchars($report['reason']) ?></td>
+                                        <td>
+                                            <div style="display:flex; align-items:center; gap:8px;">
+                                                <span class="user-avatar"><?= strtoupper(substr($report['reporter_username'], 0, 2)) ?></span>
+                                                <?= htmlspecialchars($report['reporter_username']) ?>
+                                            </div>
+                                        </td>
+                                        <td>12 Jan 2025</td>
+                                        <td>
+                                            <?php if ($report['status'] === 'open'): ?>
+                                                <span class="badge badge--danger">Open</span>
+                                            <?php elseif ($report['status'] === 'under_review'): ?>
+                                                <span class="badge badge--warning">Under Review</span>
+                                            <?php else: ?>
+                                                <span class="badge badge--success">Resolved</span>
+                                            <?php endif; ?>
+                                        </td>
+                                        <td><a href="report-detail.php?id=<?= $report['report_id'] ?>" class="btn-platform btn-primary-solid view-btn">View</a></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
                         </tbody>
                     </table>
                 </div>

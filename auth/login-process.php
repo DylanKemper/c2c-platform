@@ -16,7 +16,7 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$user || !password_verify($password, $user['password_hash'])) {
     die('Invalid credentials');
-}   
+}
 
 session_regenerate_id(true);
 
@@ -24,6 +24,14 @@ $_SESSION['user_id'] = $user['user_id'];
 $_SESSION['username'] = $user['username'];
 $_SESSION['role'] = $user['role'];
 $_SESSION['logged_in'] = true;
+
+/* Update last active timestamp */
+$updateStmt = $pdo->prepare('
+    UPDATE users
+    SET last_active = NOW()
+    WHERE user_id = ?
+');
+$updateStmt->execute([$user['user_id']]);
 
 header('Location: ../index.php');
 exit();
