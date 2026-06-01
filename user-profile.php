@@ -124,17 +124,17 @@ $itemsSold = $itemsSoldStmt->fetch(PDO::FETCH_ASSOC);
 ========================================================= */
 $reviewsSql = '
     SELECT
-        r.review_id,
-        r.rating,
-        r.body,
-        r.reviewee_role,
-        r.created_at,
+    r.review_id,
+    r.rating,
+    r.body,
+    r.reviewee_role,
+    r.created_at,
 
-        reviewer.user_id AS reviewer_id,
-        reviewer.username AS reviewer_username,
+    reviewer.user_id AS reviewer_id,
+    reviewer.username AS reviewer_username,
 
-        l.listing_id,
-        l.title AS listing_title
+    l.listing_id,
+    l.title AS listing_title
 
     FROM reviews r
 
@@ -149,12 +149,13 @@ $reviewsSql = '
 
     WHERE r.reviewee_id = ?
 
-    ORDER BY r.created_at DESC
+    ORDER BY r.created_at DESC;
 ';
 
 $reviewsStmt = $pdo->prepare($reviewsSql);
 $reviewsStmt->execute([$userId]);
 $reviews = $reviewsStmt->fetchAll(PDO::FETCH_ASSOC);
+$reviewsCount = count($reviews);
 
 ?>
 <!DOCTYPE html>
@@ -274,7 +275,7 @@ $reviews = $reviewsStmt->fetchAll(PDO::FETCH_ASSOC);
 
                     <button class="profile-tab" data-tab="reviews">
                         <i class="bi bi-star"></i> Reviews
-                        <span class="badge-status badge-neutral"><?= $buyerStats['review_count'] ?? 0 ?></span>
+                        <span class="badge-status badge-neutral"><?= $reviewsCount ?></span>
                     </button>
                 </div>
 
@@ -334,11 +335,6 @@ $reviews = $reviewsStmt->fetchAll(PDO::FETCH_ASSOC);
                                 <div class="d-flex flex-column gap-2">
 
                                     <div class="d-flex justify-content-between">
-                                        <a href="user-profile.php?id=<?= $review['reviewer_id'] ?>"
-                                            class="seller-name">
-                                            <?= htmlspecialchars($review['reviewer_username']) ?>
-                                        </a>
-
                                         <span class="seller-meta">
                                             <?= date('M Y', strtotime($review['created_at'])) ?>
                                         </span>
@@ -351,13 +347,6 @@ $reviews = $reviewsStmt->fetchAll(PDO::FETCH_ASSOC);
                                     <p class="mb-0">
                                         <?= nl2br(htmlspecialchars($review['body'])) ?>
                                     </p>
-
-                                    <?php if (!empty($review['listing_id'])): ?>
-                                        <a class="btn-platform btn-outline btn-sm"
-                                            href="listing.php?id=<?= $review['listing_id'] ?>">
-                                            View listing
-                                        </a>
-                                    <?php endif; ?>
 
                                     <hr class="m-0">
                                 </div>

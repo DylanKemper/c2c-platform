@@ -174,18 +174,34 @@ $memberSince = date('Y', strtotime($listing['user_created_at']));
                     </a>
 
                     <div class="listing-actions">
+
                         <?php if ($is_seller): ?>
-                            <button class="btn-platform btn-primary-solid" disabled>This is your listing</button>
+
+                            <button class="btn-platform btn-primary-solid" disabled>
+                                This is your listing
+                            </button>
 
                         <?php elseif ($is_guest): ?>
-                            <button class="btn-platform btn-primary-solid" disabled>Login to Purchase</button>
+
+                            <button class="btn-platform btn-primary-solid" disabled>
+                                Login to Purchase
+                            </button>
 
                         <?php else: ?>
-                            <form action="payment.php" method="POST">
-                                <input type="hidden" name="id" value="<?= $listing['listing_id'] ?>">
-                                <button type="submit" class="btn-platform btn-primary-solid btn-block">Buy Now</button>
-                            </form>
+
+                            <?php if ($listing['listing_status'] === 'active'): ?>
+
+                                <form action="payment.php" method="POST">
+                                    <input type="hidden" name="id" value="<?= $listing['listing_id'] ?>">
+                                    <button type="submit" class="btn-platform btn-primary-solid btn-block">
+                                        Buy Now
+                                    </button>
+                                </form>
+
+                            <?php endif; ?>
+
                         <?php endif; ?>
+
                     </div>
 
                 </div>
