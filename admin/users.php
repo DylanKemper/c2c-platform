@@ -33,7 +33,7 @@ $sql = '
         u.is_suspended,
         u.suspended_until,
         COUNT(DISTINCT l.listing_id)                                      AS listing_count,
-        ROUND(AVG(CASE WHEN r.role = "seller" THEN r.rating END), 1)     AS seller_rating
+        ROUND(AVG(CASE WHEN r.reviewee_role = "seller" THEN r.rating END), 1)     AS seller_rating
     FROM users u
     LEFT JOIN listings l ON l.seller_id = u.user_id
     LEFT JOIN reviews  r ON r.reviewee_id = u.user_id
