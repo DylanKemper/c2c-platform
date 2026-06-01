@@ -1,10 +1,44 @@
+<?php   
+require_once __DIR__ . '/../config/db.php';
+
+$sql = '
+    SELECT
+        r.report_id,
+        r.reporter_id,
+        r.report_type,
+        r.target_id,
+        r.reason,
+        r.created_at,
+        r.status,
+
+        reporter.username AS reporter_username,
+        target.username   AS target_username
+
+    FROM reports r
+
+    JOIN users reporter
+        ON reporter.user_id = r.reporter_id
+
+    LEFT JOIN users target
+        ON r.report_type = "user"
+       AND target.user_id = r.target_id
+
+    WHERE r.report_id = ?
+';
+$stmt = $pdo->prepare($sql);
+$stmt->execute([$_GET['id']]);
+$report = $stmt->fetch();
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Report #42 — Lootly Admin</title>
+    <title>Report #<?php echo $report['report_id']; ?> — Lootly Admin</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap" rel="stylesheet">
@@ -30,9 +64,9 @@
                 <i class="bi bi-arrow-left"></i> Back to reports
             </a>
             <div class="page-heading-row">
-                <h1 class="page-heading">Report #42</h1>
-                <span class="badge-status badge-review">
-                    <i class="bi bi-clock" style="font-size:9px"></i> Under review
+                <h1 class="page-heading">Report #<?php echo $report['report_id']; ?></h1>
+                <span class="badge badge--lg badge--warning">
+                    <i class="bi bi-clock" style="font-size:9px"></i> <?php echo ucfirst(str_replace('_', ' ', $report['status'])); ?>
                 </span>
             </div>
 
@@ -46,27 +80,29 @@
                     <div class="panel">
                         <div class="panel__header">
                             <span class="panel__title">Report details</span>
-                            <span class="badge-status badge-type-listing">
-                                <i class="bi bi-tag" style="font-size:9px"></i> Listing report
+                            <span class="badge badge--lg badge--info">
+                                <i class="bi bi-tag" style="font-size:9px"></i> <?php echo ucfirst($report['report_type']); ?>
                             </span>
                         </div>
                         <div class="panel__body">
                             <div class="report-grid">
                                 <div class="report-item">
                                     <label>Report ID</label>
-                                    <span>#42</span>
+                                    <span>#<?php echo $report['report_id']; ?></span>
                                 </div>
                                 <div class="report-item">
                                     <label>Submitted</label>
-                                    <span>Today, 09:14 — 2 hours ago</span>
+                                    <span><?php echo $report['created_at']; ?></span>
                                 </div>
                                 <div class="report-item">
                                     <label>Reporter</label>
-                                    <a href="user-detail.php?id=31">@jsmith92</a>
+                                    <a href="user-detail.php?id=<?php echo $report['reporter_id']; ?>">
+                                        @<?php echo $report['reporter_username']; ?>
+                                    </a>
                                 </div>
                                 <div class="report-item">
                                     <label>Target</label>
-                                    <a href="listing-detail.php?id=17">Listing #17</a>
+                                    <a href="listing-detail.php?id=<?php echo $report['target_id']; ?>">Listing #<?php echo $report['target_id']; ?></a>
                                 </div>
                             </div>
 
@@ -74,88 +110,9 @@
                                 <label>Reason</label>
                             </div>
                             <div class="report-reason-box">
-                                This listing appears to be selling counterfeit goods. The photos look identical
-                                to another listing I saw last week that was removed, and the price is suspiciously
-                                low for a supposedly authentic item.
+                                <p><?php echo $report['reason']; ?></p> 
                             </div>
 
-                            <div class="report-item">
-                                <label>Reported entity</label>
-                            </div>
-                            <div class="report-object-preview">
-                                <div class="report-object-icon-box">
-                                    <i class="bi bi-tag"></i>
-                                </div>
-                                <div>
-                                    <div class="report-object-name">Nike Air Max 90 — Size 10</div>
-                                    <div class="report-object-sub">
-                                        Listed by <strong>@sneakerhead_ct</strong> &nbsp;·&nbsp; R 850
-                                        &nbsp;·&nbsp; Posted 3 days ago
-                                    </div>
-                                </div>
-                                <a href="listing-detail.php?id=17" class="report-object-link">
-                                    View listing <i class="bi bi-arrow-right"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Report timeline panel -->
-                    <div class="panel">
-                        <div class="panel__header">
-                            <span class="panel__title">Report timeline</span>
-                        </div>
-                        <div class="panel__body">
-                            <div class="timeline">
-                                <div class="tl-item">
-                                    <div class="tl-dot tl-dot-done">
-                                        <i class="bi bi-check"></i>
-                                    </div>
-                                    <div>
-                                        <div class="tl-text">Report submitted</div>
-                                        <div class="tl-time">Today, 09:14</div>
-                                    </div>
-                                </div>
-                                <div class="tl-item">
-                                    <div class="tl-dot tl-dot-active">
-                                        <i class="bi bi-eye"></i>
-                                    </div>
-                                    <div>
-                                        <div class="tl-text">Marked as under review</div>
-                                        <div class="tl-time">Today, 10:02</div>
-                                    </div>
-                                </div>
-                                <div class="tl-item">
-                                    <div class="tl-dot tl-dot-pending">
-                                        <i class="bi bi-circle-dashed"></i>
-                                    </div>
-                                    <div>
-                                        <div class="tl-text" style="color:var(--muted)">Resolved</div>
-                                        <div class="tl-time">Pending</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Reporter panel -->
-                    <div class="panel">
-                        <div class="panel__header">
-                            <span class="panel__title">Reporter</span>
-                        </div>
-                        <div class="panel__body">
-                            <div class="user-row">
-                                <div class="user-avatar">JS</div>
-                                <div>
-                                    <div class="user-name">@jsmith92</div>
-                                    <div class="user-sub">
-                                        Member since Jan 2024 &nbsp;·&nbsp; 14 completed trades &nbsp;·&nbsp; 0 prior reports
-                                    </div>
-                                </div>
-                                <a href="user-detail.php?id=31" class="user-link">
-                                    View profile <i class="bi bi-arrow-right"></i>
-                                </a>
-                            </div>
                         </div>
                     </div>
 
@@ -191,13 +148,13 @@
                                 Jump to
                             </div>
 
-                            <a href="listing-detail.php?id=17" class="btn-platform btn-outline">
-                                <i class="bi bi-tag"></i> View listing #17
+                            <a href="listing-detail.php?id=<?php echo $report['target_id']; ?>" class="btn-platform btn-outline">
+                                <i class="bi bi-tag"></i> View listing #<?php echo $report['target_id']; ?>
                             </a>
-                            <a href="user-detail.php?id=88" class="btn-platform btn-outline">
+                            <a href="user-detail.php?id=<?php echo $report['target_id']; ?>" class="btn-platform btn-outline">
                                 <i class="bi bi-person"></i> View seller account
                             </a>
-                            <a href="user-detail.php?id=31" class="btn-platform btn-outline">
+                            <a href="user-detail.php?id=<?php echo $report['reporter_id']; ?>" class="btn-platform btn-outline">
                                 <i class="bi bi-person-check"></i> View reporter account
                             </a>
                         </div>
