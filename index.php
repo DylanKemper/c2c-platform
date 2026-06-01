@@ -25,7 +25,7 @@ $sql = 'SELECT l.listing_id, l.title, l.category_id, l.description, l.price, l.c
                c.name AS category_name
         FROM listings l
         LEFT JOIN listing_images li ON li.listing_id = l.listing_id AND li.is_primary = 1
-        LEFT JOIN reviews r ON r.reviewee_id = l.seller_id AND r.role = "seller"
+        LEFT JOIN reviews r ON r.reviewee_id = l.seller_id AND r.reviewee_role = "seller"
         LEFT JOIN categories c ON c.category_id = l.category_id
         WHERE ' . implode(' AND ', $where) . '
         GROUP BY l.listing_id

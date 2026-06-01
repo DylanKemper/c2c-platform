@@ -43,7 +43,7 @@ $sellerStatsSql = '
         COUNT(review_id) AS review_count
     FROM reviews
     WHERE reviewee_id = ?
-    AND role = "seller"
+    AND reviewee_role = "seller"
 ';
 
 $sellerStatsStmt = $pdo->prepare($sellerStatsSql);
@@ -59,7 +59,7 @@ $buyerStatsSql = '
         COUNT(review_id) AS review_count
     FROM reviews
     WHERE reviewee_id = ?
-    AND role = "buyer"
+    AND reviewee_role = "buyer"
 ';
 
 $buyerStatsStmt = $pdo->prepare($buyerStatsSql);
@@ -127,7 +127,7 @@ $reviewsSql = '
         r.review_id,
         r.rating,
         r.body,
-        r.role,
+        r.reviewee_role,
         r.created_at,
 
         reviewer.user_id AS reviewer_id,

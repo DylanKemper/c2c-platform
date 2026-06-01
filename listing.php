@@ -41,7 +41,7 @@ $sql = '
 
     LEFT JOIN reviews r
         ON r.reviewee_id = l.seller_id
-        AND r.role = "seller"
+        AND r.reviewee_role = "seller"
 
     LEFT JOIN listings active_listings
         ON active_listings.seller_id = l.seller_id

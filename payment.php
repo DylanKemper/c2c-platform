@@ -29,7 +29,7 @@ $sql = '
     LEFT JOIN users u
         ON u.user_id = l.seller_id
     LEFT JOIN reviews r
-        ON r.reviewee_id = l.seller_id AND r.role = "seller"
+        ON r.reviewee_id = l.seller_id AND r.reviewee_role = "seller"
     LEFT JOIN listings active_listings
         ON active_listings.seller_id = l.seller_id AND active_listings.status = "active"
     LEFT JOIN categories c
