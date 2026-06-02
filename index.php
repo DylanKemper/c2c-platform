@@ -18,6 +18,7 @@ if (!empty($_GET['title'])) {
     $params[] = '%' . $_GET['title'] . '%';
 }
 
+// SQL Query
 $sql = 'SELECT l.listing_id, l.title, l.category_id, l.description, l.price, l.condition,
                li.filename,
                ROUND(AVG(r.rating), 0) AS avg_rating,
