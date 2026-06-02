@@ -2,11 +2,13 @@
 require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../includes/session.php';
 
+// Ensure user is logged in before allowing listing creation
 if (!isset($_SESSION['user_id'])) {
     header('Location: ../index.php');
     exit;
 }
 
+// Validate and sanitize input
 $title           = trim($_POST['title']);
 $description     = trim($_POST['description']);
 $price           = (float) $_POST['price'];
@@ -24,12 +26,13 @@ if ($title === '' || $description === '' || $price <= 0 || $category_id <= 0 || 
 // Validate and handle image upload
 $filename = null;
 
+// Only process if an image was uploaded without errors
 if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
     $allowed = ['image/jpeg', 'image/png', 'image/webp'];
     $mime    = mime_content_type($_FILES['image']['tmp_name']);
 
-    if (!in_array($mime, $allowed)) die('Invalid file type.');
-    if ($_FILES['image']['size'] > 5 * 1024 * 1024) die('File too large.');
+    if (!in_array($mime, $allowed)) die('Invalid file type.');                  
+    if ($_FILES['image']['size'] > 5 * 1024 * 1024) die('File too large.');     // Check file size (5MB limit)
 
     $ext = match ($mime) {
         'image/jpeg' => 'jpg',
@@ -37,10 +40,10 @@ if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
         'image/webp' => 'webp',
     };
 
-    $filename = uniqid('img_', true) . '.' . $ext;
+    $filename = uniqid('img_', true) . '.' . $ext;  // Generate unique filename
 }
 
-// Insert listing into database
+// SQL query to insert new listing into the database
 $sql = '
 INSERT INTO listings (
     title,

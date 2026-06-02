@@ -55,6 +55,7 @@ $listings = $stmt->fetchAll();
     <?php include 'partials/login-modal.php'; ?>
     <main class="flex-grow-1">
         <div class="card-grid">
+            <!-- Loop through listings and display each one in a card format -->
             <?php foreach ($listings as $l): ?>
                 <?php
                 $avg     = (int) round($l['avg_rating'] ?? 0);
