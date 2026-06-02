@@ -146,9 +146,9 @@ $categories = $pdo->query('SELECT category_id, name FROM categories ORDER BY nam
                                     Price <span class="form-required">*</span>
                                 </label>
                                 <div class="form-price-wrapper">
-                                    <span class="form-price-prefix">£</span>
+                                    <span class="form-price-prefix">R</span>
                                     <input
-                                        class="form-input form-input form-input-price"
+                                        class="form-input form-input-price"
                                         type="number"
                                         id="listing-price"
                                         name="price"
