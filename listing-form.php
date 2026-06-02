@@ -42,7 +42,7 @@ $categories = $pdo->query('SELECT category_id, name FROM categories ORDER BY nam
                 <p class="listing-form-subtitle">Fill in the details below to list your item for sale.</p>
             </div>
 
-            <form action="auth/listing-insert.php" method="POST" enctype="multipart/form-data">
+            <form id="listing-form" action="auth/listing-insert.php" method="POST" enctype="multipart/form-data" novalidate>
 
                 <div class="listing-form-layout">
 
@@ -160,7 +160,7 @@ $categories = $pdo->query('SELECT category_id, name FROM categories ORDER BY nam
                             </div>
                         </div>
 
-                        <!-- Images -->
+                        <!-- Image -->
                         <div class="section-card">
                             <div class="section-card-header">
                                 <div class="section-card-icon">
@@ -176,7 +176,7 @@ $categories = $pdo->query('SELECT category_id, name FROM categories ORDER BY nam
                                 <i class="bi bi-cloud-arrow-up listing-upload-icon"></i>
                                 <span class="listing-upload-primary">Click to upload photos</span>
                                 <span class="listing-upload-secondary">PNG, JPG or WEBP &mdash; max 5 MB each</span>
-                                <input type="file" name="image" accept="image/jpeg, image/png, image/webp">
+                                <input type="file" class="form-control" id="image" name="image" accept="image/*">
                             </label>
 
                             <!-- JS will populate this with thumbnails -->
@@ -274,19 +274,15 @@ $categories = $pdo->query('SELECT category_id, name FROM categories ORDER BY nam
                                             <i class="bi bi-image"></i>
                                             <span>No photo yet</span>
                                         </div>
-                                        <img
-                                            class="preview-card-img"
-                                            id="preview-img"
-                                            src=""
-                                            alt="Preview"
-                                            style="display: none;">
+                                        <img id="image-preview" src="" alt="Preview"
+                                            style="display:none; max-width:100%; border-radius:6px;">
                                     </div>
                                     <div class="preview-card-body">
                                         <span class="preview-card-category" id="preview-category">Category</span>
                                         <h3 class="preview-card-title" id="preview-title">Your listing title</h3>
                                         <p class="preview-card-desc" id="preview-desc">Your description will appear here…</p>
                                         <div class="preview-card-footer">
-                                            <span class="preview-card-price" id="preview-price">£0.00</span>
+                                            <span class="preview-card-price" id="preview-price">R0.00</span>
                                             <span class="preview-card-condition" id="preview-condition">—</span>
                                         </div>
                                     </div>
@@ -319,6 +315,8 @@ $categories = $pdo->query('SELECT category_id, name FROM categories ORDER BY nam
     </main>
     <?php include 'partials/footer.php'; ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/validate.js"></script>
+    <script src="js/listing-form.js"></script>
 </body>
 
 </html>
