@@ -1,11 +1,8 @@
-console.log("listing-form.js loaded");
-
 // This script handles form validation for the listing form. It uses the Validate object defined in validate.js to check user input before allowing form submission.
 // The script listens for the form's submit event, validates each field, and prevents submission if any validation checks fail, providing feedback to the user on what needs to be corrected.
 document
   .getElementById("listing-form")
   .addEventListener("submit", function (e) {
-    console.log("form submit fired");
     let valid = true;
 
     // Validate the title field to ensure it's not empty

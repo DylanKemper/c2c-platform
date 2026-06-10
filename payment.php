@@ -95,7 +95,7 @@ $total    = $subtotal + SHIPPING_FEE + BUYER_PROTECTION_FEE;
 
     <main class="flex-grow-1">
         <div class="container py-4">
-            <form action="auth/purchase-submit.php" method="POST">
+            <form id="payment-form" action="auth/purchase-submit.php" method="POST" novalidate>
                 <!-- Form fields for payment information -->
                 <input type="hidden" name="listing_id" value="<?php echo $listingId; ?>">
                 <div class="listing-form-layout">
@@ -160,58 +160,50 @@ $total    = $subtotal + SHIPPING_FEE + BUYER_PROTECTION_FEE;
 
                                 <!-- Card Fields -->
                                 <div class="row g-3">
-                                    <div class="col-12">
+                                    <div class="col-12 form-field">
                                         <label class="form-label">
                                             Cardholder name
                                         </label>
                                         <input
+                                            id="cardholder-name"
                                             type="text"
                                             class="form-control custom-input"
                                             placeholder="John Doe">
                                     </div>
 
-                                    <div class="col-12">
+                                    <div class="col-12 form-field">
                                         <label class="form-label">
                                             Card number
                                         </label>
                                         <input
+                                            id="card-number"
                                             type="text"
                                             class="form-control custom-input"
                                             placeholder="1234 5678 9012 3456">
                                     </div>
 
-                                    <div class="col-6">
+                                    <div class="col-6 form-field">
                                         <label class="form-label">
                                             Expiry
                                         </label>
                                         <input
+                                            id="expiry"
                                             type="text"
                                             class="form-control custom-input"
                                             placeholder="MM / YY">
                                     </div>
 
-                                    <div class="col-6">
+                                    <div class="col-6 form-field">
                                         <label class="form-label">
                                             CVV
                                         </label>
                                         <input
+                                            id="cvv"
                                             type="password"
                                             class="form-control custom-input"
                                             placeholder="123">
                                     </div>
                                 </div>
-
-                                <!-- Billing -->
-                                <div>
-                                    <label class="form-label">
-                                        Billing address
-                                    </label>
-                                    <textarea
-                                        class="form-control custom-input"
-                                        rows="3"
-                                        placeholder="Street address"></textarea>
-                                </div>
-
                             </div>
                         </div>
 
@@ -226,62 +218,68 @@ $total    = $subtotal + SHIPPING_FEE + BUYER_PROTECTION_FEE;
 
                             <div class="panel__body">
                                 <div class="row g-3">
-                                    <div class="col-md-6">
+                                    <div class="col-md-6 form-field">
                                         <label class="form-label">
                                             First name
                                         </label>
                                         <input
+                                            id="first-name"
                                             type="text"
                                             class="form-control custom-input"
                                             placeholder="John">
                                     </div>
 
-                                    <div class="col-md-6">
+                                    <div class="col-md-6 form-field">
                                         <label class="form-label">
                                             Last name
                                         </label>
                                         <input
+                                            id="last-name"
                                             type="text"
                                             class="form-control custom-input"
                                             placeholder="Doe">
                                     </div>
 
-                                    <div class="col-12">
+                                    <div class="col-12 form-field">
                                         <label class="form-label">
                                             Phone number
                                         </label>
                                         <input
+                                            id="phone"
                                             type="text"
                                             class="form-control custom-input"
                                             placeholder="+27 71 234 5678">
                                     </div>
 
-                                    <div class="col-12">
+                                    <div class="col-12 form-field">
                                         <label class="form-label">
                                             Delivery address
                                         </label>
                                         <textarea
+                                            id="delivery-address"
                                             class="form-control custom-input"
                                             rows="3"
                                             placeholder="Street address"></textarea>
                                     </div>
 
-                                    <div class="col-md-6">
+                                    <div class="col-md-6 form-field">
                                         <label class="form-label">
                                             City
                                         </label>
                                         <input
+                                            id="city"
                                             type="text"
                                             class="form-control custom-input"
                                             placeholder="Cape Town">
                                     </div>
 
-                                    <div class="col-md-6">
+                                    <div class="col-md-6 form-field">
                                         <label class="form-label">
                                             Postal code
                                         </label>
 
                                         <input
+                                            id="postal-code"
                                             type="text"
                                             class="form-control custom-input"
                                             placeholder="8001">
@@ -433,6 +431,8 @@ $total    = $subtotal + SHIPPING_FEE + BUYER_PROTECTION_FEE;
     </main>
     <?php include 'partials/footer.php'; ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/validate.js"></script>
+    <script src="js/payment.js"></script>
 </body>
 
 </html>
