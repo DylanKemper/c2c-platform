@@ -484,7 +484,7 @@ $completedTransactionCount = $completedTransactions['completed_transaction_count
                                         <?php endif; ?>
                                     </div>
 
-                                    <div class="d-flex gap-2 flex-shrink-0">
+                                    <div class="d-flex gap-2 flex-wrap justify-content-end">
                                         <a href="listing.php?id=<?= $listing['listing_id'] ?>" class="btn-platform btn-outline btn-sm">
                                             View
                                         </a>
@@ -494,6 +494,16 @@ $completedTransactionCount = $completedTransactions['completed_transaction_count
                                                 <input type="hidden" name="transaction_id" value="<?= (int) $listing['transaction_id'] ?>">
                                                 <button type="submit" class="btn-platform btn-primary-solid btn-sm">
                                                     <i class="bi bi-check-lg"></i> Confirm Receipt
+                                                </button>
+                                            </form>
+                                        <?php endif; ?>
+
+                                        <?php if (in_array($listing['status'], ['held', 'dispatched'])): ?>
+                                            <form method="POST" action="open-dispute.php">
+                                                <input type="hidden" name="transaction_id" value="<?= (int) $listing['transaction_id'] ?>">
+                                                <input type="hidden" name="listing_id" value="<?=  (int) $listing['listing_id'] ?>">
+                                                <button type="submit" class="btn-platform btn-danger-outline btn-sm">
+                                                    <i class="bi bi-flag"></i> Dispute Transaction
                                                 </button>
                                             </form>
                                         <?php endif; ?>
