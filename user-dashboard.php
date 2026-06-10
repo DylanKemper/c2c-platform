@@ -83,8 +83,6 @@ $activeListingCount = count($activeListings);
 /* =========================================================
    6. SOLD LISTINGS (with buyer review status)
 ========================================================= */
-// reviewer_id = ? filters the LEFT JOIN to only this seller's review of the buyer.
-// reviewee_role = "seller" ensures we don't accidentally match the buyer's review of the seller.
 $soldListingsStmt = $pdo->prepare('
     SELECT
         l.listing_id,
@@ -94,17 +92,21 @@ $soldListingsStmt = $pdo->prepare('
         t.buyer_id,
         t.status,
         t.created_at,
-        r.review_id
+        r.review_id,
+        d.dispute_id
     FROM transactions t
     INNER JOIN listings l ON l.listing_id = t.listing_id
     LEFT JOIN reviews r
         ON  r.transaction_id = t.transaction_id
         AND r.reviewer_id    = ?
-        AND r.reviewee_role           = "buyer"
+        AND r.reviewee_role  = "buyer"
+    LEFT JOIN disputes d
+        ON  d.transaction_id = t.transaction_id
+        AND d.raised_by       = ?
     WHERE t.seller_id = ?
     ORDER BY t.created_at DESC
 ');
-$soldListingsStmt->execute([$userId, $userId]);
+$soldListingsStmt->execute([$userId, $userId, $userId]);
 $soldListings = $soldListingsStmt->fetchAll(PDO::FETCH_ASSOC);
 $totalItemsSold = count($soldListings);
 
@@ -396,7 +398,7 @@ $completedTransactionCount = $completedTransactions['completed_transaction_count
                                         <?php endif; ?>
                                     </div>
 
-                                    <div class="d-flex gap-2 justify-content-end align-items-center flex-shrink-0">
+                                    <div class="d-flex gap-2 flex-wrap justify-content-end">
                                         <a href="listing.php?id=<?= $listing['listing_id'] ?>" class="btn-platform btn-outline btn-sm">
                                             View
                                         </a>
@@ -408,10 +410,25 @@ $completedTransactionCount = $completedTransactions['completed_transaction_count
                                                     Confirm Dispatched
                                                 </button>
                                             </form>
+
                                         <?php elseif ($listing['status'] === 'dispatched'): ?>
                                             <span class="badge badge--lg badge--warning">Awaiting buyer confirmation</span>
+
+                                            <?php if (empty($listing['dispute_id'])): ?>
+                                                <form method="POST" action="open-dispute.php">
+                                                    <input type="hidden" name="transaction_id" value="<?= (int) $listing['transaction_id'] ?>">
+                                                    <button type="submit" class="btn-platform btn-danger-outline btn-sm">
+                                                        <i class="bi bi-flag"></i> Dispute
+                                                    </button>
+                                                </form>
+                                            <?php else: ?>
+                                                <span class="badge badge--lg badge--danger">Disputed</span>
+                                            <?php endif; ?>
+
+                                        <?php elseif ($listing['status'] === 'disputed'): ?>
+                                            <span class="badge badge--lg badge--danger">Disputed</span>
+
                                         <?php elseif ($listing['status'] === 'completed' && !$isReviewed): ?>
-                                            <!-- Seller reviews the buyer — reviewee_id is the buyer -->
                                             <form method="POST" action="review.php">
                                                 <input type="hidden" name="listing_id" value="<?= (int) $listing['listing_id'] ?>">
                                                 <input type="hidden" name="reviewee_id" value="<?= (int) $listing['buyer_id'] ?>">
@@ -421,6 +438,7 @@ $completedTransactionCount = $completedTransactions['completed_transaction_count
                                                     <i class="bi bi-star"></i> Review Buyer
                                                 </button>
                                             </form>
+
                                         <?php elseif ($listing['status'] === 'completed' && $isReviewed): ?>
                                             <span class="badge badge--lg badge--success">Completed</span>
                                         <?php endif; ?>
@@ -448,7 +466,7 @@ $completedTransactionCount = $completedTransactions['completed_transaction_count
                             <?php foreach ($itemsBought as $listing): ?>
                                 <?php $isReviewed = !empty($listing['review_id']); ?>
 
-                                <div class="d-flex justify-content-between align-items-center gap-3">
+                                <div class="d-flex justify-content-between align-items-center gap-3 flex-wrap">
 
                                     <div>
                                         <p class="seller-name mb-0"><?= htmlspecialchars($listing['title']) ?></p>
@@ -464,6 +482,10 @@ $completedTransactionCount = $completedTransactions['completed_transaction_count
                                         <?php elseif ($listing['status'] === 'dispatched'): ?>
                                             <span class="badge badge--md badge--info">
                                                 <i class="bi bi-truck"></i>&nbsp; Dispatched
+                                            </span>
+                                        <?php elseif ($listing['status'] === 'disputed'): ?>
+                                            <span class="badge badge--md badge--danger">
+                                                <i class="bi bi-flag"></i>&nbsp; Disputed
                                             </span>
                                         <?php elseif ($listing['status'] === 'completed'): ?>
                                             <span class="badge badge--md badge--success">
@@ -498,18 +520,17 @@ $completedTransactionCount = $completedTransactions['completed_transaction_count
                                             </form>
                                         <?php endif; ?>
 
-                                        <?php if (in_array($listing['status'], ['held', 'dispatched'])): ?>
+                                        <?php if (in_array($listing['status'], ['held', 'dispatched']) && empty($listing['dispute_id'])): ?>
                                             <form method="POST" action="open-dispute.php">
                                                 <input type="hidden" name="transaction_id" value="<?= (int) $listing['transaction_id'] ?>">
-                                                <input type="hidden" name="listing_id" value="<?=  (int) $listing['listing_id'] ?>">
+                                                <input type="hidden" name="listing_id" value="<?= (int) $listing['listing_id'] ?>">
                                                 <button type="submit" class="btn-platform btn-danger-outline btn-sm">
-                                                    <i class="bi bi-flag"></i> Dispute Transaction
+                                                    <i class="bi bi-flag"></i> Dispute
                                                 </button>
                                             </form>
                                         <?php endif; ?>
 
                                         <?php if ($listing['status'] === 'completed' && !$isReviewed): ?>
-                                            <!-- Buyer reviews the seller — reviewee_id is the seller -->
                                             <form method="POST" action="review.php">
                                                 <input type="hidden" name="listing_id" value="<?= (int) $listing['listing_id'] ?>">
                                                 <input type="hidden" name="reviewee_id" value="<?= (int) $listing['seller_id'] ?>">

@@ -73,5 +73,8 @@ $insert = $pdo->prepare('
 ');
 $insert->execute([$transaction_id, $user_id, $reason]);
 
+$pdo->prepare('UPDATE transactions SET status = "disputed" WHERE transaction_id = ?')
+    ->execute([$transaction_id]);
+
 header('Location: ../user-dashboard.php?dispute=success');
 exit;
