@@ -1,12 +1,5 @@
 /* =========================
    BADGE COMPONENT
-   
-   Base:       .badge
-   Size:       .badge--sm  .badge--lg  .badge--dot
-   Semantic:   .badge--success  .badge--warning  .badge--danger  .badge--info
-   Entity:     .badge--user  .badge--listing  .badge--transaction
-   Special:    .badge--nav  .badge--category  .badge--active-strong
-   Cart:       .cart-btn  +  .badge--cart
 ========================= */
 
 /* =========================

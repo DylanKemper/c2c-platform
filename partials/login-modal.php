@@ -10,7 +10,7 @@
             </div>
 
             <div class="modal-body auth-modal-body">
-                <form action="auth/login-process.php" method="POST" id="loginForm">
+                <form action="auth/login-process.php" method="POST" id="loginForm" nonvalidate>
 
                     <div class="form-field">
                         <label class="form-label-upper">Email</label>

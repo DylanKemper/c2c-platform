@@ -46,16 +46,21 @@ document
     if (!valid) e.preventDefault();
   });
 
+// This handles the image upload and preview functionality.
+// It listens for changes to the file input, validates the selected file's type and size, and if valid, displays a preview of the image.
+// If the file is invalid, it shows an error message and resets the input.
 document.getElementById("image").addEventListener("change", function () {
   const file = this.files[0];
   const preview = document.getElementById("image-preview");
 
+  // If no file is selected, hide the preview and return
   if (!file) {
     preview.src = "";
     preview.style.display = "none";
     return;
   }
 
+  // Validate file type and size
   const allowed = ["image/jpeg", "image/png", "image/webp"];
   if (!allowed.includes(file.type)) {
     Validate.showError("image", "Only JPG, PNG, or WEBP files are allowed.");
@@ -63,12 +68,17 @@ document.getElementById("image").addEventListener("change", function () {
     return;
   }
 
+  // Validate file size (max 5MB)
   if (file.size > 5 * 1024 * 1024) {
     Validate.showError("image", "File must be under 5MB.");
     this.value = "";
     return;
   }
 
+  // Clear any previous errors
+  Validate.clearError("image");
+
+  // Use FileReader to read the selected file and display it as a preview
   const reader = new FileReader();
   reader.onload = (e) => {
     preview.src = e.target.result;
