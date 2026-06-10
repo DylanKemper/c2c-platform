@@ -1,3 +1,5 @@
+// This script handles form validation for the payment form. It uses the Validate object defined in validate.js to check user input before allowing form submission.
+// The script listens for the form's submit event, validates each field, and prevents submission if any validation checks fail, providing feedback to the user on what needs to be corrected.
 document
   .getElementById("payment-form")
   .addEventListener("submit", function (e) {
