@@ -62,9 +62,7 @@ if (!$dispute) {
 ========================================================= */
 $statusClass = match ($dispute['status']) {
     'open'         => 'badge--warning',
-    'under_review' => 'badge--info',
     'resolved'     => 'badge--success',
-    'rejected'     => 'badge--danger',
     default        => 'badge--info'
 };
 
@@ -245,17 +243,6 @@ $statusClass = match ($dispute['status']) {
                             <button class="btn-platform btn-danger-outline" disabled>
                                 <i class="bi bi-arrow-counterclockwise"></i> Refund buyer
                             </button>
-
-                            <hr class="panel-divider">
-
-                            <button class="btn-platform btn-outline">
-                                Request more info
-                            </button>
-
-                            <button class="btn-platform btn-outline">
-                                Escalate dispute
-                            </button>
-
                         </div>
                     </div>
 

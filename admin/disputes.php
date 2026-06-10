@@ -114,7 +114,6 @@ $disputes = $stmt->fetchAll();
                             <select name="status" class="filter-select">
                                 <option value="">All statuses</option>
                                 <option value="open" <?= $status === 'open' ? 'selected' : '' ?>>Open</option>
-                                <option value="under_review" <?= $status === 'under_review' ? 'selected' : '' ?>>Under Review</option>
                                 <option value="resolved" <?= $status === 'resolved' ? 'selected' : '' ?>>Resolved</option>
                             </select>
                             <select name="resolution" class="filter-select">
@@ -167,7 +166,6 @@ $disputes = $stmt->fetchAll();
                                         <?php
                                         $statusClass = match ($dispute['dispute_status']) {
                                             'open'          => 'badge--danger',
-                                            'under_review'  => 'badge--warning',
                                             'resolved'      => 'badge--success',
                                             default         => 'badge--danger'
                                         };
