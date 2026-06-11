@@ -215,65 +215,99 @@ $statusClass = match ($dispute['status']) {
                             </div>
                         </div>
                     </div>
-
                 </div>
 
                 <!-- RIGHT -->
-                <div class="col-md-4">
+                <div class="col-md-4 d-flex flex-column gap-3">
 
-                    <div class="panel">
-                        <div class="panel__header">
-                            <span class="panel__title">Actions</span>
-                        </div>
+                    <?php if ($dispute['status'] === 'resolved'): ?>
 
-                        <div class="panel__body d-flex flex-column gap-2">
-
-                            <div class="form-field">
-                                <textarea
-                                    id="resolution-note"
-                                    class="form-textarea"
-                                    rows="4"
-                                    placeholder="Resolution note (required)..."></textarea>
-                            </div>
-
-                            <button class="btn-platform btn-primary-solid" disabled>
-                                <i class="bi bi-check-circle"></i> Release funds to seller
-                            </button>
-
-                            <button class="btn-platform btn-danger-outline" disabled>
-                                <i class="bi bi-arrow-counterclockwise"></i> Refund buyer
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- RESOLUTION -->
-                    <?php if (!empty($dispute['resolution_note'])): ?>
-                        <div class="panel mt-3">
+                        <div class="panel">
                             <div class="panel__header">
                                 <span class="panel__title">Resolution</span>
                             </div>
+                            <div class="panel__body d-flex flex-column gap-3">
+                                <p class="seller-meta mb-0">
+                                    <i class="bi bi-check-circle" style="color: var(--accent);"></i>
+                                    This dispute has been resolved.
+                                </p>
 
-                            <div class="panel__body">
-                                <div class="report-reason-box">
-                                    <?= nl2br(htmlspecialchars($dispute['resolution_note'])) ?>
-                                </div>
+                                <?php if (!empty($dispute['resolution_note'])): ?>
+                                    <div class="report-reason-box">
+                                        <?= nl2br(htmlspecialchars($dispute['resolution_note'])) ?>
+                                    </div>
+                                <?php endif; ?>
 
                                 <?php if (!empty($dispute['resolved_at'])): ?>
-                                    <div class="report-item mt-2">
+                                    <div class="report-item">
                                         <label>Resolved</label>
                                         <span><?= date('d M Y', strtotime($dispute['resolved_at'])) ?></span>
                                     </div>
                                 <?php endif; ?>
                             </div>
                         </div>
+
+                    <?php else: ?>
+                        <div class="panel">
+                            <div class="panel__header">
+                                <span class="panel__title">Resolve dispute</span>
+                            </div>
+                            <div class="panel__body d-flex flex-column gap-3">
+
+                                <form method="POST" action="resolve-dispute.php">
+                                    <input type="hidden" name="dispute_id" value="<?= (int) $dispute['dispute_id'] ?>">
+                                    <input type="hidden" name="transaction_id" value="<?= (int) $dispute['transaction_id'] ?>">
+
+                                    <div class="d-flex flex-column gap-3">
+                                        <div>
+                                            <label class="form-label fw-semibold">
+                                                Resolution note <span class="text-danger">*</span>
+                                            </label>
+                                            <textarea
+                                                id="resolution-note"
+                                                name="resolution_note"
+                                                class="form-control"
+                                                rows="4"
+                                                placeholder="Explain the resolution..."></textarea>
+                                        </div>
+
+                                        <button
+                                            type="submit"
+                                            name="resolution"
+                                            value="released"
+                                            id="btn-release"
+                                            class="btn-platform btn-primary-solid"
+                                            disabled>
+                                            <i class="bi bi-check-circle"></i> Release funds to seller
+                                        </button>
+
+                                        <button
+                                            type="submit"
+                                            name="resolution"
+                                            value="refunded"
+                                            id="btn-refund"
+                                            class="btn-platform btn-danger-outline"
+                                            disabled>
+                                            <i class="bi bi-arrow-counterclockwise"></i> Refund buyer
+                                        </button>
+                                    </div>
+
+                                </form>
+
+                            </div>
+                        </div>
+
                     <?php endif; ?>
 
                 </div>
-
+                <!-- END RIGHT -->
             </div>
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/validate.js"></script>
+    <script src="../js/dispute-detail.js"></script>
 </body>
 
 </html>

@@ -26,10 +26,10 @@ if ($status === 'open') {
 }
 
 // Resolution filter
-if ($resolution === 'refund_buyer') {
-    $where[]  = 'd.resolution = "Buyer"';
-} elseif ($resolution === 'refund_seller') {
-    $where[]  = 'd.resolution = "Seller"';
+if ($resolution === 'refunded') {
+    $where[]  = 'd.resolution = "refunded"';
+} elseif ($resolution === 'released') {
+    $where[]  = 'd.resolution = "released"';
 }
 
 $sql = '
@@ -118,8 +118,8 @@ $disputes = $stmt->fetchAll();
                             </select>
                             <select name="resolution" class="filter-select">
                                 <option value="">All resolutions</option>
-                                <option value="refund_buyer" <?= $resolution === 'refund_buyer' ? 'selected' : '' ?>>Awarded to Buyer</option>
-                                <option value="refund_seller" <?= $resolution === 'refund_seller' ? 'selected' : '' ?>>Awarded to Seller</option>
+                                <option value="refunded" <?= $resolution === 'refunded' ? 'selected' : '' ?>>Refunded</option>
+                                <option value="released" <?= $resolution === 'released' ? 'selected' : '' ?>>Released</option>
                             </select>
                             <button type="submit" class="btn-platform btn-primary-solid">Filter</button>
                             <a href="disputes.php" class="btn-platform btn-outline">Clear</a>
@@ -161,7 +161,7 @@ $disputes = $stmt->fetchAll();
                                             </div>
                                         </td>
                                         <td><?= htmlspecialchars($dispute['reason']) ?></td>
-                                        <td>$<?= number_format($dispute['amount'], 2) ?></td>
+                                        <td>R<?= number_format($dispute['amount'], 2) ?></td>
                                         <td><?= date('Y-m-d', strtotime($dispute['created_at'])) ?></td>
                                         <?php
                                         $statusClass = match ($dispute['dispute_status']) {

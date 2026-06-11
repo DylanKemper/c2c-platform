@@ -20,8 +20,8 @@ if ($status === 'held') {
     $where[]  = 't.status = "Held"';
 } elseif ($status === 'dispatched') {
     $where[]  = 't.status = "Dispatched"';
-} elseif ($status === 'received') {
-    $where[]  = 't.status = "Received"';
+} elseif ($status === 'refunded') {
+    $where[]  = 't.status = "Refunded"';
 } elseif ($status === 'completed') {
     $where[]  = 't.status = "Completed"';
 } elseif ($status === 'disputed') {
@@ -103,9 +103,9 @@ $transactions = $stmt->fetchAll();
                                 <option value="">All statuses</option>
                                 <option value="held" <?= $status === 'held' ? 'selected' : '' ?>>Held</option>
                                 <option value="dispatched" <?= $status === 'dispatched' ? 'selected' : '' ?>>Dispatched</option>
-                                <option value="received" <?= $status === 'received' ? 'selected' : '' ?>>Received</option>
-                                <option value="completed" <?= $status === 'completed' ? 'selected' : '' ?>>Completed</option>
                                 <option value="disputed" <?= $status === 'disputed' ? 'selected' : '' ?>>Disputed</option>
+                                <option value="completed" <?= $status === 'completed' ? 'selected' : '' ?>>Completed</option>
+                                <option value="refunded" <?= $status === 'refunded' ? 'selected' : '' ?>>Refunded</option>
                                 <option value="cancelled" <?= $status === 'cancelled' ? 'selected' : '' ?>>Cancelled</option>
                             </select>
                             <button type="submit" class="btn-platform btn-primary-solid">Filter</button>
@@ -159,6 +159,7 @@ $transactions = $stmt->fetchAll();
                                         'dispatched'  => 'badge--info',
                                         'completed'   => 'badge--success',
                                         'disputed'    => 'badge--danger',
+                                        'refunded'    => 'badge--info',
                                         'cancelled'   => 'badge--neutral',
                                         default       => 'badge--neutral'
                                     };
