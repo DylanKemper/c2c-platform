@@ -1,5 +1,12 @@
 <?php
 require_once __DIR__ . '/../config/db.php';
+require_once __DIR__ . '/../includes/session.php';
+
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+    header('Location: ../index.php');
+    exit;
+}
+
 $dispute_id = (int) ($_POST['dispute_id'] ?? 0);
 $transaction_id = (int) ($_POST['transaction_id']    ?? 0);
 $resolution     = $_POST['resolution']      ?? '';

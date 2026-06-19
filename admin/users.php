@@ -1,5 +1,11 @@
 <?php
 require_once __DIR__ . '/../config/db.php';
+require_once __DIR__ . '/../includes/session.php';
+
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+    header('Location: dashboard.php');
+    exit;
+}
 
 // ── Filters ────────────────────────────────────────────────
 $search = trim($_GET['search'] ?? '');
@@ -50,7 +56,8 @@ $stmt->execute($params);
 $users = $stmt->fetchAll();
 
 // ── Status helper ──────────────────────────────────────────
-function getUserStatus(array $user): string {
+function getUserStatus(array $user): string
+{
     if ($user['is_banned']) return 'banned';
     if ($user['is_suspended'] && strtotime($user['suspended_until']) > time()) return 'suspended';
     return 'active';
@@ -97,8 +104,8 @@ function getUserStatus(array $user): string {
                                 class="search-input">
                             <select name="status" class="filter-select">
                                 <option value="">All statuses</option>
-                                <option value="active"    <?= $status === 'active'    ? 'selected' : '' ?>>Active</option>
-                                <option value="banned"    <?= $status === 'banned'    ? 'selected' : '' ?>>Banned</option>
+                                <option value="active" <?= $status === 'active'    ? 'selected' : '' ?>>Active</option>
+                                <option value="banned" <?= $status === 'banned'    ? 'selected' : '' ?>>Banned</option>
                                 <option value="suspended" <?= $status === 'suspended' ? 'selected' : '' ?>>Suspended</option>
                             </select>
                             <button type="submit" class="btn-platform btn-primary-solid">Filter</button>
@@ -133,35 +140,35 @@ function getUserStatus(array $user): string {
                                     $joined   = date('d M Y', strtotime($user['created_at']));
                                     $rating   = $user['seller_rating'] ?? '—';
                                 ?>
-                                <tr class="table-row clickable"
-                                    onclick="window.location='user-detail.php?id=<?= $user['user_id'] ?>'">
-                                    <td>
-                                        <div style="display:flex; align-items:center; gap:8px;">
-                                            <span class="user-avatar"><?= $initials ?></span>
-                                            <?= htmlspecialchars($user['username']) ?>
-                                        </div>
-                                    </td>
-                                    <td><?= htmlspecialchars($user['email']) ?></td>
-                                    <td><?= $joined ?></td>
-                                    <td><?= $user['listing_count'] ?></td>
-                                    <td>
-                                        <?php if ($status === 'banned'): ?>
-                                            <span class="badge badge--danger">Banned</span>
-                                        <?php elseif ($status === 'suspended'): ?>
-                                            <span class="badge badge--warning">Suspended</span>
-                                        <?php else: ?>
-                                            <span class="badge badge--success">Active</span>
-                                        <?php endif; ?>
-                                    </td>
-                                    <td><?= $rating ?></td>
-                                    <td>
-                                        <a href="user-detail.php?id=<?= $user['user_id'] ?>"
-                                           class="btn-platform btn-primary-solid view-btn"
-                                           onclick="event.stopPropagation()">
-                                            View
-                                        </a>
-                                    </td>
-                                </tr>
+                                    <tr class="table-row clickable"
+                                        onclick="window.location='user-detail.php?id=<?= $user['user_id'] ?>'">
+                                        <td>
+                                            <div style="display:flex; align-items:center; gap:8px;">
+                                                <span class="user-avatar"><?= $initials ?></span>
+                                                <?= htmlspecialchars($user['username']) ?>
+                                            </div>
+                                        </td>
+                                        <td><?= htmlspecialchars($user['email']) ?></td>
+                                        <td><?= $joined ?></td>
+                                        <td><?= $user['listing_count'] ?></td>
+                                        <td>
+                                            <?php if ($status === 'banned'): ?>
+                                                <span class="badge badge--danger">Banned</span>
+                                            <?php elseif ($status === 'suspended'): ?>
+                                                <span class="badge badge--warning">Suspended</span>
+                                            <?php else: ?>
+                                                <span class="badge badge--success">Active</span>
+                                            <?php endif; ?>
+                                        </td>
+                                        <td><?= $rating ?></td>
+                                        <td>
+                                            <a href="user-detail.php?id=<?= $user['user_id'] ?>"
+                                                class="btn-platform btn-primary-solid view-btn"
+                                                onclick="event.stopPropagation()">
+                                                View
+                                            </a>
+                                        </td>
+                                    </tr>
                                 <?php endforeach; ?>
                             <?php endif; ?>
                         </tbody>

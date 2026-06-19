@@ -1,6 +1,12 @@
 <?php
 $active_page = 'listings';
 require_once __DIR__ . '/../config/db.php';
+require_once __DIR__ . '/../includes/session.php';
+
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+    header('Location: dashboard.php');
+    exit;
+}
 
 // Filters
 $search   = trim($_GET['search'] ?? '');

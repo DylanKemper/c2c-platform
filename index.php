@@ -2,6 +2,16 @@
 require_once __DIR__ . '/includes/session.php';
 require_once __DIR__ . '/config/db.php';
 
+// Admins shouldn't be on the public site
+if (
+    isset($_SESSION['role'])
+    && $_SESSION['role'] === 'admin'
+    && !str_contains($_SERVER['SCRIPT_NAME'], '/admin/')
+) {
+    header('Location: admin/dashboard.php');
+    exit;
+}
+
 // Dynamic WHERE clause and parameters for category filtering
 $where  = ['l.status = "active"'];
 $params = [];
@@ -98,11 +108,6 @@ $listings = $stmt->fetchAll();
                 </div>
             <?php endforeach; ?>
         </div>
-
-        <div class="btn-platform btn-accent-solid">
-            <a href="auth/logout.php">Logout</a>
-        </div>
-
     </main>
     <?php include 'partials/footer.php'; ?>
     <?php include 'partials/register-modal.php'; ?>

@@ -3,16 +3,6 @@ require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../includes/session.php';
 ?>
 
-<?php if (isset($_SESSION['user_id'])): ?>
-    <div style="color: green;">
-        Logged in as <?= htmlspecialchars($_SESSION['username']) ?>
-    </div>
-<?php else: ?>
-    <div style="color: red;">
-        Not logged in
-    </div>
-<?php endif; ?>
-
 <?php
 
 // Fetch categories for navbar dropdown
@@ -95,6 +85,9 @@ if (isset($_SESSION['user_id'])) {
                 <!-- Profile avatar (shown when logged in) -->
                 <a class="nav-action-btn nav-avatar" href="user-dashboard.php" aria-label="My profile">
                     <div class="navbar-avatar"><?= htmlspecialchars($_SESSION['initials'] ?? '') ?></div>
+                </a>
+                <a href="auth/logout.php" class="btn-platform btn-accent-solid">
+                    Logout
                 </a>
             <?php else: ?>
                 <!-- Sign in (shown when logged out) -->
