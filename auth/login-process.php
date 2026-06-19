@@ -24,6 +24,10 @@ if (!$user || !password_verify($password, $user['password_hash'])) {
     die('Invalid credentials');
 }
 
+if ($user['is_banned']) {
+    die('This account has been banned.');
+}
+
 // Regenerate session ID
 session_regenerate_id(true);
 
