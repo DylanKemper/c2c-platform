@@ -140,23 +140,6 @@ $report = $stmt->fetch();
                             <button class="btn-platform btn-danger-outline">
                                 <i class="bi bi-x-circle"></i> Dismiss report
                             </button>
-
-                            <hr class="panel-divider">
-
-
-                            <div class="panel__title">
-                                Jump to
-                            </div>
-
-                            <a href="listing-detail.php?id=<?php echo $report['target_id']; ?>" class="btn-platform btn-outline">
-                                <i class="bi bi-tag"></i> View listing #<?php echo $report['target_id']; ?>
-                            </a>
-                            <a href="user-detail.php?id=<?php echo $report['target_id']; ?>" class="btn-platform btn-outline">
-                                <i class="bi bi-person"></i> View seller account
-                            </a>
-                            <a href="user-detail.php?id=<?php echo $report['reporter_id']; ?>" class="btn-platform btn-outline">
-                                <i class="bi bi-person-check"></i> View reporter account
-                            </a>
                         </div>
                     </div>
                 </div>
