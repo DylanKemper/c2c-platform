@@ -26,7 +26,8 @@ $user = $stmt->fetch();
 ========================================================= */
 $sql = '
     SELECT COUNT(*) FROM transactions
-    WHERE buyer_id = ? OR seller_id = ? AND status = "completed"
+    WHERE (buyer_id = ? OR seller_id = ?)
+      AND status = "completed"
 ';
 $stmt = $pdo->prepare($sql);
 $stmt->execute([$user['user_id'], $user['user_id']]);
@@ -92,20 +93,21 @@ $stmt->execute([$_GET['id']]);
 $reports = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 /* =========================================================
-   6. COUNT OPEN REPORTS
+   6. COUNT OPEN (PENDING) REPORTS
 ========================================================= */
 $countSql = '
     SELECT COUNT(*) 
     FROM reports
     WHERE target_id = ?
       AND report_type = "user"
-      AND status = "open"
+      AND status = "pending"
 ';
 
 $countStmt = $pdo->prepare($countSql);
 $countStmt->execute([$_GET['id']]);
 $openReportCount = (int) $countStmt->fetchColumn();
 
+$is_banned = (bool) $user['is_banned'];
 ?>
 
 <!DOCTYPE html>
@@ -114,7 +116,7 @@ $openReportCount = (int) $countStmt->fetchColumn();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User @jsmith92 — Lootly Admin</title>
+    <title>User @<?= htmlspecialchars($user['username']) ?> — Lootly Admin</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap" rel="stylesheet">
@@ -233,86 +235,79 @@ $openReportCount = (int) $countStmt->fetchColumn();
                             <span class="badge badge--warning"><?= $openReportCount ?> open</span>
                         </div>
                         <div class="panel__body d-flex flex-column gap-2">
-                            <?php foreach ($reports as $report): ?>
-                                <div class="report-object-preview">
-                                    <div class="report-object-icon-box">
-                                        <i class="bi bi-flag"></i>
-                                    </div>
-                                    <div>
-                                        <div class="report-object-name">
-                                            Report #<?= (int)$report['report_id'] ?>
-                                            &mdash;
-                                            <?= htmlspecialchars(ucfirst($report['report_type'])) ?> report
+                            <?php if (empty($reports)): ?>
+                                <div class="text-center text-muted py-4">No reports found.</div>
+                            <?php else: ?>
+                                <?php foreach ($reports as $report): ?>
+                                    <div class="report-object-preview">
+                                        <div class="report-object-icon-box">
+                                            <i class="bi bi-flag"></i>
                                         </div>
+                                        <div>
+                                            <div class="report-object-name">
+                                                Report #<?= (int)$report['report_id'] ?>
+                                                &mdash;
+                                                <?= htmlspecialchars(ucfirst($report['report_type'])) ?> report
+                                            </div>
 
-                                        <div class="report-object-sub">
-                                            Filed by
-                                            <strong>
-                                                @<?= htmlspecialchars($report['reporter_username'] ?? 'unknown') ?>
-                                            </strong>
-                                            &nbsp;&middot;&nbsp;
-                                            <?= date('j M Y', strtotime($report['created_at'])) ?>
-                                            &nbsp;&middot;&nbsp;
-                                            <span style="color:<?= $report['status'] === 'open' ? 'var(--warning,#f59e0b)' : 'var(--success,#10b981)' ?>">
-                                                <?= htmlspecialchars(ucfirst($report['status'])) ?>
-                                            </span>
+                                            <div class="report-object-sub">
+                                                Filed by
+                                                <strong>
+                                                    @<?= htmlspecialchars($report['reporter_username'] ?? 'unknown') ?>
+                                                </strong>
+                                                &nbsp;&middot;&nbsp;
+                                                <?= date('j M Y', strtotime($report['created_at'])) ?>
+                                                &nbsp;&middot;&nbsp;
+                                                <span style="color:<?= $report['status'] === 'pending' ? 'var(--warning,#f59e0b)' : 'var(--success,#10b981)' ?>">
+                                                    <?= htmlspecialchars(ucfirst($report['status'])) ?>
+                                                </span>
+                                            </div>
                                         </div>
+                                        <a href="report-detail.php?id=<?= (int)$report['report_id'] ?>"
+                                            class="report-object-link">
+                                            View <i class="bi bi-arrow-right"></i>
+                                        </a>
                                     </div>
-                                    <a href="report-detail.php?id=<?= (int)$report['report_id'] ?>"
-                                        class="report-object-link">
-                                        View <i class="bi bi-arrow-right"></i>
-                                    </a>
-                                </div>
-                            <?php endforeach; ?>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
 
                         </div>
                     </div>
                 </div>
 
-                <!-- RIGHT COLUMN: action panel -->
+                <!-- RIGHT COLUMN: action panel OR banned notice -->
                 <div class="col-md-4">
-                    <div class="panel">
-                        <div class="panel__header">
-                            <span class="panel__title">Actions</span>
-                        </div>
-                        <div class="panel__body d-flex flex-column gap-2">
+                    <?php if ($is_banned): ?>
 
-                            <button class="btn-platform btn-outline" id="btn-warn">
-                                <i class="bi bi-exclamation-triangle"></i> Send warning
-                            </button>
-
-                            <hr class="panel-divider">
-
-                            <div class="form-field">
-                                <label class="form-label" for="suspend-duration">Suspension duration</label>
-                                <select id="suspend-duration" class="form-select form-select-sm">
-                                    <option value="">Select duration&hellip;</option>
-                                    <option value="7">7 days</option>
-                                    <option value="30">30 days</option>
-                                    <option value="custom">Custom</option>
-                                </select>
+                        <div class="panel">
+                            <div class="panel__header">
+                                <span class="panel__title">Status</span>
                             </div>
-
-                            <button class="btn-platform btn-warning-outline" id="btn-suspend" disabled style="opacity:0.45">
-                                <i class="bi bi-slash-circle"></i> Suspend account
-                            </button>
-
-                            <hr class="panel-divider">
-
-                            <div class="form-field">
-                                <textarea
-                                    id="ban-reason"
-                                    name="ban_reason"
-                                    class="form-textarea"
-                                    rows="3"
-                                    placeholder="Ban reason (required)&hellip;"></textarea>
+                            <div class="panel__body">
+                                <div class="text-center text-muted py-3">
+                                    <i class="bi bi-slash-circle" style="font-size: 1.5rem;"></i>
+                                    <p class="mb-0 mt-2">This user has been banned. Their listings have been removed from the public site.</p>
+                                </div>
                             </div>
-
-                            <button class="btn-platform btn-danger-outline" id="btn-ban" disabled style="opacity:0.45">
-                                <i class="bi bi-x-octagon"></i> Ban account
-                            </button>
                         </div>
-                    </div>
+
+                    <?php else: ?>
+
+                        <div class="panel">
+                            <div class="panel__header">
+                                <span class="panel__title">Actions</span>
+                            </div>
+                            <div class="panel__body d-flex flex-column gap-2">
+                                <form method="POST" action="ban-user.php">
+                                    <input type="hidden" name="user_id" value="<?= $user['user_id'] ?>">
+                                    <button type="submit" class="btn-platform btn-danger-outline btn-block">
+                                        <i class="bi bi-slash-circle"></i> Ban user
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+
+                    <?php endif; ?>
                 </div>
             </div>
         </div>

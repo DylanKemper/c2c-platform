@@ -13,6 +13,7 @@ $sql = '
         l.condition,
         l.description,
         l.created_at,
+        l.status,
         u.user_id AS seller_id,
         u.username AS seller_username
 
@@ -57,6 +58,20 @@ $stmt = $pdo->prepare($sql);
 $stmt->execute([$_GET['id']]);
 $reports = $stmt->fetchAll();
 
+$is_removed = $listing['status'] === 'removed';
+
+$status_badge_class = match ($listing['status']) {
+    'active'  => 'badge--success',
+    'sold'    => 'badge--info',
+    'removed' => 'badge--danger',
+    default   => 'badge--warning',
+};
+$status_icon = match ($listing['status']) {
+    'active'  => 'bi-check-circle',
+    'sold'    => 'bi-bag-check',
+    'removed' => 'bi-trash',
+    default   => 'bi-clock',
+};
 ?>
 
 <!DOCTYPE html>
@@ -65,7 +80,7 @@ $reports = $stmt->fetchAll();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listing #17 — Lootly Admin</title>
+    <title>Listing #<?= htmlspecialchars($listing['listing_id']) ?> — Lootly Admin</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap" rel="stylesheet">
@@ -96,7 +111,11 @@ $reports = $stmt->fetchAll();
 
             <div class="page-heading-row">
                 <h1 class="page-heading">Listing <?= htmlspecialchars($listing['title']) ?></h1>
+                <span class="badge badge--lg <?= $status_badge_class ?>">
+                    <i class="bi <?= $status_icon ?>" style="font-size:9px"></i> <?= ucfirst(htmlspecialchars($listing['status'])) ?>
+                </span>
             </div>
+
             <div class="row g-3 align-items-start">
 
                 <!-- LEFT COLUMN -->
@@ -192,36 +211,40 @@ $reports = $stmt->fetchAll();
 
                 </div>
 
-                <!-- RIGHT COLUMN: action panel -->
+                <!-- RIGHT COLUMN: action panel OR removed notice -->
                 <div class="col-md-4">
-                    <div class="panel">
-                        <div class="panel__header">
-                            <span class="panel__title">Actions</span>
-                        </div>
-                        <div class="panel__body d-flex flex-column gap-2">
+                    <?php if ($is_removed): ?>
 
-                            <!-- Clear flags — no prerequisite -->
-                            <button class="btn-platform btn-outline" id="btn-clear">
-                                <i class="bi bi-check2-circle"></i> Clear flags
-                            </button>
-
-                            <hr class="panel-divider">
-
-                            <!-- Remove listing — reason required -->
-                            <div class="form-field">
-                                <textarea
-                                    id="remove-reason"
-                                    name="remove_reason"
-                                    class="form-textarea"
-                                    rows="4"
-                                    placeholder="Removal reason (required)&hellip;"></textarea>
+                        <div class="panel">
+                            <div class="panel__header">
+                                <span class="panel__title">Status</span>
                             </div>
-
-                            <button class="btn-platform btn-danger-outline" id="btn-remove" disabled style="opacity:0.45">
-                                <i class="bi bi-trash"></i> Remove listing
-                            </button>
+                            <div class="panel__body">
+                                <div class="text-center text-muted py-3">
+                                    <i class="bi bi-trash" style="font-size: 1.5rem;"></i>
+                                    <p class="mb-0 mt-2">This listing has been removed and is no longer visible on the public site.</p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+
+                    <?php else: ?>
+
+                        <div class="panel">
+                            <div class="panel__header">
+                                <span class="panel__title">Actions</span>
+                            </div>
+                            <div class="panel__body d-flex flex-column gap-2">
+
+                                <form method="POST" action="remove-listing.php">
+                                    <input type="hidden" name="listing_id" value="<?= $listing['listing_id'] ?>">
+                                    <button type="submit" class="btn-platform btn-danger-outline btn-block">
+                                        <i class="bi bi-trash"></i> Remove listing
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
