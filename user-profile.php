@@ -171,7 +171,7 @@ $reviewsCount = count($reviews);
     <link rel="stylesheet" href="css/style.css">
 </head>
 
-<body>
+<body class="d-flex flex-column min-vh-100">
     <?php include 'partials/navbar.php'; ?>
 
     <div class="container py-4">

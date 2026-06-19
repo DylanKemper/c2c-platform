@@ -226,7 +226,7 @@ $completedTransactionCount = $completedTransactions['completed_transaction_count
     <link rel="stylesheet" href="css/style.css">
 </head>
 
-<body>
+<body class="d-flex flex-column min-vh-100">
 
     <?php include 'partials/navbar.php'; ?>
 
