@@ -199,8 +199,8 @@ $memberSince = date('Y', strtotime($listing['user_created_at']));
                                 </form>
 
                                 <form action="report.php" method="POST">
-                                    <input type="hidden" name="id" value="<?= $listing['listing_id'] ?>">
-                                    <input type="hidden" name="type" value="listing">
+                                    <input type="hidden" name="target_id" value="<?= $listing['listing_id'] ?>">
+                                    <input type="hidden" name="report_type" value="listing">
                                     <button type="submit" class="btn-platform btn-danger-outline btn-block">
                                         Report Listing
                                     </button>
